@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang=en><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><script>
 (function(){
-  var DATA_BASE = './data/';
+  var DATA_BASE = (window.location.pathname.replace(/[^/]*$/, '')) + 'data/';
   var apiMap = {
     'getBrandList': 'brandList.json',
     'getRandList': 'randList.json',
@@ -20,15 +20,22 @@
   var dataCache = {};
   function loadDataFile(name){
     if(dataCache[name]) return Promise.resolve(dataCache[name]);
-    return fetch(DATA_BASE + name)
-      .then(function(r){ return r.json(); })
+    return fetch(DATA_BASE + name, {cache: 'no-cache'})
+      .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
       .then(function(d){ 
         dataCache[name] = d; 
         return d; 
+      })
+      .catch(function(e){
+        console.warn('[API拦截] 加载失败 '+name+':', e);
+        throw e;
       });
   }
   
   function matchApi(url){
+    if(!url) return null;
+    // 排除资源文件
+    if(/\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|ttf)$/i.test(url)) return null;
     for(var key in apiMap){
       if(url.indexOf(key) !== -1){
         return apiMap[key];
@@ -37,96 +44,133 @@
     return null;
   }
   
-  function makeResponse(data){
-    return Promise.resolve({
-      data: data,
-      status: 200,
-      statusText: 'OK',
-      headers: {},
-      config: {}
+  function buildApiResponse(file, url, body){
+    return loadDataFile(file).then(function(d){
+      // 搜索特殊处理
+      if(file === 'searchBrandList.json'){
+        var keyword = '';
+        try {
+          if(url && url.indexOf('keyword=') !== -1){
+            keyword = decodeURIComponent(url.split('keyword=')[1].split('&')[0]);
+          } else if(body){
+            try {
+              var parsed = typeof body === 'string' ? JSON.parse(body) : body;
+              keyword = parsed.keyword || '';
+            } catch(e){}
+          }
+        } catch(e){}
+        if(keyword && d.all_brands){
+          var kw = String(keyword).trim();
+          var found = d.all_brands.find(function(b){
+            return b.brand_name && String(b.brand_name).indexOf(kw) !== -1;
+          });
+          return {code: 200, msg: '获取成功', data: found || null};
+        }
+        return {code: 200, msg: '获取成功', data: null};
+      }
+      return d;
+    }).catch(function(){
+      return {code: 200, msg: '获取成功', data: null};
     });
   }
   
-  function interceptRequest(url, options){
-    var file = matchApi(url);
-    if(file){
-      return loadDataFile(file).then(function(d){
-        // 搜索特殊处理
-        if(file === 'searchBrandList.json'){
-          var keyword = '';
-          try {
-            if(url.indexOf('keyword=') !== -1){
-              keyword = decodeURIComponent(url.split('keyword=')[1].split('&')[0]);
-            } else if(options && options.body){
-              var body = typeof options.body === 'string' ? JSON.parse(options.body) : options.body;
-              keyword = body.keyword || '';
-            }
-          } catch(e){}
-          if(keyword && d.all_brands){
-            var found = d.all_brands.find(function(b){
-              return b.brand_name && b.brand_name.indexOf(keyword) !== -1;
-            });
-            return makeResponse({code: 200, msg: '获取成功', data: found || null});
-          }
-          return makeResponse({code: 200, msg: '获取成功', data: null});
-        }
-        return makeResponse(d);
-      }).catch(function(e){
-        console.warn('加载静态数据失败:', file, e);
-        return makeResponse({code: 200, msg: '获取成功', data: null});
-      });
-    }
-    return null;
-  }
-  
-  // 拦截 fetch
+  // ====== 拦截 fetch ======
   var origFetch = window.fetch;
   window.fetch = function(input, init){
     var url = typeof input === 'string' ? input : (input && input.url ? input.url : '');
-    var result = interceptRequest(url, init || {});
-    if(result){
-      return result.then(function(resp){
-        return new Response(JSON.stringify(resp.data), {
+    var file = matchApi(url);
+    if(file){
+      return buildApiResponse(file, url, init && init.body).then(function(respObj){
+        var body = JSON.stringify(respObj);
+        return new Response(body, {
           status: 200,
-          headers: {'Content-Type': 'application/json'}
+          statusText: 'OK',
+          headers: {'Content-Type': 'application/json; charset=utf-8'}
         });
       });
     }
     return origFetch.apply(this, arguments);
   };
   
-  // 拦截 axios (XMLHttpRequest)
+  // ====== 拦截 XMLHttpRequest (axios 使用这个) ======
   var origXHROpen = XMLHttpRequest.prototype.open;
   var origXHRSend = XMLHttpRequest.prototype.send;
-  var origXHRSetHeader = XMLHttpRequest.prototype.setRequestHeader;
+  var origXHRSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
   
   XMLHttpRequest.prototype.open = function(method, url){
-    this._requestUrl = url;
-    this._requestMethod = method;
+    this.__apiUrl = String(url || '');
+    this.__apiHeaders = {};
+    this.__apiMethod = method;
+    // 如果是 API 请求，直接用相对路径防止 CORS/证书问题
+    var file = matchApi(this.__apiUrl);
+    if(file){
+      this.__isApi = true;
+    }
     return origXHROpen.apply(this, arguments);
   };
   
+  XMLHttpRequest.prototype.setRequestHeader = function(name, value){
+    if(this.__apiHeaders) this.__apiHeaders[name] = value;
+    return origXHRSetRequestHeader.apply(this, arguments);
+  };
+  
+  function fakeXHRResponse(xhr, obj){
+    var respText = JSON.stringify(obj);
+    try {
+      // 模拟属性
+      Object.defineProperty(xhr, 'readyState', {value: 4, configurable: true, writable: true});
+      Object.defineProperty(xhr, 'status', {value: 200, configurable: true, writable: true});
+      Object.defineProperty(xhr, 'statusText', {value: 'OK', configurable: true, writable: true});
+      Object.defineProperty(xhr, 'responseText', {value: respText, configurable: true, writable: true});
+      Object.defineProperty(xhr, 'response', {value: respText, configurable: true, writable: true});
+      // 触发事件
+      if(typeof xhr.onreadystatechange === 'function'){
+        try { xhr.onreadystatechange.call(xhr); } catch(e){}
+      }
+      if(typeof xhr.onload === 'function'){
+        try { xhr.onload.call(xhr); } catch(e){}
+      }
+      if(typeof xhr.onloadend === 'function'){
+        try { xhr.onloadend.call(xhr); } catch(e){}
+      }
+      // 触发 readystatechange 事件
+      try {
+        var ev = document.createEvent('Event');
+        ev.initEvent('readystatechange', false, false);
+        xhr.dispatchEvent(ev);
+        var lo = document.createEvent('Event');
+        lo.initEvent('load', false, false);
+        xhr.dispatchEvent(lo);
+      } catch(e){}
+    } catch(e) {
+      console.warn('[API拦截] fakeXHRResponse error:', e);
+    }
+  }
+  
   XMLHttpRequest.prototype.send = function(body){
     var self = this;
-    var result = interceptRequest(this._requestUrl || '', {body: body});
-    if(result){
-      result.then(function(resp){
-        try {
-          Object.defineProperty(self, 'readyState', {value: 4, writable: true});
-          Object.defineProperty(self, 'status', {value: 200, writable: true});
-          Object.defineProperty(self, 'responseText', {value: JSON.stringify(resp.data), writable: true});
-          Object.defineProperty(self, 'response', {value: JSON.stringify(resp.data), writable: true});
-          if(self.onreadystatechange) self.onreadystatechange.call(self);
-          if(self.onload) self.onload.call(self);
-        } catch(e){
-          setTimeout(function(){
-            origXHRSend.call(self, body);
-          }, 0);
-        }
-      });
-      return;
+    if(self.__isApi){
+      var file = matchApi(self.__apiUrl);
+      if(file){
+        buildApiResponse(file, self.__apiUrl, body).then(function(respObj){
+          fakeXHRResponse(self, respObj);
+        });
+        return;
+      }
+    }
+    // 如果请求是 biaozhunpaiming.com 域名但证书有问题，也尝试拦截
+    if(self.__apiUrl && self.__apiUrl.indexOf('biaozhunpaiming') !== -1){
+      var f2 = matchApi(self.__apiUrl);
+      if(f2){
+        buildApiResponse(f2, self.__apiUrl, body).then(function(respObj){
+          fakeXHRResponse(self, respObj);
+        });
+        return;
+      }
     }
     return origXHRSend.apply(this, arguments);
   };
+  
+  console.log('[API拦截器] 已初始化，数据基础路径:', DATA_BASE);
 })();
 </script><link rel=icon href=./static/home/web/favicon.ico><title>标准排名</title><link href=./static/home/web/css/chunk-00cbd158.38297742.css rel=prefetch><link href=./static/home/web/css/chunk-14244ab6.574b013d.css rel=prefetch><link href=./static/home/web/css/chunk-3fd33cb6.5edb6e83.css rel=prefetch><link href=./static/home/web/css/chunk-41e0d608.6f612fec.css rel=prefetch><link href=./static/home/web/css/chunk-48c6656e.b9284976.css rel=prefetch><link href=./static/home/web/css/chunk-54641a8a.88a89120.css rel=prefetch><link href=./static/home/web/css/chunk-596964e6.918a4d8d.css rel=prefetch><link href=./static/home/web/css/chunk-5a16a6fc.399144d2.css rel=prefetch><link href=./static/home/web/css/chunk-5eadef13.0d72dd46.css rel=prefetch><link href=./static/home/web/css/chunk-71c98bce.913ae348.css rel=prefetch><link href=./static/home/web/css/chunk-77859eab.e3677d1d.css rel=prefetch><link href=./static/home/web/css/chunk-7f702d3e.03361123.css rel=prefetch><link href=./static/home/web/css/chunk-fc022b7e.14698076.css rel=prefetch><link href=./static/home/web/js/chunk-00cbd158.ac0bac7f.js rel=prefetch><link href=./static/home/web/js/chunk-14244ab6.ca2e5aa6.js rel=prefetch><link href=./static/home/web/js/chunk-3fd33cb6.3c75c59e.js rel=prefetch><link href=./static/home/web/js/chunk-41e0d608.d5749d1c.js rel=prefetch><link href=./static/home/web/js/chunk-48c6656e.67d22bdd.js rel=prefetch><link href=./static/home/web/js/chunk-54641a8a.0a4ab808.js rel=prefetch><link href=./static/home/web/js/chunk-596964e6.597d1de3.js rel=prefetch><link href=./static/home/web/js/chunk-5a16a6fc.1555d6a0.js rel=prefetch><link href=./static/home/web/js/chunk-5eadef13.a914a3c0.js rel=prefetch><link href=./static/home/web/js/chunk-71c98bce.a8817763.js rel=prefetch><link href=./static/home/web/js/chunk-77859eab.79bd4182.js rel=prefetch><link href=./static/home/web/js/chunk-7f702d3e.c30dc4c7.js rel=prefetch><link href=./static/home/web/js/chunk-fc022b7e.17b4b279.js rel=prefetch><link href=./static/home/web/css/app.ef78c836.css rel=preload as=style><link href=./static/home/web/css/chunk-vendors.b67df4fc.css rel=preload as=style><link href=./static/home/web/js/app.0522f4c2.js rel=preload as=script><link href=./static/home/web/js/chunk-vendors.1c260615.js rel=preload as=script><link href=./static/home/web/css/chunk-vendors.b67df4fc.css rel=stylesheet><link href=./static/home/web/css/app.ef78c836.css rel=stylesheet></head><body><noscript><strong>We're sorry but 标准排名 doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id=app></div><script src=./static/home/web/js/chunk-vendors.1c260615.js></script><script src=./static/home/web/js/app.0522f4c2.js></script></body></html>
