@@ -4,10 +4,11 @@
   var apiMap = {
     'getBrandList': 'brandList.json',
     'getRandList': 'randList.json',
-    'getSearchBrandList': 'searchBrandList.json',
+    'getSearchBrandList': 'brandSearchResults.json',
     'getBannerlist': 'bannerList.json',
     'getArticleList': 'articleList.json',
     'loadVotes': 'votes.json',
+    'loadSearchDetail': 'searchDetail.json',
     'getJdarticleList': 'JdarticleList.json',
     'getZxarticleList': 'ZxarticleList.json',
     'getJzarticleList': 'JzarticleList.json',
@@ -46,8 +47,8 @@
   
   function buildApiResponse(file, url, body){
     return loadDataFile(file).then(function(d){
-      // 搜索特殊处理
-      if(file === 'searchBrandList.json'){
+      // 搜索品牌特殊处理
+      if(file === 'brandSearchResults.json'){
         var keyword = '';
         try {
           if(url && url.indexOf('keyword=') !== -1){
@@ -67,6 +68,39 @@
           return {code: 200, msg: '获取成功', data: found || null};
         }
         return {code: 200, msg: '获取成功', data: null};
+      }
+      // 搜索详情（文章/投票）
+      if(file === 'searchDetail.json'){
+        var kw2 = '';
+        var type = 'article';
+        try {
+          if(url){
+            if(url.indexOf('keyword=') !== -1){
+              kw2 = decodeURIComponent(url.split('keyword=')[1].split('&')[0]);
+            }
+            if(url.indexOf('type=') !== -1){
+              type = url.split('type=')[1].split('&')[0];
+            }
+          }
+          if(body){
+            try {
+              var p = typeof body === 'string' ? JSON.parse(body) : body;
+              kw2 = p.keyword || kw2;
+              type = p.type || type;
+            } catch(e){}
+          }
+        } catch(e){}
+        kw2 = String(kw2 || '').trim();
+        var result = [];
+        if(kw2){
+          if(type === 'article' && d.all_articles){
+            result = d.all_articles.filter(function(a){
+              var t = String(a.post_title || a.post_excerpt || '');
+              return t.indexOf(kw2) !== -1;
+            }).slice(0, 20);
+          }
+        }
+        return {status: 1, list: result, info: result.length ? 'ok' : '没有更多'};
       }
       return d;
     }).catch(function(){
