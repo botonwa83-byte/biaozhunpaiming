@@ -1,0 +1,77 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "id": 1,
+      "title": "首页",
+      "url": "/home/rank/brandList#/home",
+      "href": "#/home",
+      "type": "1",
+      "status": "1",
+      "listorder": "1"
+    },
+    {
+      "id": 5,
+      "title": "绿色低碳指数",
+      "url": "/home/rank/brandList#/exponent",
+      "href": "#/exponent",
+      "type": "1",
+      "status": "1",
+      "listorder": "2"
+    },
+    {
+      "id": 9,
+      "title": "绿色低碳城市",
+      "url": "/home/rank/brandList#/citys",
+      "href": "#/citys",
+      "type": "1",
+      "status": "1",
+      "listorder": "3"
+    },
+    {
+      "id": 12,
+      "title": "绿色低碳建筑",
+      "url": "/home/rank/brandList#/newFocus",
+      "href": "#/newFocus",
+      "type": "1",
+      "status": "1",
+      "listorder": "4"
+    },
+    {
+      "id": 13,
+      "title": "绿色医药",
+      "url": "/home/rank/brandList#/zixun",
+      "href": "#/zixun",
+      "type": "1",
+      "status": "1",
+      "listorder": "5"
+    },
+    {
+      "id": 2,
+      "title": "绿色食品",
+      "url": "/home/rank/brandList#/foods",
+      "href": "#/foods",
+      "type": "1",
+      "status": "1",
+      "listorder": "6"
+    },
+    {
+      "id": 8,
+      "title": "绿色能源",
+      "url": "/home/rank/brandList#/cars",
+      "href": "#/cars",
+      "type": "1",
+      "status": "1",
+      "listorder": "7"
+    },
+    {
+      "id": 14,
+      "title": "关于我们",
+      "url": "/home/rank/brandList#/about",
+      "href": "#/about",
+      "type": "1",
+      "status": "1",
+      "listorder": "8"
+    }
+  ]
+}

@@ -65,9 +65,20 @@
           var found = d.all_brands.find(function(b){
             return b.brand_name && String(b.brand_name).indexOf(kw) !== -1;
           });
-          return {code: 200, msg: '获取成功', data: found || null};
+          if(found){
+            return {code: 200, msg: '获取成功', data: found};
+          }
+          // 没找到匹配，返回空对象而非null，防止前端读取null.rank_type报错
+          return {code: 200, msg: '获取成功', data: {
+            id: 0, brand_name: '', rank_type: 0, rank_list_id: '',
+            details: [], scores: []
+          }};
         }
-        return {code: 200, msg: '获取成功', data: null};
+        // 无关键词时也返回空对象
+        return {code: 200, msg: '获取成功', data: {
+          id: 0, brand_name: '', rank_type: 0, rank_list_id: '',
+          details: [], scores: []
+        }};
       }
       // 搜索详情（文章/投票）
       if(file === 'searchDetail.json'){
@@ -204,6 +215,62 @@
     }
     return origXHRSend.apply(this, arguments);
   };
+  
+  // ====== 重写外部资源URL ======
+  function rewriteResourceUrl(url){
+    if(!url || typeof url !== 'string') return url;
+    // 处理双重URL
+    url = url.replace(/https?:\/\/www\.biaozhunpaiming\.comhttps?:\/\/www\.biaozhunpaiming\.com/g, '');
+    // 替换 biaozhunpaiming.com 的资源为本地路径
+    var base = window.location.pathname.replace(/[^/]*$/, '');
+    url = url.replace(/https?:\/\/www\.biaozhunpaiming\.com\/data\/upload\//g, base + 'static/upload/');
+    url = url.replace(/https?:\/\/www\.biaozhunpaiming\.com\/static\//g, base + 'static/');
+    return url;
+  }
+  
+  function fixResourceUrls(){
+    // 修正 img 标签
+    document.querySelectorAll('img').forEach(function(img){
+      var src = img.getAttribute('src') || '';
+      if(src.indexOf('biaozhunpaiming.com') !== -1){
+        img.setAttribute('src', rewriteResourceUrl(src));
+      }
+    });
+    // 修正 source 标签
+    document.querySelectorAll('source').forEach(function(s){
+      var src = s.getAttribute('src') || '';
+      if(src.indexOf('biaozhunpaiming.com') !== -1){
+        s.setAttribute('src', rewriteResourceUrl(src));
+      }
+    });
+  }
+  
+  // ====== 修正导航菜单链接 ======
+  function fixNavLinks(){
+    var navLinks = document.querySelectorAll('nav a, .nav a, header a, .header a, .head-nav-item');
+    navLinks.forEach(function(a){
+      var href = a.getAttribute('href') || '';
+      // 将 /home/rank/brandList#/xxx 转换为 #/xxx
+      var match = href.match(/\/home\/rank\/brandList(#\/[^#]+)$/);
+      if(match){
+        a.setAttribute('href', match[1]);
+      }
+    });
+    fixResourceUrls();
+  }
+  
+  // 监听 DOM 变化，自动修正导航链接
+  var navObserver = new MutationObserver(function(mutations){
+    mutations.forEach(function(m){
+      if(m.addedNodes && m.addedNodes.length > 0){
+        setTimeout(fixNavLinks, 10);
+      }
+    });
+  });
+  navObserver.observe(document.documentElement, {childList: true, subtree: true});
+  
+  // 初始修正
+  setTimeout(fixNavLinks, 500);
   
   console.log('[API拦截器] 已初始化，数据基础路径:', DATA_BASE);
 })();
