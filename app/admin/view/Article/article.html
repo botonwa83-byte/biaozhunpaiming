@@ -1,0 +1,186 @@
+{extend name="Article/article_base" /}
+{block name="title"}{$article_data.post_title} - 标准排名{/block}
+{block name="seo"}
+<meta name="description" content="{$article_data.post_mime_type}"/>
+<meta name="keywords" content="{$article_data.post_keywords}" />
+{/block}
+{block name="navs"}{/block}
+{block name="main"}
+    <div class="page-content">
+        <div class="contain narrow post-content">
+            <h6>{$article_data.post_title}</h6>
+            <!-- <div id="sharing">
+                <div class="sharedaddy sd-sharing-enabled">
+                    <div class="robots-nocontent sd-block sd-social sd-social-icon sd-sharing">
+                        <h3 class="sd-title">分享给你的朋友:</h3>
+                        <div id="share" style="position: relative;">
+                        <div class="bdsharebuttonbox" data-tag="share_1">
+                            <div class="sd-content">
+                                <ul class="share-group">
+                                    <li class="share-weixin">
+                                        <a class="sd-button"  href="javascript:void(0)" title="分享到微信">
+                                            <i class="fa fa-weixin"></i>
+                                            <span class="sharing-screen-reader-text">分享到微信</span>
+                                        </a>
+                                        <a class="bds_weixin share-tool" data-cmd="weixin"></a>
+                                    </li>
+                                    <li class="share-pinterest">
+                                        <a class="sd-button" href="javascript:void(0)" title="分享到新浪微博">
+                                            <i class="fa fa-weibo"></i>
+                                            <span class="sharing-screen-reader-text">分享到新浪微博</span>
+                                        </a>
+                                        <a class="bds_tsina share-tool" data-cmd="tsina"></a>
+                                    </li>
+                                    <li class="share-twitter">
+                                        <a class="sd-button" href="javascript:void(0)" title="分享到腾讯微博" style="padding: 8px 10px;">
+                                            <i class="fa fa-tencent-weibo"></i>
+                                            <span class="sharing-screen-reader-text">分享到腾讯微博</span>
+                                        </a>
+                                        <a class="bds_tqq share-tool" data-cmd="tqq"></a>
+                                    </li>
+                                    <li class="share-qzone">
+                                        <a rel="nofollow"class="sd-button" href="javascript:void(0)" title="分享到QQ空间">
+                                            <i class="fa fa-star"></i>
+                                            <span class="sharing-screen-reader-text">分享到QQ空间</span>
+                                        </a>
+                                        <a class="bds_qzone share-tool" data-cmd="qzone"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        {if condition="$article_data.comment_status eq 1"}
+                        <a target="_blank" href="javascript:;" class="right btn btn-link btn-sm" style="position: absolute;right: 0;top: 0;">评论 {$article_data.comment_count}</a>
+                        {/if}
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <div class="header-image">
+                {if condition="$article_data['post_video'] eq false AND $article_data['isshow'] eq 1"}
+                    <img src="__UPLOAD__/{$article_data.smeta.thumb}" class="attachment-large wp-post-image">
+                {/if}
+                {if condition="$article_data.post_video eq true"}
+                <iframe height="500" src="{$article_data.post_video}" frameborder=0 allowfullscreen style="width: 100%;"></iframe>
+                {/if}
+            </div>
+            <div class="clearfix">
+                <p class="fs12" style="max-width: 100%;color: #818181;font-size: 14px;margin-top: 0;padding: 0">
+                    {if condition="$article_data.post_smeta_type AND !ctype_space($article_data.post_smeta_type) AND $article_data['isshow'] eq 1"}
+                        <span class="pull-left" style="width: 60%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">{$article_data.post_smeta_type}</span>
+                    {/if}
+                    {if condition="$article_data.post_smeta_desc AND !ctype_space($article_data.post_smeta_desc) AND $article_data['isshow'] eq 1"}
+                        <span class="pull-right">{$article_data.post_smeta_desc}</span>
+                    {/if}
+                </p>
+            </div>
+            <div>{$article_data.post_content}</div>
+
+            {if condition="$article_data.post_excerpt eq true"}
+                <a href="{$article_data.post_excerpt}" target="_blank" class="btn btn-danger btn-block text-white m-x-auto m-y-lg" style="width: 60%;">直达链接</a>
+            {/if}
+            
+            {if condition="!empty($article_data.post_report_id)"}
+            <a href="javascript:void(0)" target="_blank" class="btn btn-danger btn-block text-white m-x-auto m-y-lg" style="width: 60%;">下载报告</a>
+            {/if}
+        </div>
+        {if condition="$article_data.comment_status eq 1"}
+        <div class="sharedaddy article-about">
+            <h6 class="sd-title">
+                评论（<span>{$article_data.comment_count}</span>条）
+            </h6>
+            <div class="row no-gutter">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <form action="javascript:;" class="ajaxForm" method="post" id="form" onsubmit="return checkcontent();">
+                        <input type="hidden" name="ob_id" value="{$article_data.object_id}"/>
+                        <input type="hidden" name="type" value="1"/>
+                        <input type="hidden" name="flag" value="1"/>
+                        <textarea name="content" cols="30" rows="5" class="com_content comment-text" id="com_content" onkeyup="words_deal()"></textarea>
+                        <p class="help-block">
+                            还可以输入&nbsp;<span class="textcontent">150</span>&nbsp;字
+                            <span class="right">
+                            <span style="color:red;" id="submit-info"></span>
+                            <a target="_blank" href="javascript:;" class="btn btn-link btn-sm">查看更多评论</a>
+                            {if condition="$user"}
+                            <button type="button" class="btn btn-secondary btn-sm" >发布评论</button>
+                            {else/}
+                            <a href="javascript:void(0)" class="btn btn-secondary btn-sm" data-toggle="modal" data-target=".login">发布评论</a>
+                            {/if}
+                        </span>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {/if}
+
+        <div class="sharedaddy article-about">
+            <h6 class="sd-title">{$article_data.post_recommend_status?'相关推荐':'相关文章'}</h6>
+                <div class="row no-gutter">
+                    {foreach item="v" name="coarticles"}
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                        <div class="object post">
+                            {php}$smeta=json_decode($v['smeta'],true);{/php}
+                            <div class="object-header image" style="background-image:url('__UPLOAD__/{$smeta['thumb']}');">
+                                <a target="_blank" href="{:url('articles/detail',array('id'=>$v['tid']))}" class="permacover"></a>
+                                <span class="object-header-meta">
+                                    <a href="{:url('articles/detail',array('id'=>$v['tid']))}">
+                                        <span class="">{$v.post_modified|date="Y-m-d",###}</span>
+                                    <span class="right">
+                                        <span><i class="fa fa-heart-o"></i> {$v.post_like}</span>&nbsp;&nbsp;
+                                        <span><i class="fa fa-commenting-o"></i> {$v.comment_count}</span>
+                                    </span>
+                                    </a>
+                                </span>
+                            </div>
+                            <div class="object-meta">
+                                <h3><a href="{:url('articles/detail',array('id'=>$v['tid']))}">{$v.post_title}</a>
+                                </h3>
+                                <div class="object-excerpt">
+                                    <p>{$v.post_title}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/foreach}
+                </div>
+            </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    /* 投票选项选中 */
+    $(".vote-checkbox").click(function(){
+        $(this).closest(".question").prev(".answer").click();
+        $(this).closest(".question").toggleClass("active");
+        $(this).find(".answer-checked").toggleClass("collapse");
+    });
+    $(".vote-radio").click(function(){
+        $(this).closest(".question").prev(".answer").click();
+        $(this).closest(".row").find(".question").removeClass("active");
+        $(this).closest(".question").addClass("active");
+        $(this).closest(".row").find(".answer-checked").addClass("collapse");
+        $(this).find(".answer-checked").removeClass("collapse");
+    });
+    function checkcontent(){
+        if(!$('#com_content').val()){
+            $('#submit-info').text('内容不能为空！');
+            return false;
+        }
+    }
+    window._bd_share_config = {
+    common : {
+      bdText : "{$article_data.post_title}",
+      bdDesc : "{$article_data.post_mime_type}", 
+      bdUrl : "http://{$_SERVER['HTTP_HOST']}{:url('article/index',array('id'=>$article_data.id))}",   
+    },
+    share : [{
+      "bdSize" : 16
+    }],
+    selectShare : [{
+      "bdselectMiniList" : ['weixin','tsina','qzone','tqq']
+    }]
+  }
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+{/block}

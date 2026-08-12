@@ -1,0 +1,94 @@
+{extend name="public/mobile/base" /}
+{block name="title"}{$navs[$nav_id]['label']} - 标准排名{/block}
+{block name="meta"}
+<script type="text/javascript" src="http://imgcache.qq.com/tencentvideo_v1/tvp/js/tvp.player_v2.js"></script>
+{/block}
+{block name="main"}
+<div class="content content-home content-list">
+    {foreach item="vo" name="posts" key="k"}
+        {if condition="$vo['ad_flag'] eq 0"}
+            <div class="card">
+                <a href="{:url('articles/detail',array('id'=>$vo['tid']),true,true)}">
+                    <div class="media-left" href="{:url('articles/detail',array('id'=>$vo['tid']),true,true)}">
+                        {php}$smeta=json_decode($vo['smeta'],true);{/php}
+                        <img class="lazy media-object img-responsive" data-original="__UPLOAD__/{$smeta['thumb']}" alt="">
+                    </div>
+                    <div class="media-body">
+                        <h6 class="media-heading">{$vo.post_title}</h6>
+                        <p>
+                            <small>
+                                <span class="pull-left" style="padding-top: .2em">{$vo.post_modified|date="Y-m-d",###}</span>
+                                <span> {$vo.comment_count} 评论</span>
+                            </small>
+                        </p>
+                    </div>
+                </a>
+            </div>
+        {else/}
+            {if condition="$vo['ad_type'] eq 3"}
+                <div class="content-order">
+
+                    <div class="card" style="padding: 0">
+                        <span class="icon-video"></span>
+                        <div style="text-align: center;" class="video-hit" video-id="{$vo.ad_id}">
+                            <div id="mod_player_{$k}" class="movie"></div>
+                            <script type="text/javascript">
+                                var width = $(".content-order").width();
+                                var height = width*0.56+"px";
+                                var video = new tvp.VideoInfo();
+                                video.setVid("{$vo['ad_url']}");
+                                var player =new tvp.Player();
+                                player.create({
+                                    width:width,
+                                    height:height,
+                                    video:video,
+                                    modId:"mod_player_{$k}",
+                                    autoplay:false,
+                                    pic:"__DOMAIN__{$vo['ad_image']}"
+                                });
+                            </script>
+                        </div>
+                        <a href="{:url('video/detail',array('id'=>$vo['ad_id']))}">
+                            <div class="card-block">
+                                <h6 class="card-title" style="margin-bottom: 5px;">{$vo.ad_name}</h6>
+                                <p class="card-text text-right">
+                                    <small>
+                                        <span class="pull-left" style="padding-top: .2em">{$vo.ad_createtime|date="Y-m-d",###}</span>
+                                        <span> <i class="icon-eye"></i> {$vo.ad_hit}</span>
+                                    </small>
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {else/}
+                <div class="position-rel">
+                    <a href="{$vo.ad_url}">
+                        {if condition="$vo['ad_type'] eq 2"}
+                        <span class="icon-theme"></span>
+                        {/if}
+                        <img class="img-responsive" src="__DOMAIN__{$vo['ad_image']}" alt="">
+                    </a>
+                </div>
+            {/if}
+        {/if}
+    {/foreach}
+</div>
+{/block}
+{block name="load"}
+<div class="container">
+    <div class="p-t-16 p-b-40">
+        <button url="{:url('index/loadArticles',['term_id'=>$nav_id])}" class="btn btn-block  js-more-btn">加载更多</button>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__MJS__/basic.js"></script>
+<script src="__MJS__/general.js"></script>
+<script src="__MJS__/swiper.jquery.min.js"></script>
+<script>
+var swiper = new Swiper('.swiper-container', {pagination: '.swiper-pagination',paginationClickable: true,centeredSlides: true,autoplay: 3000,autoplayDisableOnInteraction: false});
+$("img.lazy").lazyload({threshold:0,effect:"fadeIn",failurelimit:2,skip_invisible:false});
+</script>
+{/block}
+{block name="footer"}{include file="public/mobile/footer" /}{/block}

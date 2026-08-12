@@ -1,0 +1,155 @@
+{extend name="public/mobile/base" /}
+{block name="title"}{$apply.title} - 报名 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<div class="bar-app">
+    <a href="/">
+        <img src="__MIMG__/logo90.png" alt="" class="bar-app-logo pull-left">
+        <div class="text-white pull-left" style="margin-left:10px;">
+            <strong>标准排名</strong>
+            <br>
+            <small>比出美好生活</small>
+        </div>
+    </a>
+    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.bm.standard&g_f=991653" class="btn btn-sm btn-danger2 pull-right" style="margin: 10px 15px 0;">下载APP</a>
+</div>
+
+<div class="apply-banner position-rel">
+    {if condition="$apply.smeta"}
+        <img class="media-object img-responsive" src="{$apply.smeta}" alt="" style="width: 100%;">
+        <h6 class="apply-title text-center">{$apply.title}</h6>
+    {/if}
+</div>
+<div class="container content-article p-y bg-white ">
+    <div class="apply-content fs14">
+        {$apply.content}
+    </div>
+</div>
+<div class="list-about content-hotlist m-y">
+    <form class="form-horizontal" action="{:url('applyPost')}" method="post" id="form">
+        <div class="apply-primitive">
+            <input type="hidden" name="apply_id" value="{$apply.id}"/>
+            {foreach item="v" name="apply.options"}
+                <div class="form-group clearfix">
+                    <label class="col-sm-2 control-label">{$v.name}</label>
+                    <div class="col-sm-10">
+                        {if condition="$v['case'] eq 0"}
+                            <input type="text" class="form-control options" placeholder="请输入{$v.name}" name="options[]">
+                        {else/}
+                            <textarea name="options[]" class="form-control options" placeholder="请输入{$v.name}" cols="30" rows="5"></textarea>
+                        {/if}
+                    </div>
+                </div>
+            {/foreach}
+            <div class="form-group clearfix">
+                <label class="col-sm-2 control-label">{$apply.link_name}</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control links" placeholder="（可不填）" name="links[]">
+                </div>
+            </div>
+            {for start='1' end="$apply.links"}
+                <div class="form-group clearfix">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control links" placeholder="（可不填）" name="links[]">
+                    </div>
+                </div>
+            {/for}
+
+<!--            <h5 class="m-t-lg m-b p-t apply-title" style="padding-left: 15px;font-size: 16px;border-top: 10px solid #f1f1f1;">
+                {$apply.apply_title}</h5>-->
+
+            {foreach item="v" key="k" name="apply.apply_case"}
+                <div class="form-group clearfix">
+                    <label class="col-sm-2 control-label">{$v}</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control unempty apply-case" placeholder="请输入{$v}" name="apply_case[{$k}]" required="required">
+                        <span class="info" style="color:red;display:none;">{$v}不能为空！</span>
+                    </div>
+                </div>
+            {/foreach}
+
+            <div class="form-group clearfix">
+                <p class="unempty-info text-center" style="color: red;margin-top: 10px"></p>
+                <div class="col-sm-offset-12 col-sm-12 text-right" style="padding: 0 20px">
+                    <a href="javascript:void(0)" class="btn btn-sb btn-block apply-yulan" style="color: #ffffff;">预览</a>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="apply-check collapse">
+            {foreach item="v" name="apply.options" key="k"}
+                <div class="form-group clearfix">
+                    <label class="col-sm-2 control-label " style="color: #818181;">{$v.name}</label>
+                    <div class="col-sm-10 options-preview"></div>
+                </div>
+            {/foreach}
+
+
+            <div class="form-group clearfix">
+                <label class="col-sm-2 control-label">{$apply.link_name}</label>
+                <div class="col-sm-10 links-preview"></div>
+            </div>
+
+
+            <for start='1' end="$links">
+                <div class="form-group clearfix">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10 links-preview"></div>
+                </div>
+            </for>
+
+            <h5 class="m-t-lg m-b p-t" style="padding-left: 15px;font-size: 16px;border-top: 10px solid #f1f1f1;">
+                {$apply.apply_title}</h5>
+
+            {foreach item="v" key="k" name="apply.apply_case"}
+                <div class="form-group clearfix">
+                    <label class="col-sm-2 control-label" style="color: #818181;">{$v}</label>
+                    <div class="col-sm-10 apply-case-preview"></div>
+                </div>
+            {/foreach}
+
+            <div class="form-group clearfix">
+                <p class="unempty-info text-center" style="color: red;margin-top: 10px"></p>
+                <div class="col-sm-offset-12 col-sm-12 text-right" style="padding: 0 20px">
+                    <button type="button" class="btn btn-sb btn-block submit">提交</button>
+                </div>
+                <div class="col-sm-offset-12 col-sm-12 text-right" style="padding: 0 20px">
+                    <a href="javascript:void(0)" class="btn btn-sb2 btn-block apply-xiugai" style="border-radius: 3px;color: #b81c22;">返回修改</a>
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+
+    <div class="m-t-lg apply-help p-x">
+        <p class="m-b-0">说明：</p>
+        <p>{$apply.help_info}</p>
+    </div>
+</div>
+
+<a href="#" class="btn-reminder" data-toggle="modal" data-target=".reminder" style="display:none"></a>
+<div class="modal fade reminder" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="/" class="close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </a>
+                <h6 class="modal-title"></h6>
+            </div>
+            <div class="modal-body text-center">
+                <p>您的报名已成功！感谢您的支持，我们会及时联系您，请注意来电18610060337</p>
+            </div>
+            <div class="modal-footer">
+                <span class="btn-sm" style="color:red;" id="wait">5</span>秒后返回首页
+                <a href="/" class="btn btn-default btn-sm">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

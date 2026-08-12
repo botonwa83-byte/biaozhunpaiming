@@ -1,0 +1,27 @@
+{extend name="public/mobile/base" /}
+{block name="title"}忘记密码 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<body style="padding-top: 0;">
+ <form action="{:url('changeusername')}" method="post" class="ajaxForm form-inline navbar-form">
+<header class="bdb-grey" style="z-index: 999">
+    <nav class="navbar">
+        <a href="javascript:history.back(-1)" class="navbar-brand"><i class="icon-back"></i></a>
+        <h6>昵称</h6>
+        <button type="submit" class="btn btn-link text-gray pull-right nav-rightbtn" >保存</button>
+    </nav>
+</header>
+<div class="content bg-white m-t-4">
+    <input type="text" name="username" value="{$user.user_nicename}" class="navbar-input" style="color: #2e2e2e;width: 80%;padding-left: 20px;">
+    <button class="btn btn-search pull-right" type="button"><i class="icon-close10"></i></button>
+</div>
+</form>
+ <script>
+     $(".icon-close10").click(function () {
+         $(this).closest(".content").find("input").val('');
+     })
+ </script>
+{/block}
+{block name="js"}
+<script type="text/javascript" src="__MJS__/jquery.form.js"></script>
+{/block}

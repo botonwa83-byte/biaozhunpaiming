@@ -1,0 +1,39 @@
+{extend name="public/mobile/base" /}
+{block name="title"}绑定手机号 - 账号管理 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<body style="padding-top: 0;">
+<header class="bdb-grey" style="z-index: 999">
+    <nav class="navbar">
+        <a href="javascript:history.back(-1)" class="navbar-brand"><i class="icon-back"></i></a>
+        <h6>绑定手机号</h6>
+    </nav>
+</header>
+<div class="content content-home vote-list" style="min-height: 80vh">
+    <form action="{:url('bindMobileData')}" method="post" id="form" class="form-login ajaxForm">
+        <div class="container p-t">
+            <div class="form-group p-t bdb-grey">
+                <div class="input-group-sm">
+                    <input type="tel" id="mobile" name="username" class="form-control input-tel" placeholder="请输入手机号" maxlength="11">
+                </div>
+            </div>
+            <div class="form-group p-t bdb-grey pull-left" style="width: 60%;">
+                <div class="input-group-sm position-rel">
+                    <input type="text" name="verify" class="form-control input-password" placeholder="短信验证码">
+                </div>
+            </div>
+            <div class="pull-right m-t" style="width: 37%;">
+                <button type="button" onclick="getBindVerifyCode(this)" class="btn btn-secondary btn-sm btn-block fs12 text-666666">获取验证码</button>
+            </div>
+            <div class="form-group p-t">
+                <button type="submit" class="btn btn-secondary btn-block fs18">确认</button>
+            </div>
+            <div class="massage text-red text-center"></div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript" src='__MJS__/jquery.form.js'></script>
+<script type="text/javascript" src='__MJS__/basic.js'></script>
+{/block}

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+<meta name = "format-detection" content="telephone = no" />
+<title></title>
+<meta property="qc:admins" content="24312574706211720560076375" />
+<meta property="wb:webmaster" content="8dd5ff9535649a26" />
+<link rel="stylesheet" href="__MCSS__/bootstrap.css">
+<link rel="stylesheet" href="__MCSS__/font-awesome.min.css">
+<link rel="stylesheet" href="__MCSS__/style.css">
+<script src="__MJS__/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="__MJS__/bootstrap.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="//hm.baidu.com/hm.js?3836a8c066732a2e02a623f8acde3f3e"></script>
+</head>
+<div class="container content-article p-y bg-white ">
+    <p class="help-block fs12">
+        <span>{$article_data.post_author_name}</span>
+        <span class="m-l-15">{$article_data.post_modified|date="Y-m-d",###}</span>
+        <span class="m-l-15"><a href="{:url('Comment/index',array('id'=>$article_data['object_id']))}">评论 {$article_data['comment_count']}</a></span>
+        <span class="pull-right"><i class="icon-eye2"></i> {$article_data.post_hits}</span>
+    </p>
+    {if condition="$article_data.isshow eq 1"}
+        {if condition="$article_data.post_video eq true"}
+            <div>
+                <iframe src="{$article_data.post_video}" frameborder=0 allowfullscreen style="width: 100%"></iframe>
+            </div>
+        {else/}
+            <div class="position-rel">
+                <img class="media-object img-responsive" src="__UPLOAD__/{$article_data.smeta.thumb}" alt="" style="width: 100%;">
+                {if condition="!empty($article_data.post_smeta_type) AND !ctype_space($article_data.post_smeta_type)"}
+                <span class="img-from">图片简介：{$article_data.post_smeta_type}</span>
+                {/if}
+            </div>
+            {if condition="!empty($article_data.post_smeta_desc) AND !ctype_space($article_data.post_smeta_desc)"}
+            <div class="clearfix">
+                <p class="fs12 text-gray2">
+                        <span class="pull-left">{$article_data.post_smeta_desc}</span>
+                </p>
+            </div>
+            {/if}
+        {/if}
+    {/if}
+    <div class="article-content m-t">
+        {$article_data.post_content}
+        {if condition="!empty($article_data.post_excerpt)"}
+            <a href="{$article_data.post_excerpt}" class="direct-Link">直达<br>链接</a>
+        {/if}
+        {if condition="!empty($article_data.post_report_id)"}
+            <a href="{:url('report/detail',array('id'=>$article_data.post_report_id))}" class="btn btn-block btn-danger-outline">下载报告</a>
+        {/if}
+    </div>
+</div>
+<script src="__MJS__/jquery.lazyload.js"></script>
+</body>
+</html>

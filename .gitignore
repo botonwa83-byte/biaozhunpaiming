@@ -1,0 +1,28 @@
+# Runtime files
+runtime/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Backup files
+*.bak
+*.zip
+*.tar.gz
+
+# Environment
+.env
+.env.local
+
+# Vendor (install via composer)
+vendor/
+
+# Uploaded files (too large for git)
+public/data/upload/

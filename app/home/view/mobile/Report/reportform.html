@@ -1,0 +1,64 @@
+{extend name="public/mobile/base" /}
+{block name="title"}报告信息 - 报告 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<div class="container p-y">
+    <form action="__SELF__" method="post" id="user-form">
+        <fieldset class="form-group">
+            <label for="name">姓名<span class="text-red">*</span></label>
+            <input type="text" class="form-control" id="name" name="name" required placeholder="请输入姓名">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="phone">手机号<span class="text-red">*</span></label>
+            <input type="tel" class="form-control" id="mobile" name="mobile" required placeholder="请输入手机号">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="Email">邮箱</label>
+            <input type="email" class="form-control" id="email" name="email" required placeholder="请输入邮箱">
+        </fieldset>
+        <small class="text-muted">
+            尊敬的用户：<br>
+            请您填写联系信息，我们的业务人员会尽快和您取得联系。<br>
+            PS: 注意来电   010-56676029
+        </small>
+        <fieldset class="form-group m-t">
+            <a class="btn btn-block btn-sb2 submit-user">确认</a>
+        </fieldset>
+    </form>
+</div>
+<a href="#" class="btn-reminder" data-toggle="modal" data-target=".reminder" ></a>
+<div class="modal fade reminder" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="/" class="close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </a>
+                <h6 class="modal-title"></h6>
+            </div>
+            <div class="modal-body text-center">
+                <p>提交成功！感谢您的支持，我们会及时联系您，请注意来电010-56676029</p>
+            </div>
+            <div class="modal-footer">
+                <span class="btn-sm" style="color:red;" id="wait">5</span>秒后返回首页
+                <a href="/" class="btn btn-default btn-sm">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $('.submit-user').click(function(){
+        $.post($('#user-form').attr('action'),$("#user-form").serialize(),function(data){if(data.status==1){
+            $(".btn-reminder").click();
+            f = parseInt($("#wait").text());
+            var b = setInterval(function () {
+                var a = --f;
+                0 >= a ? (location.href = "/", clearInterval(b)) : $("#wait").text(a)
+            }, 1E3)
+        }})
+    });
+</script>
+{/block}

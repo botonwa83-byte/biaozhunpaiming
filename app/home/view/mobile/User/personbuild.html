@@ -1,0 +1,59 @@
+{extend name="public/mobile/base" /}
+{block name="title"}我创建的投票 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<body style="padding-top: 0;">
+<header class="bdb-grey" style="z-index: 999">
+    <nav class="navbar">
+        <a href="javascript:history.back(-1)" class="navbar-brand"><i class="icon-back"></i></a>
+        <h6>我创建的投票</h6>
+    </nav>
+</header>
+{if condition="$votes"}
+    <div class="content content-home vote-list" style="min-height: 80vh">
+        {foreach item="v" name="votes"}
+        <div class="card">
+            <a href="{:url('vote/voteshow',array('id'=>$v['id']))}">
+                <div class="media-left" href="{:url('vote/voteshow',array('id'=>$v['id']))}">
+                    {php}$smeta = json_decode($v['smeta'],true);{/php}
+                    <img class="media-object img-responsive" src="{$smeta['thumb']}">
+                </div>
+                <div class="media-body">
+                    <h6 class="media-heading">{$v.title}</h6>
+                    <p>
+                        <small>
+                            <span class="pull-left" style="padding-top: .2em">{$v.createtime|date="Y-m-d",###}</span>
+                            <span class="m-r text-{$v['vote_status']==1?'green':'red'}">{$v['vote_status']==1?'已审核':'未审核'}</span>
+                            <span>{$v.hits} 阅读</span>
+                        </small>
+                    </p>
+                </div>
+            </a>
+        </div>
+        {/foreach}
+    </div>
+    {if condition="count($votes) gt (config('MORE_PAGESIZE')-1)"}
+    <div class="container">
+        <div class="p-t-16 p-b-40">
+            <a url="{:url('loadMorePersonBuild')}" class="btn btn-block btn-secondary js-user-vote-more-btn">加载更多</a>
+        </div>
+    </div>
+    {/if}
+{else/}
+    <div class="content content-home vote-list" style="min-height: 80vh">
+        <div class="build0 text-center">
+            <img src="__MIMG__/wenjian.png" alt="" style="width: 40px;height: 48px;">
+            <p style="margin-top: 20px">您还未发起任何投票</p>
+            {if condition="$user AND isset($user['mobile'])"}
+            <p><a href="{:url('vote/add')}" style="text-decoration: underline">快来发起投票吧</a></p>
+            {elseif condition="$user AND !isset($user['mobile'])"/}
+            <p><a href="{:url('user/bindmobile')}" style="text-decoration: underline">快来发起投票吧</a></p>
+            {/if}
+        </div>
+    </div>
+{/if}
+{/block}
+{block name="js"}
+<script src="__MJS__/general.js"></script>
+{/block}
+{block name="footer"}{include file="public/mobile/footer" /}{/block}

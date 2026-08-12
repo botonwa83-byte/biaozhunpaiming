@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>{block name="title"}{/block}</title>
+<meta name="description" content="标准排名 - 比出美好生活"/>
+<meta name="keywords" content="标准排名 - 比出美好生活" />
+<meta name="auther" content="47.94.199.232" />
+<meta name="copyright" content="Copyright©2016-2066 Powered By biaozhun007" />
+{block name="meta"}{/block}
+<link rel="stylesheet" href="__MCSS__/bootstrap.css">
+<link rel="stylesheet" href="__MCSS__/font-awesome.min.css">
+<link rel="stylesheet" href="__MCSS__/style.css">
+<script src="__MJS__/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="__MJS__/bootstrap.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="//hm.baidu.com/hm.js?3836a8c066732a2e02a623f8acde3f3e"></script>
+<script type="text/javascript" src="http://imgcache.qq.com/tencentvideo_v1/tvp/js/tvp.player_v2.js"></script>
+{block name="css"}{/block}
+</head>
+{block name="navs"}
+<body style="padding-top: 83px;">
+<header class="navbar-fixed-top" style="z-index: 9999">
+    <nav class="navbar">
+        <a href="/" class="navbar-brand"><img src="__MIMG__/logo-black.png" alt="" class="img-responsive"></a>
+        <button class="navbar-toggler pull-right" type="button" data-toggle="collapse" data-target="#Navbar">
+            <i class="icon-01"></i>
+        </button>
+    </nav>
+    <div class="collapse" id="Navbar">
+        <div class="nav-first p-a">
+            {if condition="!$user"}
+            <div class="navbar-group m-b-5">
+                    <ul class="nav nav-pills" style="overflow: hidden;padding: 10px 12px;">
+                        <li class="nav-item">
+                            <a href="{:url('User/login')}" class="link-login btn fs14" style="color: #ffffff;">立即登录></a>
+                        </li>
+                        <li class="nav-item pull-right">
+                            <a href="{:url('api/oauth/login',array('type'=>'qq'))}" class="btn btn-info bdr0" style="padding: 6px 9px;"><i class="fa fa-qq"></i></a>
+                            <a href="{:url('api/oauth/login',array('type'=>'sina'))}" class="btn btn-danger bdr0 m-l-sm" style="padding: 6px 9px;"><i class="fa fa-weibo"></i></a>
+                            <a href="{:url('/home/OpenAuth/login',array('type'=>'weixin'))}" class="btn btn-success bdr0 m-l-sm" style="padding: 6px 9px;"><i class="fa fa-weixin"></i></a>
+                        </li>
+                    </ul> 
+            </div>
+            {else/}
+            <div class="navbar-group m-b-5">
+                <ul class="nav nav-pills navbar-user" style="overflow: hidden;padding: 10px 12px;">
+                    <li class="nav-item">
+                        <img src="{$user['avatar']?$user['avatar']:'__MIMG__/portrait8.jpg'}" alt="头像" class="img-circle">
+                        <span class="navbar-username">{$user['user_nicename']?$user['user_nicename']:$user['user_login']}</span>
+                    </li>
+                    <li class="nav-item pull-right">
+                        <a href="{:url('User/person')}" class="link-login btn fs14 m-t-4" style="color: #ffffff;">个人中心></a>
+                    </li>
+                </ul>
+            </div>
+            {/if}
+            <div class="navbar-group m-b-5">
+                <form action="{:url('Search/detail')}" method="post" class="form-inline navbar-form">
+                    <input type="text" name="keyword" class="navbar-input" placeholder="搜索...">
+                    <button class="btn btn-search text-right" type="submit"><i class="icon-search"></i></button>
+                </form>
+            </div>
+            <ul class="nav nav-pills" style="overflow: hidden">
+                <li class="nav-item" style="width: 100%;">
+                    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.bm.standard&g_f=991653" class="nav-link navbar-app"><i class="icon-app"></i> APP下载</a>
+                </li>
+                {foreach name="navs" key="k" item="vo"}
+                    <li class="nav-item" style="width: 50%;">
+                        <a href="{$vo['href']}" class="nav-link {$vo['id']==1?'active':''}" style="margin: 0 {php}echo $i%2?'2px':'0px';{/php} 4px {php}echo $i%2?'0px':'2px';{/php}">{$vo.label}</a>
+                    </li>
+                {/foreach}
+            </ul>
+        </div>
+    </div>
+</header>
+<header class="navbar-fixed-top" style="top: 3.1em;background-color: #F6F6F6;">
+	<nav class="row text-center nav-second header-shadow">
+    {foreach name="navs" item="vo"}
+    <a href="{$vo['href']}" class="col-xs-3 {$nav_id==$vo['id']?'active':''}">{$vo.label}{$nav_id==$vo['id']?'<i class="nav-active"></i>':''}</a>
+	{/foreach}
+	</nav>
+</header>
+{/block}
+{block name="banner"}{/block}
+{block name="main"}{/block}
+{block name="load"}{/block}
+{block name="js"}{/block}
+{block name="footer"}{/block}
+</body>
+</html>

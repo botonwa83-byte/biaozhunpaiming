@@ -1,0 +1,19 @@
+{extend name="public/mobile/base" /}
+{block name="title"}嘉宾信息 - 标准排名{/block}
+{block name="meta"}{/block}
+{block name="navs"}{/block}
+{block name="css"}{/block}
+{block name="main"}
+<body style="padding-top: 0;background-color: #fff;">
+<header class="bdb-grey" style="z-index: 999">
+    <nav class="navbar">
+        <a href="javascript:history.back(-1)" class="navbar-brand"><i class="icon-back"></i></a>
+        <h6>嘉宾信息</h6>
+    </nav>
+</header>
+<div class="container content-article p-y bg-white ">
+    <div><img class="media-object img-responsive" src="{$data.smeta}" alt="" style="width: 100%;"></div>
+    <div class="m-t">{$data.description}</div>
+</div>
+{/block}
+{block name="footer"}{include file="public/mobile/footer" /}{/block}

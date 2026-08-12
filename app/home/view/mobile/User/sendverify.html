@@ -1,0 +1,23 @@
+{extend name="public/mobile/base" /}
+{block name="title"}注册 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<form action="" method="post" id="" class="form-login">
+    <input style="display: none">
+    <div class="container p-t">
+        <div class="form-group p-t bdb-grey pull-left" style="width: 60%;">
+            <div class="input-group input-group-sm position-rel">
+                <input type="hidden" name="username" value="{:request()->param('username')}"/>
+                <input type="text" name="verify" class="form-control input-password" placeholder="短信验证码">
+            </div>
+        </div>
+        <div class="pull-right m-t" style="width: 37%;">
+            <a href="javascript:void(0)" class="btn btn-secondary btn-sm btn-block text-666666" id="codes" onclick="checkPhone(this)">获取验证码</a>
+        </div>
+        <div class="form-group p-t">
+            <button type="submit" class="btn btn-secondary btn-block">下一步</button>
+        </div>
+        <div class="massage text-red text-center"></div>
+    </div>
+</form>
+{/block}

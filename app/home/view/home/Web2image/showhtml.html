@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>标准排名</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="__CSS__/bootstrap.css" rel="stylesheet">
+    <link href="__CSS__/web2image.css" rel="stylesheet">
+</head>
+<body style="width: 480px;padding: 0; margin: 0;">
+<div class="cao p-a p-b-lg" style="background-color:#fff;">
+    <div class="main p-x">
+        <img src="__IMG__/logo.jpg" alt="" class="img-responsive">
+        <h4 class="poster-title p-x">{$data['title']}</h4>
+        <div class="content p-x m-b-lg">
+        {$data['content']}
+        </div>
+        <div class="row p-t-lg">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-3">
+                <img src="{$data['img']}" alt="" class="img-responsive">
+            </div>
+            <div class="col-xs-6 information" style="margin-top: 5px">
+                <p>{$data['message_one']}</p>
+                <p>{$data['message_two']}</p>
+                <p>{$data['message_three']}</p>
+            </div>
+        </div>
+    </div>
+    <div class="m-t">
+        <img src="__IMG__/logo2.jpg" alt="" class="img-responsive">
+    </div>
+</div>
+<div style="position: fixed;right: 500px;top: 50%;">
+    <input class="" type="button" value="生成图片" id="btn_screen">
+    <a class="button" href="{:url('edit',['id'=>$data['id']])}">返回修改</a>
+    <a href="javascript:void(0)" target="_blank"  id="img22">查看图片</a>
+</div>
+<script src="__JS__/jquery.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script type="text/javascript" src="__JS__/html2canvas/html2canvas.js"></script>
+<script type="text/javascript" src="__JS__/html2canvas/html2canvas.svg.js"></script>
+<script  type="text/javascript" >
+    $("#btn_screen").on("click", function () {
+        html2canvas($(".cao"), {
+            height: $(".cao").height() + 50,
+            bottom: -50,
+            top:100,
+            onrendered: function (canvas) {
+                var url = canvas.toDataURL();
+                $("#img22").attr('href',url);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

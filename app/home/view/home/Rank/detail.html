@@ -1,0 +1,123 @@
+{extend name="home/base" /}
+{block name="title"}{$rank.rank_name} - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="css"}<link rel="stylesheet" href="__CSS__/style_rank.css">{/block}
+{block name="main"}
+<div class="page-wrap">
+    <div class="view">
+        <div class="page-content">
+            <div class="contain narrow post-content">
+                <div id="sharing">
+                    <div class="sharedaddy sd-sharing-enabled">
+                        <div class="robots-nocontent sd-block sd-social sd-social-icon sd-sharing">
+                            <h3 class="sd-title">分享给你的朋友:</h3>
+                            <div id="share" style="position: relative;">
+                                <div class="bdsharebuttonbox" data-tag="share_1">
+                                    <div class="sd-content">
+                                        <ul class="share-group">
+
+                                            <li class="share-weixin">
+                                                <a class="sd-button"  href="javascript:void(0)" title="分享到微信">
+                                                    <i class="fa fa-weixin"></i>
+                                                    <span class="sharing-screen-reader-text">分享到微信</span>
+                                                </a>
+                                                <a class="bds_weixin share-tool" data-cmd="weixin"></a>
+                                            </li>
+
+                                            <li class="share-pinterest">
+                                                <a class="sd-button" href="javascript:void(0)" title="分享到新浪微博">
+                                                    <i class="fa fa-weibo"></i>
+                                                    <span class="sharing-screen-reader-text">分享到新浪微博</span>
+                                                </a>
+                                                <a class="bds_tsina share-tool" data-cmd="tsina"></a>
+                                            </li>
+
+                                            <li class="share-twitter">
+                                                <a class="sd-button" href="javascript:void(0)" title="分享到腾讯微博" style="padding: 8px 10px;">
+                                                    <i class="fa fa-tencent-weibo"></i>
+                                                    <span class="sharing-screen-reader-text">分享到腾讯微博</span>
+                                                </a>
+                                                <a class="bds_tqq share-tool" data-cmd="tqq"></a>
+                                            </li>
+
+                                            <li class="share-qzone">
+                                                <a rel="nofollow"class="sd-button" href="javascript:void(0)" title="分享到QQ空间">
+                                                    <i class="fa fa-star"></i>
+                                                    <span class="sharing-screen-reader-text">分享到QQ空间</span>
+                                                </a>
+                                                <a class="bds_qzone share-tool" data-cmd="qzone"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="header-image" style="width: 910px;height: 404px;position: relative;">
+                    <img src="/static/home/images/list50-bg.jpg" class="attachment-large wp-post-image" style="width: 910px;">
+                    <form action="/rank/{$rank['id']}/month/{$month}/" method="post">
+                    <div class="list50-search">
+                        <input name="keyword" type="text" value="{$keyword}" >
+                        <button type="submit" class="btn-list50-search"></button>
+                    </div>
+                    </form>
+                    <div class="list50-dropdown pull-right">
+                        <a id="dLabel" data-target="#" class="btn btn-danger dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {$month}月
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dLabel">
+                            {for start="$rank['month']" end="0" step="-1" comparison="gt"}
+                            {if condition="$i neq $month"}
+                            <a class="dropdown-item" href="{:url('Rank/detail',['id'=>$rank['id'],'month'=>$i])}">{$i}月</a>
+                            {/if}
+                            {/for}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bs-example" data-example-id="bordered-table">
+                    <table class="table table-bordered list50-table" style="width: 910px;background-color: #ffffff">
+                        <tbody>
+                            {foreach name="curr_scores" key="k" item="v"}
+                                {php}
+                                $last_score = isset($last_scores_data[$v['brand_id']]['score'])?$last_scores_data[$v['brand_id']]['score']:'';
+                                if(empty($last_score)){
+                                    $state = 'minus';
+                                }elseif($v['score']>$last_score){
+                                    $state = 'up';
+                                }elseif($v['score']==$last_score){
+                                    $state = 'minus';
+                                }else{
+                                    $state = 'down';
+                                }
+                                $k%2==0?$color='table-gray':$color='';
+                                {/php}
+                            <tr class="{:in_array($v['brand_id'],$brand_ids_arr)?'table-danger':''}{$color}">
+                                <td scope="row" style="width: 10%">{$k+1}</td>
+                                <td class="text-center" style="width: 30%">{$brands[$v['brand_id']]['brand_name']}</td>
+                                <td class="text-center" style="width: 27%"><?php echo $v['score']==0?'-':$v['score'];?></td>
+                                <td class="text-center"><?php echo $last_score==0?'-':$last_score;?><i class="list50-icon icon-list50-{$state}"></i></td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function(){
+        var brand_ids_arr = {:empty($brand_ids_arr)?1:0};
+        if(!brand_ids_arr){
+            $('html,body').animate({
+                scrollTop: $(".table-danger").offset().top-230
+            }, 300); 
+        }
+    })
+</script>
+{/block}

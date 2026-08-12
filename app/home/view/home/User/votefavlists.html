@@ -1,0 +1,118 @@
+{extend name="home/base" /}
+{block name="title"}个人中心 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<div class="page-wrap">
+    <div class="hero article-banner">
+        <a href="javascript:;" class="logo"><img src="__IMG__/logo.png" alt=""></a>
+        <div class="hero-image" style="background-image:url('__IMG__/person-bg.jpg');"></div>
+        <div class="hero-content" style="padding-left:0; padding-right: 0;">
+            <div class="object-list">
+                <ul>
+                    <li>
+						<span class="left">
+							我创建的投票
+						</span>
+                        <a href="{:url('personBuild')}" class="permacover"></a>
+                    </li>
+                    <li>
+						<span class="left">
+							我参与的投票
+						</span>
+                        <a href="{:url('myAttendVote')}" class="permacover"></a>
+                    </li>
+                    <li>
+						<span class="left">
+							文章收藏
+						</span>
+                        <a href="{:url('myArticleFavlists')}" class="permacover"></a>
+                    </li>
+                    <li class="active">
+						<span class="left">
+							投票收藏
+						</span>
+                        <a href="{:url('myVoteFavlists')}" class="permacover"></a>
+                    </li>
+                    <li>
+						<span class="left">
+							我的下载
+						</span>
+                        <a href="{:url('mydownload')}" class="permacover"></a>
+                    </li>
+                    <li>
+						<span class="left">
+							账号管理
+						</span>
+                        <a href="{:url('account')}" class="permacover"></a>
+                    </li>
+                    <li>
+						<span class="left">
+							退出
+						</span>
+                        <a href="{:url('logout')}" class="permacover"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="view">
+        <div class="contain post-content page-content">
+            <div class="user-neck m-t clearfix">
+                <div class="left">
+                    <img src="{$user['avatar']?$user['avatar']:'__IMG__/portrait8.jpg'}" class="img-circle" style="width: 90px;height: 90px;" >
+                </div>
+                <div class="left m-l p-y">
+                    <h6 class="m-y-0">{$user['user_nicename']?$user['user_nicename']:$user['user_login_encrypt']}</h6>
+                </div>
+            </div>
+            <hr>
+            {if condition="$votes"}
+            <div class="row no-gutter user-card">
+                {foreach item="v" name="votes"}
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                    <a href="{:url('vote/voteShow',array('id'=>$v['id']))}" class="user-close text-center collapse" data-toggle="modal" data-target=".bd-example-modal-sm"><i class="fa fa-close text-white"></i></a>
+                    <div class="object post">
+                        <div class="object-header image" style="background-image:url('{$v['smeta']}');">
+                            <a target="_blank" href="{:url('vote/voteShow',array('id'=>$v['id']))}" class="permacover"></a>
+                            <span class="object-header-meta">
+                                <a href="javascript:void(0)">
+                                    <span class="">{$v.createtime|date="Y-m-d",###}</span>
+                                <span class="right">
+                                    <span class="read-time">{$v.comment_count} 评论</span>
+                                </span>
+                                </a>
+                            </span>
+                        </div>
+                        <div class="object-meta p-y-0">
+                            <h6 class="m-y"><a href="">{$v.title}</a></h6>
+                        </div>
+                    </div>
+                </div>
+                {/foreach}
+            {if condition="count($votes) gt config('MORE_PAGESIZE')"}
+            </div>
+            <a href="javascript:void(0)" class="btn btn-secondary btn-block btn-sm m-x-auto text-center m-y-lg" style="width: 50%;">加载更多</a>
+            {/if}
+            {else/}
+            <div class="row no-gutter" style="min-height: 400px">
+                <p class="text-center p-y-lg m-y-lg">你还没有收藏投票</p>
+            </div>
+            {/if}
+        </div>
+        <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        确定删除？
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger btn-sm">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{/block}

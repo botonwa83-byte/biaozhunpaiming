@@ -1,0 +1,201 @@
+{extend name="home/base" /}
+{block name="title"}{$vote['title']} - 投票 - 标准排名{/block}
+{block name="main"}
+<style type="text/css">
+    h5 {
+     padding: 0; 
+     text-align: center; 
+     color: #000; 
+     font-size: 20px; 
+     line-height: 1.25em; 
+     margin: 0 auto 60px; 
+    }
+</style>
+<div class="page-wrap">
+<div class="view">
+<div class="page-content">
+    <div class="contain narrow post-content">
+        <h5>{$vote['title']}</h5>
+        <br/>
+        <h6>{$vote['description']}</h6>
+        <div id="sharing">
+            <div class="sharedaddy sd-sharing-enabled">
+                <div class="robots-nocontent sd-block sd-social sd-social-icon sd-sharing">
+                    <h3 class="sd-title">分享给你的朋友:</h3>
+                    <div id="share" style="position: relative;">
+                    <div class="bdsharebuttonbox" data-tag="share_1">
+                        <div class="sd-content">
+                            <ul class="share-group">
+                                <li class="share-weixin">
+                                    <a class="sd-button"  href="javascript:void(0)" title="分享到微信">
+                                        <i class="fa fa-weixin"></i>
+                                        <span class="sharing-screen-reader-text">分享到微信</span>
+                                    </a>
+                                    <a class="bds_weixin share-tool" data-cmd="weixin"></a>
+                                </li>
+
+                                <li class="share-pinterest">
+                                    <a class="sd-button" href="javascript:void(0)" title="分享到新浪微博">
+                                        <i class="fa fa-weibo"></i>
+                                        <span class="sharing-screen-reader-text">分享到新浪微博</span>
+                                    </a>
+                                    <a class="bds_tsina share-tool" data-cmd="tsina"></a>
+                                </li>
+                                <li class="share-qzone">
+                                    <a rel="nofollow"class="sd-button" href="javascript:void(0)" title="分享到QQ空间">
+                                        <i class="fa fa-star"></i>
+                                        <span class="sharing-screen-reader-text">分享到QQ空间</span>
+                                    </a>
+                                    <a class="bds_qzone share-tool" data-cmd="qzone"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                        <a target="_blank" href="{:url('Comment/vote',array('id'=>$vote['id'],'type'=>2))}" class="right btn btn-link btn-sm" style="position: absolute;right: 0;top: 0;">评论 {$vote['comment_count']}</a>
+                    </div>
+                    <script>
+                      window._bd_share_config = {
+                        common : {
+                          bdText : "{$vote['title']}",
+                          bdDesc : "{$vote['description']}", 
+                          bdUrl : "http://{$_SERVER['HTTP_HOST']}/votesw/{$vote['id']}.html",   
+                          bdPic : "http://{$_SERVER['HTTP_HOST']}{$vote['smeta']['thumb']}"
+                        },
+                        share : [{
+                          "bdSize" : 16
+                        }],
+                        selectShare : [{
+                          "bdselectMiniList" : ['weixin','tsina','qzone','tqq']
+                        }]
+                      }
+                      with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="header-image"><img src="{$vote['smeta']['thumb']}" class="attachment-large wp-post-image"></div>
+    </div>
+    <form action="{:url('vote/votePost',array('id'=>$vote['id']))}" method="post" style="padding: 0 5% 5%">
+        <input type="hidden" value="{$vote['ismain']}" name="ismain"/>
+        {foreach item="v" key="k" name="vote['question']"}
+        <div class="sharedaddy article-about vote-question p-y-0 m-b-lg" id="div{$k}">
+            {php}$count = count($vote['question']);{/php}
+            {if condition="$count gt 1"}
+            <p class="m-b">{$k+1}、{$v.question}</p>
+            {/if}
+            <div class="row no-gutter">
+            {if condition="$v['ismanyasr'] eq 0"}
+            {foreach item="vo" name="v['answers']" key="kk"}
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                    <label class="answer collapse">
+                        <input type="radio" name="choices[{$v.id}]" value="{$vo.id}">
+                    </label>
+                    <div class="object question">
+                        <a href="javascript:void(0)" class="vote-radio">
+                            {if condition="$vo['a_pic'] eq true"}
+                            <div class="object-header image" style="background-image:url('{$vo['a_pic']}');"></div>
+                            {/if}
+                            <div class="object-meta">
+                                <p>{$vo.content}</p>
+                                <span class="answer-checked collapse"><i class="fa fa-check text-danger"></i></span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {/foreach}
+            {else/}
+            {foreach item="vo" name="v['answers']" key="kk"}
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                    <label class="answer collapse">
+                        <input type="checkbox" name="choices[{$v.id}][]" value="{$vo.id}">
+                    </label>
+                    <div class="object question my">
+                        <a href="javascript:void(0)" class="vote-checkbox">
+                            {if condition="$vo['a_pic']"}
+                            <div class="object-header image" style="background-image:url('{$vo['a_pic']}');"></div>
+                            {/if}
+                            <div class="object-meta">
+                                <p>{$vo.content}</p>
+                                <span class="answer-checked collapse"><i class="fa fa-check text-danger"></i></span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {/foreach}
+            {/if}
+            </div>
+        </div>
+        {/foreach}
+        {if condition="$vote['vote_status'] eq 1"}
+        <div class="m-x-auto btn-vote" style="width: 50%">
+            <button type="submit" class="btn btn-block btn-danger-outline">投票</button>
+        </div>
+        {/if}
+    </form>
+    <div class="sharedaddy article-about">
+        <h6 class="sd-title">
+            评论（<span>{$vote['comment_count']}</span>条）
+        </h6>
+        <div class="row no-gutter">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <form action="{:url('home/Comment/present')}" method="post" class="ajaxForm_c" id="form" onsubmit="return checkcontent();">
+                    <input type="hidden" name="ob_id" value="{$vote['id']}"/>
+                    <input type="hidden" name="type" value="2"/>
+                    <input type="hidden" name="flag" value="2"/>
+                    <textarea name="content" cols="30" rows="5" id="com_content" class="com_content comment-text" onkeyup="words_deal()"></textarea>
+                    <p class="help-block">
+                        还可以输入&nbsp;<span class="textcontent">150</span>&nbsp;字
+                        <span class="right">
+                            <span style="color:red;" id="submit-info"></span>
+                            <a target="_blank" href="{:url('Comment/vote',array('id'=>$vote['id'],'type'=>2))}" class="btn btn-link btn-sm">查看更多评论</a>
+                            {if condition="$user"}
+                            <button type="submit" class="btn btn-secondary btn-sm sub-com">发布评论</button>
+                            {else/}
+                            <a href="javascript:void(0)" class="btn btn-secondary btn-sm" data-toggle="modal" data-target=".login">发布评论</a>
+                            {/if}
+                        </span>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="sharedaddy article-about">
+        <h6 class="sd-title">
+            相关阅读
+        </h6>
+        <div class="row no-gutter">
+            {foreach item="v" name="covotes" key="k"}
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                <div class="object post">
+                    {php}$smeta=json_decode($v['smeta'],true);{/php}
+                    <div class="object-header image" style="background-image:url('{$smeta['thumb']}');">
+                        <a target="_blank" href="{:url('vote/voteshow',array('id'=>$v['id']))}" class="permacover"></a>
+                        <span class="object-header-meta">
+                            <a href="javascript:void(0)">
+                                <span class="">{$v.createtime|date="Y-m-d",###}</span>
+                            <span class="right">
+                                <span><i class="fa fa-commenting-o"></i> {$v.hits}</span>
+                            </span>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="object-meta">
+                        <h3><a href="{:url('vote/voteshow',array('id'=>$v['id']))}">{$v.title}</a>
+                        </h3>
+                        <div class="object-excerpt">
+                            <p>{$v.description}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           {/foreach}
+        </div>
+    </div>
+</div>
+</div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/basic.js"></script>
+{/block}

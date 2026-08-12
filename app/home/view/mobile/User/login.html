@@ -1,0 +1,48 @@
+{extend name="public/mobile/base" /}
+{block name="title"}登录 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<header class="navbar-fixed-top">
+    <nav class="navbar">
+        <a href="javascript:history.back(-1)" class="navbar-brand"><i class="icon-back"></i></a>
+        <h6>登录</h6>
+    </nav>
+</header>
+<form action="{:url('home/Login/login')}" method="post" class="form-login ajaxForm" id="form">
+        <div class="container p-t">
+        <div class="form-group p-t bdb-grey">
+            <div class="input-group-sm">
+                <input type="tel" name="username" class="form-control input-tel" placeholder="请输入手机号" maxlength="11">
+            </div>
+        </div>
+        <div class="form-group p-t bdb-grey">
+            <div class="input-group-sm position-rel">
+                <input type="password" name="password" class="form-control input-password" placeholder="请输入密码" minlength="4" maxlength="20">
+                <a href="javascript:void(0)" class="check-password"></a>
+            </div>
+        </div>
+        <div class="form-group p-t">
+            <button type="submit" class="btn btn-secondary btn-block">登录</button>
+            <p class="m-t">
+                <a href="{:url('register')}" class="link-grey">注册</a>
+                <a href="{:url('forgetPassword')}" class="link-grey2 pull-right">忘记密码？</a>
+            </p>
+        </div>
+        <div class="massage text-red text-center"></div>
+ </div>
+</form>
+
+<div class="container p-t text-center" style="position: absolute;bottom: 10px;left: 0;width: 100%;">
+    <div class="form-group p-t bdb-grey">
+        <span class="p-a-sm" style="position: absolute;top: 13px;left: 50%;margin-left: -63px;background-color: #f1f1f1;">使用合作账号登录</span>
+    </div>
+    <a href="{:url('/home/OpenAuth/login',array('type'=>'qq'))}" class="login-qq m-r"></a>
+    <a href="{:url('/home/OpenAuth/login',array('type'=>'sina'))}" class="login-xinlang"></a>
+</div>
+{/block}
+
+{block name="js"}
+<script src="__MJS__/basic.js"></script>
+<script src="__MJS__/jquery.form.js"></script>
+{/block}
+

@@ -1,0 +1,73 @@
+{extend name="home/base" /}
+{block name="title"}标准排名 - 绿色指数专家{/block}
+{block name="main"}
+<div class="page-wrap">
+    <div class="page-content">
+        <form action="{:url('search/detail')}" method="post">
+        <div class="input-group input-group-sm m-y m-x-auto" style="width: 50%;">
+                <input type="text" name="keyword" class="form-control" placeholder="请输入关键字" value="{$keyword}">
+            <span class="input-group-btn">
+                <button class="btn btn-danger" type="submit">搜索</button>
+            </span>
+        </div>
+        </form>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="share-weixin nav-item">
+                <a class="nav-link btn btn-link btn-sm active" href="#searchArticle" role="tab" data-toggle="tab">文章</a>
+            </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="searchArticle">
+                <div class="row no-gutter posts-list">
+                    {if condition="$posts"}
+                    {foreach item="vo" name="posts"}
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                        <div class="object post">
+                            {php}$smeta=json_decode($vo['smeta'],true);{/php}
+                            <div class="object-header image" style="background-image:url('__UPLOAD__/{$smeta['thumb']}');">
+                                <a target="_blank" href="{:url('articles/detail',array('id'=>$vo['tid']))}" class="permacover"></a>
+                            <span class="object-header-meta">
+                                <a href="javascript:void(0)">
+                                    <span class="">{$vo.post_modified|date="Y-m-d",###}</span>
+                                <span class="right">
+                                    <span class="read-time"><i class="fa fa-heart-o"></i> {$vo.post_like}</span>&nbsp;&nbsp;
+                                    <span class="read-time"><i class="fa fa-commenting-o"></i> {$vo.comment_count}</span>
+                                </span>
+                                </a>
+                            </span><!-- /.object-author -->
+                            </div><!-- /.object-header -->
+                            <div class="object-meta">
+                                <h3><a href="{:url('articles/detail',array('id'=>$vo['tid']))}">{$vo.post_title}</a>
+                                </h3>
+                                <div class="object-excerpt">
+                                    <p>{$vo.post_mime_type}</p>
+                                </div><!-- /.object-excerpt -->
+                            </div><!-- /.oject-meta -->
+                        </div>
+                    </div><!-- /.col -->
+                    {/foreach}
+                    {else/}
+                    <div role="tabpanel" class="tab-pane active" id="searchArticle">
+                        <div class="search-empty text-center p-y-lg m-y-lg">
+                        <img src="__IMG__/404.png" alt="">
+                        <p class="p-t">没搜索到相关内容</p>
+                        <p><a href="/" class="btn btn-block" style="color: #b81c22;">返回首页>></a></p>
+                        </div>
+                    </div>
+                    {/if}
+                </div>
+                {if condition="$posts"}
+                <div url="{:url('loadSearchDetail',['keyword'=>$keyword,'type'=>'article'])}" class="load-more text-center m-t text-666666">下拉加载更多</div>
+                {/if}
+            </div>
+            
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/basic.js"></script>
+<script src="__JS__/frontend.js"></script>
+{/block}

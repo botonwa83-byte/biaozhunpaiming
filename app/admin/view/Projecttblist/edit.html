@@ -1,0 +1,384 @@
+{extend name="Public/base" /}
+{block name="main-content"}
+    <div class="page-content">
+        <div class="page-header">
+            <h1>
+                您当前操作
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    项目信息
+                </small>
+            </h1>
+        </div>
+        <form class="form-horizontal ajaxForm2" name="ad_add" method="post" action="{:url('editsub')}">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                        <h2 class="center">中国房地产建筑业绿色低碳发展情况调研统计（2022年度）</h2><br><br><br>
+                        <h3 class="center">---------------------公司资料---------------------</h3>
+                        <div class="form-group center">
+                            <label>集团名称：</label>
+                            <label>{$tainfo.group_name}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>项目公司名称：</label>
+                            <label>{$tainfo.project_gcname}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>营业执照：</label>
+                            <label><a href="{$tainfo.project_yyimg}" target="_blank"><img width="100" height="100" src="{$tainfo.project_yyimg}"></a></label>
+                        </div>
+                        <div class="form-group center">
+                            <label>项目照片：</label>
+                            <label><a href="{$tainfo.project_img}" target="_blank"><img width="100" height="100" src="{$tainfo.project_img}"></a></label>
+                        </div>
+                        <div class="form-group center">
+                            <label>填表人名称：</label>
+                            <label>{$tainfo.tb_name}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>职务(名片)：</label>
+                            <label><a href="{$tainfo.tb_img}" target="_blank"><img width="100" height="100" src="{$tainfo.tb_img}"></a></label>
+                        </div>
+                        <div class="form-group center">
+                            <label>办公电话：</label>
+                            <label>{$tainfo.tb_bgphone}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>传真号码：</label>
+                            <label>{$tainfo.tb_czphone}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>手机号码：</label>
+                            <label>{$tainfo.tb_mobile}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>邮箱：</label>
+                            <label>{$tainfo.email}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>公司地址：</label>
+                            <label>{$tainfo.address}</label>
+                        </div>
+                        <div class="form-group center">
+                            <h3 class="center">---------------------基本资料---------------------</h3>
+                            <label>项目名称：</label>
+                            <label>{$tainfo.jb_project_name}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>项目地址：</label>
+                            <label>{$tainfo.jb_project_address}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>建筑类别（住宅/公共/工业建筑）：</label>
+                            <label>{$tainfo.jb_project_type}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>项目建设用地面积（万㎡）：</label>
+                            <label>{$tainfo.jb_project_mj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>项目总建筑面积（万㎡）：</label>
+                            <label>{$tainfo.jb_project_zmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>建筑结构形式（混凝土/钢筋混凝土/钢结构/木结构/砖混结构）：</label>
+                            <label>{$tainfo.jb_project_jgtype}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>容积率：</label>
+                            <label>{$tainfo.jb_project_rjl}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>绿地率：</label>
+                            <label>{$tainfo.jb_project_ldl}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>规划住宅套数（套）：</label>
+                            <label>{$tainfo.jb_project_ghzz}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>停车位数量（个）：</label>
+                            <label>{$tainfo.jb_project_tcsl}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>开工时间：</label>
+                            <label>{$tainfo.jb_project_kg}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>计划竣工时间：</label>
+                            <label>{$tainfo.jb_project_jg}</label>
+                        </div>
+                        <div class="form-group center">
+                            <h3 class="center">---------------------绿色低碳建筑---------------------</h3>
+                            <label>在建面积（万㎡）：</label>
+                            <label>{$tainfo.zj_project_zjmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>绿色建筑等级（一/二/三星级）：</label>
+                            <label>{$tainfo.zj_project_level}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>绿色建筑预评价（设计标识）面积（万㎡）：</label>
+                            <label>{$tainfo.zj_project_ypmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>近零能耗建筑等级（超低能耗/近零能耗/零能耗）：</label>
+                            <label>{$tainfo.zj_project_nhlevel}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>近零能耗建筑面积（万㎡）：</label>
+                            <label>{$tainfo.zj_project_nhmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>低碳建筑等级（低碳/零能耗/碳中和/零碳）：</label>
+                            <label>{$tainfo.zj_project_dtjzlevel}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>低碳建筑面积（万㎡）：</label>
+                            <label>{$tainfo.zj_project_dtjz}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>装配式建筑面积（万㎡）：</label>
+                            <label>{$tainfo.zj_project_zpsmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>全装修成品住宅面积（万㎡）：</label>
+                            <label>{$tainfo.zj_project_zxcpmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>健康建筑/ WELL面积（万㎡）：</label>
+                            <label>{$tainfo.zj_project_jkjzmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>国际绿色建筑认证（LEED/BREAM/DGNB/CASBEE）：</label>
+                            <label>{$tainfo.zj_project_lstype}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>国际绿色建筑认证面积（万㎡）：</label>
+                            <label>{$tainfo.zj_project_lsjzmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>竣工面积（万㎡）：</label>
+                            <label>{$tainfo.jg_project_jgmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>绿色建筑等级（一/二/三星级）：</label>
+                            <label>{$tainfo.jg_project_lsjztype}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>绿色建筑评价（运行标识）面积（万㎡）：</label>
+                            <label>{$tainfo.jg_project_ypmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>近零能耗建筑等级（超低能耗/近零能耗/零能耗）：</label>
+                            <label>{$tainfo.jg_project_nhlevel}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>近零能耗建筑面积（万㎡）：</label>
+                            <label>{$tainfo.jg_project_nhmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>低碳建筑等级（低碳/零能耗/碳中和/零碳）：</label>
+                            <label>{$tainfo.jg_project_dtjzlevel}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>低碳建筑面积（万㎡）：</label>
+                            <label>{$tainfo.jg_project_dtjz}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>装配式建筑面积（万㎡）：</label>
+                            <label>{$tainfo.jg_project_zpsmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>全装修成品住宅面积（万㎡）：</label>
+                            <label>{$tainfo.jg_project_zxcpmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>健康建筑/ WELL面积（万㎡）：</label>
+                            <label>{$tainfo.jg_project_jkjzmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>国际绿色建筑认证（LEED/BREAM/DGNB/CASBEE）：</label>
+                            <label>{$tainfo.jg_project_lstype}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>国际绿色建筑认证面积（万㎡）：</label>
+                            <label>{$tainfo.jg_project_lsjzmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>待开发面积（万㎡）：</label>
+                            <label>{$tainfo.project_dkfmj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <h3>---------------------环境信息---------------------</h3>
+                            <label>汽油（升）：</label>
+                            <label>{$tainfo.hj_qy}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>柴油（升）：</label>
+                            <label>{$tainfo.hj_cy}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>天然气（立方米）：</label>
+                            <label>{$tainfo.hj_trq}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>电力（千瓦时）：</label>
+                            <label>{$tainfo.hj_dl}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>热力（千兆焦耳）：</label>
+                            <label>{$tainfo.hj_rl}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>温室气体直接排放量（kg）：</label>
+                            <label>{$tainfo.hj_wsqt}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>氮氧化物排放量（kg）：</label>
+                            <label>{$tainfo.hj_dyhhw}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>二氧化硫排放量（kg）：</label>
+                            <label>{$tainfo.hj_eyhl}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>悬浮粒子/颗粒物（kg）：</label>
+                            <label>{$tainfo.hj_xflz}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>固体废弃物排放量（吨）：</label>
+                            <label>{$tainfo.hj_gtfqw}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>有害废弃物排放量（吨）：</label>
+                            <label>{$tainfo.hj_yhfqw}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>无害废弃物排放量（吨）：</label>
+                            <label>{$tainfo.hj_whfqw}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>建筑垃圾排放量（吨） ：</label>
+                            <label>{$tainfo.hj_jzlj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>废水/污水排放量（吨） ：</label>
+                            <label>{$tainfo.hj_fsws}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>用纸量（kg）：</label>
+                            <label>{$tainfo.hj_yzl}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>用水量（吨）：</label>
+                            <label>{$tainfo.hj_ysl}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>水泥/混凝土（吨）：</label>
+                            <label>{$tainfo.hj_slhlt}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>钢材（吨）：</label>
+                            <label>{$tainfo.hj_gc}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>铝材（吨）：</label>
+                            <label>{$tainfo.hj_lc}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>玻璃（吨）：</label>
+                            <label>{$tainfo.hj_bl}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>陶瓷（吨）：</label>
+                            <label>{$tainfo.hj_tc}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>研发费用（万元）：</label>
+                            <label>{$tainfo.hj_yffy}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>环保资金投入（万元）：</label>
+                            <label>{$tainfo.hj_hbzj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>社会公益捐赠额度（万元）：</label>
+                            <label>{$tainfo.hj_shgy}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>知识产权专利数量（个）：</label>
+                            <label>{$tainfo.hj_zscq}</label>
+                        </div>
+                        <div class="form-group center">
+                            <h3>---------------------公司治理---------------------</h3>
+                            <label>企业违规/违法事件或行为数量（件）：   </label>
+                            <label>{$tainfo.hj_qywg}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>企业员工违规/违法事件或行为数量（件）：</label>
+                            <label>{$tainfo.hj_ygwg}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>企业涉诉案件数量（件）：</label>
+                            <label>{$tainfo.hj_ssaj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>企业涉诉金额（万元）：</label>
+                            <label>{$tainfo.hj_ssje}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>建筑工地安全事故数量（件）：</label>
+                            <label>{$tainfo.hj_aqsg}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>建筑工地安全事故人员伤亡（人）：</label>
+                            <label>{$tainfo.hj_aqsgsw}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>供应商重大负面事件（件）：</label>
+                            <label>{$tainfo.hj_gyszdsj}</label>
+                        </div>
+                        <div class="form-group center">
+                            <label>供应商产品质量问题事故（件）：</label>
+                            <label>{$tainfo.hj_gyszlwt}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="col-md-offset-5 col-md-7">
+                    <input type="hidden" name="status" value="1">
+                    <input type="hidden" name="id" value="{$tainfo.id}">
+                    <button class="btn btn-danger" type="submit">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        通过
+                    </button>
+                    <button onclick="javascript:history.back(-1)" class="btn btn-info" type="button">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        返回
+                    </button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+    </div>
+{/block}
+{block name="scripts"}
+    <script>
+        $("#plug_ad_checkjsid").click(function(){
+            $("#pic_jslist").show();
+            $("#pic_list").hide();
+            $("#pic_listurl").hide();
+        });
+        $("#plug_ad_checkid").click(function(){
+            $("#pic_jslist").hide();
+            $("#pic_list").show();
+            $("#pic_listurl").show();
+        });
+    </script>
+{/block}

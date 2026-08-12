@@ -1,0 +1,46 @@
+{extend name="public/mobile/base" /}
+{block name="title"}{$name} - 专题 - 标准排名{/block}
+{block name="meta"}{/block}
+{block name="navs"}{/block}
+{block name="css"}{/block}
+{block name="main"}
+<body style="padding-top: 0;background-color: #fff;">
+<header class="bdb-grey" style="z-index: 999">
+    <nav class="navbar">
+        <a href="javascript:history.back(-1)" class="navbar-brand"><i class="icon-back"></i></a>
+        <h6>{$name}</h6>
+    </nav>
+</header>
+<div class="content content-home hotunite-list content-list">
+    {foreach item="vo" name="posts" key="k"}
+	    <div class="card">
+	        <a href="{:url('articles/detail',array('id'=>$vo['tid']),true,true)}">
+	            <div class="media-left" href="{:url('articles/detail',array('id'=>$vo['tid']),true,true)}">
+	                <img class="lazy media-object img-responsive" data-original="{$vo.smeta}" alt="">
+	            </div>
+	            <div class="media-body">
+	                <h6 class="media-heading">{$vo.post_title}</h6>
+	                <p>
+	                    <small>
+	                        <span class="pull-left" style="padding-top: .2em">{$vo.post_modified|date="Y-m-d",###}</span>
+	                        <span> {$vo.comment_count} 评论</span>
+	                    </small>
+	                </p>
+	            </div>
+	        </a>
+	    </div>
+   	{/foreach}
+</div>
+{if condition="$posts"}
+<div class="container">
+    <div class="p-t-16 p-b-40">
+        <button url="{:url('loadMoreSpecialArticles',['id'=>$ids])}" class="btn btn-block btn-secondary js-more-btn">加载更多</button>
+    </div>
+</div>
+{/if}
+{/block}
+{block name="js"}
+<script>$("img.lazy").lazyload({threshold:0,effect:"fadeIn",failurelimit:2,skip_invisible:false});</script>
+<script src="__MJS__/general.js"></script>
+{/block}
+{block name="footer"}{include file="public/mobile/footer" /}{/block}

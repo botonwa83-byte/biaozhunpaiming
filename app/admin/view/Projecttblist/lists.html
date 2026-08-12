@@ -1,0 +1,115 @@
+{extend name="Public/base" /}
+{block name="main-content"}
+	<div class="page-content">
+		<link rel="stylesheet" type="text/css" media="all" href="__PUBLIC__/sldate/daterangepicker-bs3.css" />
+		<div class="row">
+			<div class="col-xs-12">
+				<div>
+					<form name="listorder" method="post"  >
+						<div class="table-responsive"><table class="table table-striped table-bordered table-hover" id="dynamic-table">
+								<thead>
+								<tr>
+									<th class="hidden-xs">ID</th>
+									<th class="hidden-xs">项目名称</th>
+									<th class="hidden-xs">状态</th>
+									<th class="hidden-xs">添加时间</th>
+									<th style="border-right:#CCC solid 1px;">操作</th>
+								</tr>
+								</thead>
+								<tbody>
+								{foreach name="data" item="v"}
+									<tr>
+										<td class="hidden-xs" align="left">{$v.id}</td>
+										<td class="hidden-xs" align="center">{$v.project_gcname}</td>
+										<td class="hidden-xs" align="center" style="color:{$v.status?'green':'red'};">{$v.status?'已审':'未审'}</td>
+										<td class="hidden-xs">{$v.create_time}</td>
+										<td>
+											<div class="hidden-xs action-buttons">
+												<a class="green" href="{:url('edit',array('id'=>$v['id']))}" title="查看项目数据">
+												查看项目数据
+												</a>
+											</div>
+										</td>
+									</tr>
+								{/foreach}
+								<tr>
+									<td align="left"><a href="{:url('tbexcel')}"><button type="button" class="btn btn-white btn-yellow btn-sm">下载所有数据</button></a> </td>
+									<td colspan="8" align="right" class="hidden-xs">{$page}</td>
+									<td colspan="8" align="right" class="hidden-lg hidden-md hidden-sm">{$page_min}</td>
+								</tr>s
+								</tbody>
+							</table>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<form class="form-horizontal ajaxForm2" name="add" method="post" action="{:url('runAdd')}">
+			<div class="modal-dialog" style="width:1000px;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">×
+						</button>
+						<h4 class="modal-title" id="myModalLabel">
+							添加项目数据
+						</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 项目数据名称：  </label>
+									<div class="col-sm-11">
+										<input type="text" name="rank_name" id="rank_name" placeholder="输入项目数据名称" class="col-xs-10 col-sm-5" required/>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 项目数据描述： </label>
+									<div class="col-sm-11">
+										<textarea  name="desc" cols="20" rows="5" class="col-xs-10 col-sm-8 limitedone" id="form-field-10"></textarea>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 数据显示量： </label>
+									<div class="col-sm-11">
+										<input type="text" name="number" id="number" placeholder="数据显示量" class="col-xs-10 col-sm-5" required/>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 是否审核： </label>
+									<div class="col-sm-11" style="padding-top:5px;">
+										<input name="status" id="status" value="1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox" />
+										<span class="lbl">&nbsp;&nbsp;默认关闭</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">
+							提交保存
+						</button>
+						<button class="btn btn-info" type="reset">
+							重置
+						</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">
+							关闭
+						</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+{/block}
+{block name="scripts"}
+	<script type="text/javascript" src="__PUBLIC__/sldate/moment.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/sldate/daterangepicker.js"></script>
+    <script type="text/javascript">
+        $('#reservation').daterangepicker(null, function (start, end, label) {
+            console.log(start.toISOString(), end.toISOString(), label);
+        });
+    </script>
+{/block}

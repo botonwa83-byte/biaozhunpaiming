@@ -1,0 +1,81 @@
+{extend name="Public/base" /}
+{block name="main-content"}
+	<div class="page-content">
+		<div class="row">
+			<div class="col-xs-12">
+				<div>
+					<form id="alldel" name="alldel" method="post" action="{:url('commentAlldel')}" >
+						<input name="p" id="p" value="{:request()->param('p')}" type="hidden" />
+						<div class="table-responsive">
+							<table class="table table-striped table-bordered table-hover" id="dynamic-table">
+								<thead>
+								<tr>
+									<th class="hidden-xs center">
+										<label class="pos-rel">
+											<input type="checkbox" class="ace"  id='chkAll' onclick='CheckAll(this.form)' value="全选"/>
+											<span class="lbl"></span>
+										</label>
+									</th>
+									<th>ID</th>
+									<th>评论人</th>
+									<th class="hidden-sm hidden-xs">评论文章ID</th>
+									<th>评论内容</th>
+									<th class="hidden-xs">审核</th>
+									<th class="hidden-sm hidden-xs">评论时间</th>
+									<th style="border-right:#CCC solid 1px;">操作</th>
+								</tr>
+								</thead>
+
+								<tbody>
+
+								{foreach name="comments" item="v"}
+									<tr>
+										<td width="30" class="hidden-xs" align="center">
+											<label class="pos-rel">
+												<input name='id[]' id="navid" class="ace"  type='checkbox' value='{$v.id}'>
+												<span class="lbl"></span>
+											</label>
+										</td>
+										<td width="10">{$v.id}</td>
+										<td width="30">{$v.full_name}</td>
+										<td width="50" class="hidden-sm hidden-xs">{$v.post_id}</td>
+										<td width="250">{$v.content}</td>
+										<td width="50" class="hidden-xs">
+											{if condition="$v['status'] eq 1"}
+												<a class="red state-btn" href="{:url('commentState')}" data-id="{$v.id}" title="已审">
+													<div id="zt{$v.id}"><button class="btn btn-minier btn-yellow">已审</button></div>
+												</a>
+											{else/}
+												<a class="red state-btn" href="{:url('commentState')}" data-id="{$v.id}" title="未审">
+													<div id="zt{$v.id}"><button class="btn btn-minier btn-danger">未审</button></div>
+												</a>
+											{/if}
+										</td>
+										<td width="80" class="hidden-sm hidden-xs">{$v.createtime|date='Y-m-d H:i:s',###}</td>
+										<td width="50">
+											<div class="action-buttons">
+												<a class="green confirm-rst-url-btn" data-info="你确定要置顶吗？" href="{:url('commentTop',array('id'=>$v['id'],'p'=>request()->param('p')))}" title="置顶">
+													<i class="ace-icon fa fa-check bigger-130"></i>
+												</a>
+												|
+												<a class="red confirm-rst-url-btn" data-info="你确定要删除吗？" href="{:url('commentDel',array('id'=>$v['id'],'p'=>request()->param('p')))}" title="删除">
+													<i class="ace-icon fa fa-trash-o bigger-130"></i>
+												</a>
+											</div>
+										</td>
+									</tr>
+								{/foreach}
+								<tr>
+									<td align="left"><button id="btnsubmit" class="btn btn-white btn-yellow btn-sm" >删</button> </td>
+									<td colspan="8" align="right" class="hidden-xs">{$page}</td>
+									<td colspan="8" align="right" class="hidden-lg hidden-md hidden-sm"></td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div><!-- /.page-content -->
+{/block}

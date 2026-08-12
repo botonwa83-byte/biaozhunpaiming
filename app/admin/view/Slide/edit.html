@@ -1,0 +1,160 @@
+{extend name="Public/base" /}
+{block name="main-content"}
+	<div class="page-content">
+		<!--主题-->
+		<div class="page-header">
+			<h1>
+				您当前操作
+				<small>
+					<i class="ace-icon fa fa-angle-double-right"></i>修改幻灯片
+				</small>
+			</h1>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<form class="form-horizontal ajaxForm2" name="form0" method="post" action="{:url('runedit')}"  enctype="multipart/form-data">
+					<input type="hidden" name="slide_id" value="{$slide.slide_id}"/>
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="form-group">
+								<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 所属位置： </label>
+								<div class="col-sm-11">
+									<select name="slide_cid"  class="col-sm-4 selector" required>
+										<option value="">请选择所属广告位</option>
+										{foreach name="cats" key="k" item="v"}
+											<option value="{$v.cid}" {$v.cid==$slide.slide_cid?'selected':''}>{$v.cat_name}</option>
+										{/foreach}
+									</select>
+								</div>
+							</div>
+							<div class="space-4"></div>
+
+							<div class="form-group">
+								<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 名称：  </label>
+								<div class="col-sm-11">
+									<textarea name="slide_name" id="slide_name" placeholder="输入名称" class="col-xs-10 col-sm-5" required/>{$slide.slide_name}</textarea>
+								</div>
+							</div>
+							<div class="space-4"></div>
+
+							<div class="form-group">
+								<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 描述：  </label>
+								<div class="col-sm-11">
+									<textarea name="slide_des" id="slide_des" placeholder="输入名称" class="col-xs-10 col-sm-5" required/>{$slide.slide_des}</textarea>
+								</div>
+							</div>
+							<!--<div class="form-group">-->
+							<!--	<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 投票状态：  </label>-->
+							<!--	<div class="col-sm-11">-->
+							<!--		<textarea name="slide_content" id="slide_content" placeholder="投票进行中" class="col-xs-10 col-sm-5" required/>{$slide.slide_content}</textarea>-->
+							<!--	</div>-->
+							<!--</div>-->
+							<div class="space-4"></div>
+
+							<div class="form-group">
+								<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 类型：  </label>
+								<div class="col-sm-11">
+									<input type="radio" name="slide_type" value="1" {$slide.slide_type==1?'checked':''}/>文章<br/>
+									<!--<input type="radio" name="slide_type" value="2" {$slide.slide_type==2?'checked':''}/>投票<br/>-->
+									<!--<input type="radio" name="slide_type" value="3" {$slide.slide_type==3?'checked':''}/>专题<br/>-->
+									<!--<input type="radio" name="slide_type" value="4" {$slide.slide_type==4?'checked':''}/>文章+投票<br/>-->
+								</div>
+							</div>
+							<div class="space-4"></div>
+
+							<div class="form-group" id="pic_listurl">
+								<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 文章ID：  </label>
+								<div class="col-sm-3">
+									<input type="text" name="slide_url" id="slide_url" placeholder="输入ID" class="col-xs-10 col-sm-8" value="{$slide.slide_url}" />
+								</div>
+							</div>
+							<!--<div class="form-group" id="pic_listurl">-->
+							<!--	<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 专题ID：  </label>-->
+							<!--	<div class="col-sm-3">-->
+							<!--		<input type="text" name="slide_special_url" id="slide_special_url" placeholder="输入ID" class="col-xs-10 col-sm-8" value="{$slide.slide_special_url}" />-->
+							<!--	</div>-->
+							<!--</div>-->
+							<!--<div class="form-group" id="pic_listurl">-->
+							<!--	<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 投票ID：  </label>-->
+							<!--	<div class="col-sm-3">-->
+							<!--		<input type="text" name="slide_vote" id="slide_vote" placeholder="输入ID" class="col-xs-10 col-sm-8" value="{$slide.slide_vote}"/>-->
+							<!--	</div>-->
+							<!--</div>-->
+							<!--<div class="space-4"></div>-->
+
+							<div class="form-group">
+								<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 图片： </label>
+								<div class="col-sm-11">
+									<a href="javascript:;" class="file">
+										<input type="file" name="file0" id="file0" multiple="multiple"/>
+										选择上传文件
+									</a>
+									<a href="javascript:;" onclick="return backpic('__PUBLIC__/img/no_img.jpg');" title="还原修改前的图片" class="file">
+										撤销上传
+									</a>
+									<input type="hidden" name="slide_pic" value="{$slide.slide_pic}"/>
+									<div><img src="{$slide.slide_pic|default='__PUBLIC__/img/no_img.jpg'}" height="70" id="img0" ></div>
+								</div>
+							</div>
+							<div class="space-4"></div>
+
+							<div class="form-group">
+								<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 是否审核： </label>
+								<div class="col-sm-11" style="padding-top:5px;">
+									<input name="slide_status" id="slide_status" value="1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox" {$slide.slide_status==1?'checked':''}/>
+									<span class="lbl">&nbsp;&nbsp;默认关闭</span>
+								</div>
+							</div>
+							<div class="space-4"></div>
+
+						</div>
+					</div>
+					<div class="space-4"></div>
+					<div class="clearfix form-actions">
+						<div class="col-md-offset-3 col-md-9">
+							<button class="btn btn-info" type="submit">
+								<i class="ace-icon fa fa-check bigger-110"></i>
+								保存
+							</button>&nbsp; &nbsp; &nbsp;
+							<button class="btn" type="reset">
+								<i class="ace-icon fa fa-undo bigger-110"></i>
+								重置
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div><!-- /.page-content -->
+{/block}
+{block name="scripts"}
+	<link rel="stylesheet" type="text/css" media="all" href="__PUBLIC__/css/jquery.datetimepicker.css" />
+	<script type="text/javascript" src="__PUBLIC__/js/jquery.datetimepicker.full.min.js"></script>
+	<script>
+		$.datetimepicker.setLocale('zh');
+        $('#datetimepicker').datetimepicker({
+            dayOfWeekStart : 1,
+            lang:'zh',
+            disabledDates:[],
+            startDate:  ''
+        });
+		//多图设置
+		$("#pic_list").hide();
+		$("#news_pic_list").click(function(){
+			$("#pic_list").hide();
+		});
+		$("#news_pic_qqlist").click(function(){
+			$("#pic_list").show();
+		});
+		//跳转额外属性
+		$("#pptaddress").hide();
+		$("#news_flag_vaj").click(function(){
+			$("#pptaddress").toggle(400);
+		});
+		$("#cpprice").hide();
+		$("#news_flag_vacp").click(function(){
+			$("#cpprice").toggle(400);
+		});
+	</script>
+{/block}

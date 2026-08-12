@@ -1,0 +1,93 @@
+{extend name="Public/base" /}
+{block name="main-content"}
+<div class="page-content">
+    <div class="page-header">
+        <h1>
+            您当前操作
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                修改排行榜信息
+            </small>
+        </h1>
+    </div>
+    <a class="btn btn-xs" href="javascript:history.back(-1)">
+        <i class="ace-icon fa fa-bolt bigger-110"></i>
+        企业名称列表
+    </a>
+    <form class="form-horizontal ajaxForm2" name="ad_add" method="post" action="{:url('detailEdit')}">
+        <div class="modal-body">
+            <div class="row">
+                <input type="hidden" value="{$data['id']}" name="id">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 项目名称：  </label>
+                    <div class="col-sm-11">
+                        <input type="text" name="project_name" id="project_name" placeholder="输入项目名称" value="{$data['project_name']}" class="col-xs-10 col-sm-5" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 申报单位：  </label>
+                    <div class="col-sm-11">
+                        <input type="text" name="support_name" id="support_name" placeholder="输入申报单位" value="{$data['support_name']}" class="col-xs-10 col-sm-5" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 项目类别：  </label>
+                    <div class="col-sm-11">
+                        <input type="text" name="flag_project" id="flag_project" placeholder="输入项目类别" value="{$data['flag_project']}" class="col-xs-10 col-sm-5" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 标识类别：  </label>
+                    <div class="col-sm-11">
+                        <input type="text" name="flag_name" id="flag_name" placeholder="输入标识类别" value="{$data['flag_name']}" class="col-xs-10 col-sm-5" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 评定星级(数字代表星级)：  </label>
+                    <div class="col-sm-11">
+                        <input type="number" name="star" id="star" placeholder="输入评定星级数字" value="{$data['star']}" class="col-xs-10 col-sm-5" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 面积万/平方米：  </label>
+                    <div class="col-sm-11">
+                        <input type="text" name="squire" id="squire" placeholder="输入面积" value="{$data['squire']}" class="col-xs-10 col-sm-5" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 项目排序： </label>
+                    <div class="col-sm-11">
+                        <input type="text" name="listorder" id="listorder" placeholder="输入项目名称排序" value="{$data['listorder']}" class="col-xs-10 col-sm-5" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button class="btn btn-info" type="submit">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        保存
+                    </button>
+                    <button class="btn" type="reset">
+                        <i class="ace-icon fa fa-undo bigger-110"></i>
+                        重置
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="scripts"}
+<script>
+    $("#plug_ad_checkjsid").click(function(){
+        $("#pic_jslist").show();
+        $("#pic_list").hide();
+        $("#pic_listurl").hide();
+    });
+    $("#plug_ad_checkid").click(function(){
+        $("#pic_jslist").hide();
+        $("#pic_list").show();
+        $("#pic_listurl").show();
+    });
+</script>
+{/block}

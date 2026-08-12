@@ -1,0 +1,64 @@
+{extend name="Public/base" /}
+{block name="main-content"}
+    <div class="page-content">
+        <div class="page-header">
+            <h1>
+                您当前操作
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    修改排行榜信息
+                </small>
+            </h1>
+        </div>
+        <a class="btn btn-xs" href="javascript:history.back(-1)">
+            <i class="ace-icon fa fa-bolt bigger-110"></i>
+            企业名称列表
+        </a>
+        <form class="form-horizontal ajaxForm2" name="ad_add" method="post" action="{:url('randEdit')}">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                        <input type="hidden" value="{$brand.id}" name="id">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 名称：  </label>
+                            <div class="col-sm-11">
+                                <input type="text" value="{$brand.brand_name}" name="brand_name" id="brand_name" placeholder="输入广告名称" class="col-xs-10 col-sm-5" required/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button class="btn btn-info" type="submit">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        保存
+                    </button>
+
+                    &nbsp; &nbsp; &nbsp;
+                    <button class="btn" type="reset">
+                        <i class="ace-icon fa fa-undo bigger-110"></i>
+                        重置
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+    </div>
+{/block}
+{block name="scripts"}
+    <script>
+        $("#plug_ad_checkjsid").click(function(){
+            $("#pic_jslist").show();
+            $("#pic_list").hide();
+            $("#pic_listurl").hide();
+        });
+        $("#plug_ad_checkid").click(function(){
+            $("#pic_jslist").hide();
+            $("#pic_list").show();
+            $("#pic_listurl").show();
+        });
+    </script>
+{/block}

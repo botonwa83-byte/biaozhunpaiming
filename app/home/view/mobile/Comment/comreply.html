@@ -1,0 +1,129 @@
+{extend name="public/mobile/base" /}
+{block name="title"}回复评论 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<header class="navbar-fixed-top">
+    <nav class="navbar">
+        <a href="javascript:history.back(-1)" class="navbar-brand"><i class="icon-back"></i></a>
+        <h6>回复评论</h6>
+    </nav>
+</header>
+<div class="comment p-t m-b-lg">
+    <div class="row" style="margin: 0">
+        <div class="col-xs-2"><img src="{$comment.avatar|default='__MIMG__/portrait7.jpg'}" class="img-circle"></div>
+        <div class="col-xs-10 p-r-0">
+            <h6 class="m-b-0 p-r text-lightblue">{$comment.full_name}</h6>
+            <p class="m-b-0p-r"><small>{$comment.createtime|date="Y-m-d",###}</small></p>
+            <p class="p-r">{$comment.content}</p>
+            <p class="text-right m-y p-r" style="font-size: 13px">
+                <a href="javascript:;" url="{:url('doLike',array('type'=>1,'id'=>$comment['id'],'ob_id'=>$comment['post_id']))}" class="do-like pull-right text-danger"><i class="{:in_array($comment['id'],$dolikes)?'icon-heart15':'icon-heart-o15'}"></i> <span class="com-like">{$comment.com_like}</span></a>
+                <a href="javascript:void(0)" class="m-r text-gray">回复 {$comment.replay_num}</a>
+            </p>
+            {if condition="$comment['children']"}
+            <div class="m-b p-b-sm comment-reply">
+                <div class="comment-list">
+                	{foreach item="v" name="comment['children']"}
+                	{php}$path = explode("-", $v['path']);{/php}
+                    {if condition="!isset($path[2])"}
+                        <hr>
+                        <p class="m-b-0 p-r">
+                            <span class="reply-user1 text-lightblue">{$v.full_name}</span>：
+                            <a href="javascript:;" url="{:url('doLike',array('type'=>1,'id'=>$v['id'],'ob_id'=>$comment['post_id']))}" class="do-like pull-right text-danger">
+                                <i class="{:in_array($v['id'],$dolikes)?'icon-heart15':'icon-heart-o15'}"></i>
+                                <span class="com-like">{$v.com_like}</span>
+                            </a>
+                            <br>
+                            {if condition="session('uid')"}
+                            <a href="#replyWindow" data-toggle="collapse" data-id="{$v.id}" class="reply-name">
+                            {else/}
+                            <a href="javascript:void(0)" class="reply-name" data-toggle="modal" data-target=".bd-example-modal-sm">
+                            {/if}
+                            {$v.content}
+                            </a>
+                        </p>
+                    {else/}
+                        <hr>
+                        <p class="m-b-0 p-r">
+                            <span class="reply-user1 text-lightblue">
+                                {$v.full_name}</span>
+                            回复
+                            <span class="reply-user2 text-lightblue">
+                            {$comment['children'][$path[2]]['full_name']}</span>：
+                            <a href="javascript:;" url="{:url('doLike',array('type'=>1,'id'=>$v['id'],'ob_id'=>$comment['post_id']))}" class="do-like pull-right text-danger">
+                                <i class="{:in_array($v['id'],$dolikes)?'icon-heart15':'icon-heart-o15'}"></i>
+                                <span class="com-like">{$v.com_like}</span>
+                            </a>
+                            <br>
+                            <a href="#replyWindow" data-toggle="collapse" data-id="{$v.id}" class="reply-name">
+                            {$v.content}
+                            </a>
+                        </p>
+                	{/if}
+                	{/foreach}
+                </div>
+            </div>
+            {/if}
+        </div>
+    </div>
+</div>
+<div class="navbar-fixed-bottom bg-white">
+    {if condition="session('user')"}
+    <a href="#replyWindow" class="btn btn-block btn-comment" data-toggle="collapse" aria-expanded="false" aria-controls="replyWindow">回复</a>
+    {else/}
+    <a href="javascript:void(0)" class="btn btn-block btn-comment" data-toggle="modal" data-target=".bd-example-modal-sm">回复</a>
+    {/if}
+    <form action="{:url('present')}" class="ajaxForm" method="post" id="form">
+    <div class="collapse" id="replyWindow">
+        <div class="card card-block m-b-0">
+            <p class="help-block reply-user">回复评论：</p>
+            <textarea class="com-content" name="content" rows="3" style="width: 100%;"></textarea>
+            <input type="hidden" name="ob_id" value="{$comment['post_id']}">
+            <input type="hidden" name="cid" value="{$comment['id']}">
+            <input type="hidden" id="reply-id" name="reply_id" value="">
+            <input type="hidden" name="type" value="1"/>
+            <p class="m-y-0 text-right">
+                <a href="#replyWindow" class="btn btn-sm btn-secondary" data-toggle="collapse" aria-expanded="false" aria-controls="commentWindow">取消</a>
+                <input type="submit" value="发布" class="btn btn-sm btn-danger submit-reply">
+            </p>
+        </div>
+    </div>
+    </form>
+</div>
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bdb0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="deal-close"></span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title text-center" id="myModalLabel">登录</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center">
+                    <div class="{$is_wechat?'col-xs-4':'col-xs-6'}">
+                        <a href="{:url('/home/OpenAuth/login',array('type'=>'qq'))}" class="text-gray"><i class="icon-qq50 bdra50"></i><br>QQ登录</a>
+                    </div>
+
+                    <div class="{$is_wechat?'col-xs-4':'col-xs-6'}">
+                        <a href="{:url('/home/OpenAuth/login',array('type'=>'sina'))}" class="text-gray"><i class="icon-weibo50 bdra50"></i><br>微博登录</a>
+                    </div>
+
+                    {if condition="$is_wechat"}
+                    <div class="col-xs-4">
+                        <a href="{:url('home/login/wechatLoginUrl')}" class="text-gray"><i class="icon-weixin50 bdra50"></i><br>微信登录</a>
+                    </div>
+                    {/if}
+                </div>
+            </div>
+            <div class="modal-footer text-center bdt0">
+                <a href="{:url('home/login/login')}" class="text-gray2">手机号登录/注册 ﹥</a>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__MJS__/basic.js"></script>
+<script src="__MJS__/jquery.form.js"></script>
+{/block}

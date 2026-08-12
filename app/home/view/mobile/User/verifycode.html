@@ -1,0 +1,34 @@
+{extend name="public/mobile/base" /}
+{block name="title"}注册 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<header class="navbar-fixed-top">
+    <nav class="navbar">
+        <a href="javascript:history.back(-1)" class="navbar-brand"><i class="icon-back"></i></a>
+        <h6>注册</h6>
+    </nav>
+</header>
+<form action="{:url('verifyCode')}" method="post" id="form" class="form-login ajaxForm">
+    <input style="display: none">
+    <div class="container p-t">
+        <div class="form-group p-t bdb-grey pull-left" style="width: 60%;">
+	        <div class="input-group input-group-sm position-rel">
+                <input type="hidden" name="username" id="username" value="{$username}"/>
+	            <input type="text" name="verify" class="form-control input-password" placeholder="短信验证码">
+	        </div>
+        </div>
+        <div class="pull-right m-t" style="width: 37%;">
+            <button type="button" onclick="getVerifyCode(this)" class="btn btn-secondary btn-sm btn-block fs12 text-666666">获取验证码</button>
+        </div>
+        <div class="form-group p-t">
+            <button type="submit" class="btn btn-secondary btn-block">下一步</button>
+        </div>
+        <div class="massage text-red text-center"></div>
+    </div>
+</form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript" src='__MJS__/jquery.form.js'></script>
+<script type="text/javascript" src='__MJS__/basic.js'></script>
+{/block}

@@ -1,0 +1,300 @@
+<!doctype html>
+<head>
+<title>{block name="title"}{/block}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{block name="seo"}
+<meta name="description" content="标准排名"/>
+<meta name="keywords" content="标准排名" />
+{/block}
+<meta name="baidu-site-verification" content="vZGEdsBEVE" />
+<meta name="alexaVerifyID" content="Ad99YU69naV9kaG14aUV4ZX7yBA"/>
+<link rel="stylesheet" href="__CSS__/bootstrap.css">
+<link rel="stylesheet" href="__CSS__/font-awesome.min.css">
+<link rel="stylesheet" href="__CSS__/main.css">
+<link rel="stylesheet" href="__CSS__/jecpack.css">
+{block name="meta"}{/block}
+{block name="css"}{/block}
+<script type="text/javascript" src="__JS__/jquery.min.js"></script>
+<script type="text/javascript" src="__JS__/bootstrap.min.js"></script>
+<script type="text/javascript" src="__JS__/jquery.form.js"></script>
+<script type="text/javascript" src="//hm.baidu.com/hm.js?3836a8c066732a2e02a623f8acde3f3e"></script>
+</head>
+<body>
+{block name="nav"}
+<body class="single single-post postid-25650 single-format-standard um-desktop">
+<div class="modal fade login" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 150px;width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header position-rel">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <span class="login-title">帐号登录</span>
+            </div>
+            <div class="modal-body">
+                <div class="windows login-win">
+                    <form action="{:url('home/Login/login')}" method="post" class="ajaxForm_1 login-form m-t">
+                        <fieldset class="form-group">
+                            <input type="text" name="username" class="form-control input-tel fs14" placeholder="请输入手机号">
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <input type="password" name="password" class="form-control input-password fs14" placeholder="请输入密码">
+                            <small class="text-muted">
+                                <a href="javascript:void(0)" class="btn-link btn-register">注册</a>
+                                <a href="javascript:void(0)" class="btn-link dennis-link pull-right btn-forget" style="text-decoration: underline">忘记密码？</a>
+                            </small>
+                        </fieldset>
+                        <button type="submit" class="btn btn-danger2 btn-block">登录</button>
+                    </form>
+                    <div class="massage text-red text-center"></div>
+                    <p class="fs12 text-center m-t-lg">使用合作账号登录</p>
+                    <div class="text-center">
+                        <a href="{:url('/home/OpenAuth/login',array('type'=>'qq'))}" class="login-qq m-x-sm"></a>
+                        <a href="{:url('/home/OpenAuth/login',array('type'=>'sina'))}" class="login-weibo m-x-sm"></a>
+                        {if condition="$is_wechat"}
+                        <a href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="login-weixin m-x-sm"></a>
+                        {/if}
+                        <div class="dropdown-menu" style="left: 145px;bottom: 0;">
+                            <img src="__IMG__/qr.jpg" alt="" style="width: 200px">
+                        </div>
+                    </div>
+                </div>
+                <div class="windows register-win" style="display: none">
+                    <form action="{:url('home/Login/register')}" method="post" class="ajaxForm_2 login-form m-t">
+                        <fieldset class="form-group">
+                            <input type="text" name="username" id="registr_show_username" class="form-control input-tel fs14" placeholder="请输入手机号">
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <input type="password" name="password" class="form-control input-password fs14" placeholder="请输入密码">
+                        </fieldset>
+                        <div class="form-group pull-left">
+                            <div class="input-group-sm">
+                                <a href="javascript:void(0)" class="deal dian hongdian"></a>
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class="fs12 text-666666" style="text-decoration: underline">我同意《标准排名合作协议》</a>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-danger2 btn-block btn-register1">下一步</button>
+                    </form>
+                    <div class="massage text-red text-center"></div>
+                </div>
+
+                <div class="windows register2-win" style="display: none">
+                    <form action="{:url('home/login/verifyCode')}" method="post" class="ajaxForm_3 login-form m-t">
+                        <fieldset class="form-group">
+                            <input type="hidden" name="username" id="registr_hide_username" value=""/>
+                            <input type="text" name="verify" class="form-control input-password fs14" placeholder="请输入验证码" style="width: 225px;">
+                            <button type="button" class="btn btn-secondary btn-sm pull-right fs12" onclick="getVerifyCode(this)" style="width: 135px;height: 36.5px;">获取验证码</button>
+                        </fieldset>
+                        <button type="submit" class="btn btn-danger2 btn-block btn-register2">下一步</button>
+                    </form>
+                    <div class="massage text-red text-center"></div>
+                </div>
+
+                <div class="windows forget-win" style="display: none">
+                    <form action="{:url('home/login/forgetPassword')}" method="post" class="login-form m-t ajaxForm_4">
+                        <fieldset class="form-group">
+                            <input type="text" name="username" id="forget_show_username" class="form-control input-tel fs14" placeholder="请输入手机号">
+                        </fieldset>
+                        <div class="form-group pull-left">
+                            <div class="input-group-sm">
+                                <a href="javascript:void(0)" class="deal dian hongdian"></a>
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class="fs12 text-666666" style="text-decoration: underline">我同意《标准排名合作协议》</a>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-danger2 btn-block btn-forget1">下一步</button>
+                    </form>
+                    <div class="massage text-red text-center"></div>
+                </div>
+
+                <div class="windows forget2-win" style="display: none">
+                    <form action="{:url('home/login/forgetVerifyCode')}" method="post" class="ajaxForm_5 login-form m-t">
+                        <fieldset class="form-group">
+                            <input type="hidden" name="username" id="forget_hide_username" value=""/>
+                            <input type="text" name="verify" id="forget_show_verify" class="form-control input-password fs14" placeholder="请输入验证码" style="width: 225px;">
+                            <button type="button" onclick="getForgetVerifyCode(this)" class="btn btn-secondary btn-sm pull-right fs12" style="width: 135px;height: 36.5px;">获取验证码</button>
+                        </fieldset>
+                        <button type="submit" class="btn btn-danger2 btn-block btn-forget2">下一步</button>
+                    </form>
+                    <div class="massage text-red text-center"></div>
+                </div>
+
+                <div class="windows forget3-win" style="display: none">
+                    <form action="{:url('home/login/changePassword')}" method="post" class="ajaxForm_6 login-form m-t">
+                        <fieldset class="form-group">
+                            <input type="hidden" name="username" id="change_hide_username" value=""/>
+                            <input type="hidden" name="verify" id="change_hide_verify" value=""/>
+                            <input type="password" name="password" class="form-control input-password fs14" placeholder="请输入密码">
+                        </fieldset>
+                        <button type="submit" class="btn btn-danger2 btn-block btn-forget3">确认</button>
+                    </form>
+                    <div class="massage text-red text-center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-wrap">
+    <div class="hero article-banner">
+        <div class="hero-image" style="background-image:url('__UPLOAD__/{$article_data.smeta.thumb}')"></div>
+        <div class="hero-header">
+            <a href="javascript:void(0)" class="logo">
+                <img src="__IMG__/logo.png" alt="">
+            </a>
+        </div>
+        <div class="hero-content">
+            <h1>{$article_data.post_title}</h1>
+            <p class="writer text-center">
+                <span>{$article_data.post_author_name}</span>
+                <span class="m-l-lg">时间：{$article_data.post_modified|date="Y-m-d",###}</span>
+            </p>
+        </div>
+        <div class="hero-footer">
+            <p class="article-star text-center">
+                <a href="{:url('articles/favorite',array('id'=>$article_data['object_id']))}" class="btn js-favorite-btn" title="收藏"><i class="fa {$favorite?'fa-star':'fa-star-o'}"></i></a>
+                <a href="javascript:void(0)" class="btn disabled"><i class="fa fa-eye"></i> {$article_data.post_hits}</a>
+                <a href="{$dolike?'javascript:;':url('articles/doLike',array('id'=>$article_data['object_id']));}" class="btn js-count-btn" title="赞"><i class="fa {$dolike?'fa-heart':'fa-heart-o'}"></i> <span class="post-like">{$article_data.post_like>999?'999+':$article_data.post_like}</span></a>
+            </p>
+            <hr >
+            <ul class="tag-cloud">
+                {foreach item="v" name="article_data.post_keywords"}
+                <li><a href="JavaScript:;"><i class="fa hash">#</i> {$v}</a></li>
+                {/foreach}
+            </ul>
+        </div>
+    </div>
+
+    <div class="view">
+        <nav>
+            <ul class="nav-items">
+                {foreach name="navs" item="vo"}
+                <li class="{$vo['id']==$nav_id?'active':''}">
+                    <a href="{$vo.href}"><span class="link-text">{$vo.label}</span></a>
+                </li>
+                {/foreach}
+            </ul>
+            <div class="nav-secondary">
+                <ul class="social-icons">
+                    <li>
+                        <div class="btn-group">
+                            <a target="_blank" href="javascript:void(0)" class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-search"></i></a>
+                            <div class="dropdown-menu p-a" style="width:400px;left: -250px;line-height:normal;">
+                                <form action="{:url('search/detail')}" method="post">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" name="keyword" class="form-control form-control-sm" placeholder="请输入关键字">
+                                         <span class="input-group-btn">
+                                             <button class="btn btn-danger-outline btn-sm" type="submit"><i class="fa fa-search"></i></button>
+                                         </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a target="_blank" href="http://weibo.com/biaozhunpaiming"><i class="fa fa-weibo"></i></a></li>
+                    <li>
+                        <div class="btn-group">
+                            <a target="_blank" href="javascript:void(0)" class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-weixin"></i></a>
+                            <div class="dropdown-menu" style="left: -50px;">
+                                <img src="__IMG__/qr.jpg" alt="" style="width: 100%;">
+                            </div>
+                        </div>
+                    </li>
+                    {if condition="!$user"}
+                        <li><a target="_blank" href="javascript:void(0)" data-toggle="modal" data-target=".login"><i class="fa fa-user"></i></a></li>
+                    {else/}
+                        <li style="width: 30px;">
+                            <a href="/home/user/personbuild.html">
+                                <img src="{$user['avatar']?$user['avatar']:'__MIMG__/portrait8.jpg'}" alt="" class="img-circle" style="width: 30px;height: 30px;">
+                            </a>
+                        </li>
+                    {/if}
+                    <!-- <li>
+                        <a href="javascript:void(0)" data-toggle="modal" data-target=".bs-example-modal-lg" style="width: auto;">联系我们</a>
+                    </li> -->
+                </ul>
+            </div>
+        </nav>
+{/block}
+{block name="main"}{/block}
+{block name="js"}{/block}
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id=""></h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 p-b border-r">
+                        <h6>联系我们</h6>
+                        <ul class="ul-none">
+                            <li>
+                                邮箱：admin@biaozhunpaiming.com
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 p-b border-r">
+                    <h6>加入我们</h6>
+                    <ul class="ul-none">
+                        <li>现招聘主编、新媒体记者、数据分析员、运营推广、市场经理、CTO以及实习生，为了倡导绿色生活工作方式，我们仅接受电子邮件简历的投递。</li>
+                        <li>邮箱：admin@biaozhunpaiming.com </li>
+                    </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 p-b border-r">
+                        <h6>关于我们</h6>
+                        <ul class="ul-none">
+                            <li>
+                                标准排名，英文名“Green Ranking”，一个专注于绿色评级与评价的研究机构，基于互联网大数据分析的信息服务商，致力于成为全球绿色指数专家。
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center p-t-lg p-b">
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 p-x-md">
+                            <img src="__IMG__/qr-weixin.jpg" class="img-responsive" alt="关注标准排名">
+                            <p>关注标准排名</p>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 p-b border-r">
+                        <h6>联系我们</h6>
+                        <ul class="ul-none">
+                            <li>
+                                邮箱：admin@biaozhunpaiming.com
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 p-b border-r">
+                    <h6>加入我们</h6>
+                    <ul class="ul-none">
+                        <li>为了倡导绿色生活工作方式，我们仅接受电子邮件简历的投递。 </li>
+                        <li>邮箱：admin@biaozhunpaiming.com </li>
+                    </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 p-b border-r">
+                        <h6>关于我们</h6>
+                        <ul class="ul-none">
+                            <li>
+                                标准排名，英文名“Green Ranking”，一个专注于绿色评级与评价的研究机构，基于互联网大数据分析的信息服务商，致力于成为全球绿色指数专家。
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center p-t-lg p-b">
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 p-x-md">
+                            <img src="__IMG__/qr-weixin.jpg" class="img-responsive" alt="关注标准排名">
+                            <p>关注标准排名</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="filing text-center p-y">
+        <p><i class="fa fa-star"></i> 若有图片涉及版权问题，敬请原作者联系我们 <i class="fa fa-star"></i> </p>
+        <p>京ICP备17053107号 | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010502034648" style="color: #00a0e9;text-decoration: none">
+                        <img src="__IMG__/beian.png" alt=""> 京公网安备 11010502034648号</a></p>
+        <p>Copyright 北京万家绿色信用评级有限公司  All Rights Reserved 版权所有 复制必究</p>
+    </div>
+</footer>
+

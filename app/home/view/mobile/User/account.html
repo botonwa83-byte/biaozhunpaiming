@@ -1,0 +1,40 @@
+{extend name="public/mobile/base" /}
+{block name="title"}账号管理 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<body style="padding-top: 0">
+<header class="bdb-grey" style="z-index: 999">
+    <nav class="navbar">
+        <a href="javascript:history.back(-1)" class="navbar-brand"><i class="icon-back"></i></a>
+        <h6>账号管理</h6>
+    </nav>
+</header>
+<div class="content bg-white m-t-4">
+    <ul class="person-ul fs15">
+        <li>
+            <a href="javascript:void(0)">
+                头像
+                <span class="pull-right navbar-user m-r-15"><img src="{$user['avatar']|default='__MIMG__/portrait8.jpg'}" class="img-circle"></span>
+            </a>
+        </li>
+        <li>
+            <a href="{:url('changeUsername')}">
+                昵称
+                <span class="pull-right navbar-user m-r-15 text-gray2 fs14">
+                {php}!isset($user['user_login_encrypt'])?$user['user_login_encrypt']='':'';{/php}
+                {$user['user_nicename']?$user['user_nicename']:$user['user_login_encrypt']}</span>
+            </a>
+        </li>
+        <li>
+            <a href="{$user['user_login_encrypt']?'javascript:;':url('bindMobile')}" style="border: none">
+                手机号
+                <span class="pull-right navbar-user m-r-15 text-gray2 fs14">{$user['user_login_encrypt']?$user['user_login_encrypt']:'绑定手机号'}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="content bg-white p-x-14 p-t" style="min-height: 60vh">
+    <a href="{:url('logout')}" class="btn btn-danger btn-block fs17">退出登录</a>
+</div>
+{/block}
+{block name="footer"}{include file="public/mobile/footer" /}{/block}

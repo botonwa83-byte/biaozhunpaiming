@@ -1,0 +1,227 @@
+{extend name="public/mobile/base" /}
+{block name="title"}{$data.speacial_name} - 专题 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="seo"}
+<meta name="description" content="{$data.speacial_name}"/>
+<meta name="keywords" content="{$data.speacial_name}" />
+{/block}
+{block name="main"}
+<body {$app==1?'style="padding-top: 0px;"':'style="padding-top: 50px;"'}>
+<div class="bar-app">
+    <a href="/">
+        <img src="__MIMG__/logo90.png" alt="" class="bar-app-logo pull-left">
+        <div class="text-white pull-left" style="margin-left:2px;margin-top:19px;">
+            <strong style="font-size:18px">标准排名</strong>
+        </div>
+    </a>
+</div>
+<div class="position-rel">
+    <img class="media-object img-responsive" src="{$data.smeta}" alt="" style="width: 100%;">
+</div>
+
+{if condition="$data.description"}
+<div class="theme-lead bg-white text-666666">
+    {$data.description}
+</div>
+{/if}
+
+{if condition="$data.content"}
+<div class="container m-t-4 bg-white theme-cell">
+    <h6 class="theme-title">
+        {$ctname?$ctname:'议程'}
+        {if condition="$data.ct_id"}
+        <span class="pull-right">
+             <a href="/articles/{$ct_id}.html" class="pull-right fs12 m-t-0" style="color: inherit;">查看更多></a>
+        </span>
+        {/if}
+    </h6>
+    <div>
+        {foreach item="v" name="data.content"}
+            <div>{$v}</div>
+        {/foreach}
+    </div>
+</div>
+{/if}
+
+{if condition="$data.list_pic"}
+<div class="container m-t-4 bg-white theme-cell">
+    <div>
+        <img src="{$data.list_pic}" style="width: 100%" />
+    </div>
+</div>
+{/if}
+
+{if condition="$guest"}
+    <div class="container m-t-4 bg-white theme-cell">
+        <a class="vote-more text-gray" data-toggle="collapse" href="#renwu2" aria-expanded="false" aria-controls="collapseExample">
+            <h6 class="theme-title">
+                {$data.guest_name?$data.guest_name:'嘉宾'} <span class="pull-right"><i class="fa fa-angle-down"></i></span>
+            </h6>
+        </a>
+        <div class="collapse in" id="renwu2">
+            {foreach item="v" key="k" name="guest"}
+                {if condition="$v['pstatus'] eq 1"}
+                    <a href="{:url('themeName',array('id'=>$v['id']))}" class="col-xs-6 col-md-6 col-lg-6 col-sm-6">
+                {else/}
+                    <a href="javascript:;" class="col-xs-6 col-md-6 col-lg-6 col-sm-6">
+                {/if}
+                <figure class="figure">
+                    {if condition="$v['smeta']"}
+                        <img src="{$v['smeta']}" class="" alt="">
+                    {/if}
+                    {if condition="$v['pstatus'] eq 1"}
+                    <figcaption class="figure-caption">{$v.name}</figcaption>
+                    {/if}
+                </figure>
+                </a>
+            {/foreach}
+        </div>
+    </div>
+{/if}
+
+
+{if condition="$data.video_link"}
+    <div class="container m-t-4 bg-white theme-cell p-b">
+            <div class="vote-more text-gray">
+                <h6 class="theme-title">
+                   视频
+                </h6>
+            </div>
+        <iframe src="{$data.video_link}" frameborder=0 allowfullscreen style="width: 100%"></iframe>
+    </div>
+{/if}
+
+{if condition="$data.apply_link"}
+<div class="container m-t-4 bg-white theme-cell p-b">
+    <div class="p-y">
+        <a href="{$data.apply_link}" class="btn btn-block btn-danger">{$data.apply_name}</a>
+    </div>
+</div>
+{/if}
+
+{if condition="$correlations"}
+<div class="content content-home hotunite-list content-list bg-white m-t-4">
+    <h6 class="theme-title" style="margin: auto 15px">
+        {php}$coname = $data['coname']?$data['coname']:'相关推荐';{/php}
+        {$coname}
+        <a href="{:url('moreSpecialArticles',array('id'=>$data.corr_ids,'name'=>$coname))}" class="pull-right fs12 m-t-0 hotlist-more">更多</a>
+    </h6>
+    {foreach item="vo" name="correlations"}
+    <div class="card">
+        <a href="{:url('articles/detail',array('id'=>$vo['tid']),true,true)}">
+            <div class="media-left" href="{:url('articles/detail',array('id'=>$vo['tid']),true,true)}">
+                <img class="lazy media-object img-responsive" data-original="{$vo.smeta}" alt="">
+            </div>
+            <div class="media-body">
+                <h6 class="media-heading">{$vo.post_title}</h6>
+                <p>
+                    <small>
+                        <span class="pull-left" style="padding-top: .2em">{$vo.post_modified|date="Y-m-d",###}</span>
+                        <span> {$vo.comment_count} 评论</span>
+                    </small>
+                </p>
+            </div>
+        </a>
+    </div>
+    {/foreach}
+</div>
+{/if}
+
+{if condition="$reviews"}
+<div class="content content-home hotunite-list content-list bg-white m-t-4">
+    <h6 class="theme-title" style="margin: auto 15px">
+        {php}$rname = $data['rename']?$data['rename']:'往期回顾';{/php}
+        {$rname}
+        <a href="{:url('moreSpecialArticles',array('id'=>$data.review_ids,'name'=>$rname))}" class="pull-right fs12 m-t-0 hotlist-more">更多</a>
+    </h6>
+    {foreach item="vo" name="reviews"}
+    <div class="card">
+        <a href="{:url('articles/detail',array('id'=>$vo['tid']),true,true)}">
+            <div class="media-left" href="{:url('articles/detail',array('id'=>$vo['tid']),true,true)}">
+                <img class="lazy media-object img-responsive" data-original="{$vo.smeta}" alt="">
+            </div>
+            <div class="media-body">
+                <h6 class="media-heading">{$vo.post_title}</h6>
+                <p>
+                    <small>
+                        <span class="pull-left" style="padding-top: .2em">{$vo.post_modified|date="Y-m-d",###}</span>
+                        <span> {$vo.comment_count} 评论</span>
+                    </small>
+                </p>
+            </div>
+        </a>
+    </div>
+    {/foreach}
+</div>
+{/if}
+
+{if condition="isset($data.posts) && $data.posts"}
+{foreach item="v" key="k" name="data.posts"}
+<div class="content content-home hotunite-list content-list bg-white m-t-4">
+    <h6 class="theme-title" style="margin: auto 15px">
+        {$data['other_name'][$k]}
+        <a href="{:url('moreSpecialArticles',array('id'=>$data['other_ids'][$k],'name'=>$data['other_name'][$k]))}" class="pull-right fs12 m-t-0 hotlist-more">更多</a>
+    </h6>
+    {foreach item="vo" key="ko" name="v"}
+    <div class="card">
+        <a href="{:url('articles/detail',array('id'=>$vo['tid']),true,true)}">
+            <div class="media-left" href="{:url('articles/detail',array('id'=>$vo['tid']),true,true)}">
+                <img class="lazy media-object img-responsive" data-original="{$vo.smeta}" alt="">
+            </div>
+            <div class="media-body">
+                <h6 class="media-heading">{$vo.post_title}</h6>
+                <p>
+                    <small>
+                        <span class="pull-left" style="padding-top: .2em">{$vo.post_modified|date="Y-m-d",###}</span>
+                        <span> {$vo.comment_count} 评论</span>
+                    </small>
+                </p>
+            </div>
+        </a>
+    </div>
+    {/foreach}
+</div>
+{/foreach}
+{/if}
+
+{if condition="isset($data.moreposts) AND $data.moreposts"}
+    <div class="content content-home hotunite-list content-list bg-white m-t-4">
+    <h6 class="theme-title" style="margin: auto 15px">
+        {$data['morename']}
+    </h6>
+    {foreach item="vo" key="k" name="data.moreposts"}
+    <div class="card">
+        <a href="{:url('articles/detail',array('id'=>$vo['tid']),true,true)}">
+            <div class="media-left" href="{:url('articles/detail',array('id'=>$vo['tid']),true,true)}">
+                <img class="lazy media-object img-responsive" data-original="{$vo.smeta}" alt="">
+            </div>
+            <div class="media-body">
+                <h6 class="media-heading">{$vo.post_title}</h6>
+                <p>
+                    <small>
+                        <span class="pull-left" style="padding-top: .2em">{$vo.post_modified|date="Y-m-d",###}</span>
+                        <span> {$vo.comment_count} 评论</span>
+                    </small>
+                </p>
+            </div>
+        </a>
+    </div>
+    {/foreach}
+    </div>
+    {if condition="$data.moreposts gt config('MORE_PAGESIZE')"}
+    <div class="container">
+        <div class="p-t-16 p-b-40">
+            <button url="{:url('loadMoreSpecialArticles',['id'=>$data.last_ids])}" class="btn btn-block btn-secondary js-more-btn">加载更多</button>
+        </div>
+    </div>
+    {/if}
+{/if}
+
+{/block}
+{block name="js"}
+<script>$("img.lazy").lazyload({threshold:0,effect:"fadeIn",failurelimit:2,skip_invisible:false});</script>
+<script src="__MJS__/general.js"></script>
+{/block}
+{block name="footer"}
+{include file="public/mobile/footer" /}
+{/block}

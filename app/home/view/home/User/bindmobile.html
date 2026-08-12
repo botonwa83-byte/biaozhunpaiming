@@ -1,0 +1,106 @@
+{extend name="home/base" /}
+{block name="title"}个人中心 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<div class="page-wrap">
+    <div class="hero article-banner">
+        <a href="javascript:;" class="logo"><img src="__IMG__/logo.png" alt=""></a>
+        <div class="hero-image" style="background-image:url('__IMG__/person-bg.jpg');"></div>
+        <div class="hero-content" style="padding-left:0; padding-right: 0;">
+            <div class="object-list">
+                <ul>
+                    <li>
+						<span class="left">
+							我创建的投票
+						</span>
+                        <a href="{:url('personBuild')}" class="permacover"></a>
+                    </li>
+                    <li>
+						<span class="left">
+							我参与的投票
+						</span>
+                        <a href="{:url('myAttendVote')}" class="permacover"></a>
+                    </li>
+                    <li>
+						<span class="left">
+							文章收藏
+						</span>
+                        <a href="{:url('myArticleFavlists')}" class="permacover"></a>
+                    </li>
+                    <li>
+						<span class="left">
+							投票收藏
+						</span>
+                        <a href="{:url('myVoteFavlists')}" class="permacover"></a>
+                    </li>
+                    <li>
+						<span class="left">
+							我的下载
+						</span>
+                        <a href="{:url('mydownload')}" class="permacover"></a>
+                    </li>
+                    <li class="active">
+						<span class="left">
+							账号管理
+						</span>
+                        <a href="{:url('account')}" class="permacover"></a>
+                    </li>
+                    <li>
+						<span class="left">
+							退出
+						</span>
+                        <a href="{:url('logout')}" class="permacover"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="view">
+        <div class="contain post-content page-content">
+            <div class="user-neck m-t clearfix">
+                <div class="left">
+                    <img src="{$user['avatar']?$user['avatar']:'__IMG__/portrait8.jpg'}" class="img-circle" style="width: 90px;height: 90px;" >
+                </div>
+                <div class="left m-l p-y">
+                    <h6 class="m-y-0">{$user['user_nicename']?$user['user_nicename']:$user['user_login_encrypt']}</h6>
+                </div>
+            </div>
+            <hr>
+            <div class="row no-gutter user-card">
+                <form class="form-control-sm ajaxForm" method="post" action="{:url('bindMobileData')}">
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label">手机号</label>
+                        <div class="col-sm-4">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-sm vote-check" name="username" id="username" placeholder="请输入手机号" maxlength="11">
+                                <span class="input-group-btn">
+                                <button class="btn btn-danger btn-sm" type="button" id="codes" onclick="getBindVerifyCode(this)">获取验证码</button>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label">验证码</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control  form-control-sm vote-check" placeholder="请输入验证码" name="verify">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-danger btn-sm">确定</button>
+                            <a href="javascript:history.back(-1)" class="btn btn-secondary btn-sm">取消</a>
+                        </div>
+                    </div>
+                    <div class="massage text-red text-center"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+{block name="js"}
+<script type="text/javascript" src='__MJS__/jquery.form.js'></script>
+<script type="text/javascript" src="__JS__/basic.js"></script>
+{/block}

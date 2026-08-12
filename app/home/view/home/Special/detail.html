@@ -1,0 +1,209 @@
+{extend name="home/base" /}
+{block name="title"}{$data.speacial_name} - 专题 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<div class="page-wrap">
+<div class="view">
+<div class="page-content">
+    <div class="contain narrow post-content">
+        <div id="sharing">
+            <div class="sharedaddy sd-sharing-enabled">
+                <div class="robots-nocontent sd-block sd-social sd-social-icon sd-sharing">
+                    <h3 class="sd-title">分享给你的朋友:</h3>
+                    <div id="share" style="position: relative;">
+                        <div class="bdsharebuttonbox" data-tag="share_1">
+                            <div class="sd-content">
+                                <ul class="share-group">
+
+                                    <li class="share-weixin">
+                                        <a class="sd-button"  href="javascript:void(0)" title="分享到微信">
+                                            <i class="fa fa-weixin"></i>
+                                            <span class="sharing-screen-reader-text">分享到微信</span>
+                                        </a>
+                                        <a class="bds_weixin share-tool" data-cmd="weixin"></a>
+                                    </li>
+
+                                    <li class="share-pinterest">
+                                        <a class="sd-button" href="javascript:void(0)" title="分享到新浪微博">
+                                            <i class="fa fa-weibo"></i>
+                                            <span class="sharing-screen-reader-text">分享到新浪微博</span>
+                                        </a>
+                                        <a class="bds_tsina share-tool" data-cmd="tsina"></a>
+                                    </li>
+
+                                    <li class="share-twitter">
+                                        <a class="sd-button" href="javascript:void(0)" title="分享到腾讯微博" style="padding: 8px 10px;">
+                                            <i class="fa fa-tencent-weibo"></i>
+                                            <span class="sharing-screen-reader-text">分享到腾讯微博</span>
+                                        </a>
+                                        <a class="bds_tqq share-tool" data-cmd="tqq"></a>
+                                    </li>
+
+                                    <li class="share-qzone">
+                                        <a rel="nofollow"class="sd-button" href="javascript:void(0)" title="分享到QQ空间">
+                                            <i class="fa fa-star"></i>
+                                            <span class="sharing-screen-reader-text">分享到QQ空间</span>
+                                        </a>
+                                        <a class="bds_qzone share-tool" data-cmd="qzone"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        window._bd_share_config = {
+                            common : {
+                                bdText : "{$data.speacial_name}",
+                                bdDesc : "{$data.speacial_name}",
+                                bdUrl : "http://47.94.199.232/portal/index/theme/id/4.html",
+                                bdPic : "http://{$_SERVER['HTTP_HOST']}{$data.smeta}"
+                            },
+                            share : [{
+                                "bdSize" : 16
+                            }],
+                            selectShare : [{
+                                "bdselectMiniList" : ['weixin','tsina','qzone','tqq']
+                            }]
+                        }
+                        with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="header-image"><img src="{$data.smeta}" class="attachment-large wp-post-image"></div>
+    </div>
+    <div class="sharedaddy article-about">
+        <h6 class="sd-title">
+            专题摘要
+        </h6>
+        <div class="row no-gutter">
+            <div class="contain narrow post-content">
+                <p>{$data.description}</p>
+            </div>
+        </div>
+    </div>
+    {if condition="$data.content"}
+        <div class="sharedaddy article-about">
+            <h6 class="sd-title">
+                {$data.ctname?$data.ctname:'议程'}
+            </h6>
+            <div class="row no-gutter">
+                <div class="contain narrow post-content">
+                    {foreach item="v" name="data.content"}
+                        <div>{$v}</div>
+                    {/foreach}
+                </div>
+            </div>
+        </div>
+    {/if}
+    {if condition="$data.video_link"}
+        <div class="sharedaddy article-about">
+            <h6 class="sd-title">
+                视频
+            </h6>
+            <div class="row no-gutter">
+                <div class="contain narrow post-content">
+                    <p><iframe width=640 height=500 src="{$data.video_link}" frameborder=0 allowfullscreen></iframe></p>
+                </div>
+            </div>
+        </div>
+    {/if}
+
+    {if condition="$guest"}
+    <div class="sharedaddy article-about" style="position: relative">
+        <h6 class="sd-title">{$data.guest_name?$data.guest_name:'嘉宾'}</h6>
+        <div class="row no-gutter">
+            {foreach item="v" key="k" name="guest"}
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                <div class="object post">
+                    {if condition="$v['smeta']"}
+                    <div class="object-header image" style="background-image:url('{$v['smeta']}');">
+                        <a target="_blank" href="javascript:;" class="permacover"></a>
+                    </div>
+                    {/if}
+                    <div class="object-meta">
+                        <h3><a href="{:url('themeName',array('id'=>$v['id']))}">{$v.name}</a></h3>
+                    </div>
+                </div>
+            </div>
+            {/foreach}
+        </div>
+    </div>
+    {/if}
+    {if condition="$data.apply_link"}
+        <div class="p-t">
+            <a href="{$data.apply_link}" class="btn btn-block btn-danger" style="width: 60%;background-color: #b81c22;border: none;border-radius: 0;margin: 0 auto;">{$data.apply_name}</a>
+        </div>
+    {/if}
+    <div class="sharedaddy article-about" style="position: relative">
+        <h6 class="sd-title">
+            {php}$coname = $data['coname']?$data['coname']:'相关推荐';{/php}
+            {$coname}
+        </h6>
+        <a href="{:url('moreSpecialArticles',array('id'=>$data.corr_ids,'name'=>$coname))}" class="right btn btn-link btn-sm m-t">查看更多</a>
+        <div class="row no-gutter">
+            {foreach item="v" name="correlations"}
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                <div class="object post">
+                    <div class="object-header image" style="background-image:url('{$v.smeta}');">
+                        <a target="_blank" href="{:url('articles/detail',array('id'=>$v['tid']),true,true)}" class="permacover"></a>
+                		<span class="object-header-meta">
+                            <a href="{:url('articles/detail',array('id'=>$v['tid']),true,true)}">
+                                <span class="">{$v.post_modified|date="Y-m-d",###}</span>
+                            <span class="right">
+                                <span><i class="fa fa-heart-o"></i> {$v.post_like}</span>&nbsp;&nbsp;
+                                <span><i class="fa fa-commenting-o"></i> {$v.comment_count}</span>
+                            </span>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="object-meta">
+                        <h3><a href="{:url('articles/detail',array('id'=>$v['tid']))}">{$v.post_title}</a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            {/foreach}
+        </div>
+    </div>
+    {if condition="$reviews"}
+    <div class="sharedaddy article-about" style="position: relative">
+        <h6 class="sd-title">
+            {php}$rname = $data['rename']?$data['rename']:'往期回顾';{/php}
+            {$rname}
+        </h6>
+        <a href="{:url('moreSpecialArticles',array('id'=>$data.review_ids,'name'=>$rname))}" class="right btn btn-link btn-sm m-t">查看更多</a>
+        <div class="row no-gutter">
+            {foreach item="v" name="reviews"}
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                    <div class="object post">
+                        <div class="object-header image" style="background-image:url('{$v.smeta}');">
+                            <a target="_blank" href="{:url('articles/detail',array('id'=>$v['tid']),true,true)}" class="permacover"></a>
+                    		<span class="object-header-meta">
+                                <a href="{:url('articles/detail',array('id'=>$v['tid']),true,true)}">
+                                    <span class="">{$v.post_modified|date="Y-m-d",###}</span>
+                                <span class="right">
+                                    <span><i class="fa fa-heart-o"></i> {$v.post_like}</span>&nbsp;&nbsp;
+                                    <span><i class="fa fa-commenting-o"></i> {$v.comment_count}</span>
+                                </span>
+                                </a>
+                            </span>
+                        </div>
+                        <div class="object-meta">
+                            <h3><a href="{:url('articles/detail',array('id'=>$v['tid']))}">{$v.post_title}</a>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            {/foreach}
+        </div>
+    </div>
+    {/if}
+</div>
+</div>
+</div>
+{/block}
+{block name="js"}
+<script>$("img.lazy").lazyload({threshold:0,effect:"fadeIn",failurelimit:2,skip_invisible:false});</script>
+<script src="__MJS__/general.js"></script>
+{/block}

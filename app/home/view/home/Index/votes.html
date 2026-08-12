@@ -1,0 +1,53 @@
+{extend name="home/base" /}
+{block name="title"}{$navs[$nav_id]['label']} - 标准排名 - 比出美好生活{/block}
+{block name="main"}
+<div class="page-wrap">
+<div class="view">
+<div class="page-content">
+    <!-- {if condition="session('user') AND session('user.mobile')"}
+    <div class="m-x-auto m-y" style="width: 50%">
+        <a href="{:url('vote/add')}" class="btn btn-danger-outline btn-block">创建投票</a>
+    </div>
+    {elseif condition="session('user') AND !session('user.mobile')"/}
+    <div class="m-x-auto m-y" style="width: 50%">
+        <a href="/user/center/binphone.html" class="btn btn-danger-outline btn-block">创建投票</a>
+    </div>
+    {else/}
+    <div class="m-x-auto m-y" style="width: 50%">
+        <a href="javascript:void(0)" class="btn btn-danger-outline btn-block" data-toggle="modal" data-target=".login">创建投票</a>
+    </div>
+    {/if} -->
+    <div class="row no-gutter vote-list">
+		{foreach name="votes" item="vo"}
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+            <div class="object post">
+            	{php}$smeta = json_decode($vo['smeta'],true);{/php}
+                {php}$i = rand(1,11);{/php}
+                {php}$smeta['thumb'] = $smeta['thumb']?$smeta['thumb']:"__MIMG__/images/randvote-$i.jpg";{/php}
+                <div class="object-header image" style="background-image:url('{$smeta['thumb']}')">
+                    <a target="_blank" href="{:url('vote/voteshow',array('id'=>$vo['id']))}" class="permacover"></a>
+            		<span class="object-header-meta">
+                        <a href="javascript:void(0)">
+                            <span class="">{$vo.createtime|date="Y-m-d",###}</span>
+                        <span class="right">
+                             <span class="read-time"><i class="fa fa-commenting-o"></i> {$vo.comment_count}</span>
+                            <!--<span class="read-time"><i class="fa fa-eye"></i> {$vo.hits}</span>-->
+                        </span>
+                        </a>
+                    </span>
+                </div>
+                <div class="object-meta">
+                    <h6 style="padding-top: 20px"><a href="{:url('vote/voteshow',array('id'=>$vo['id']))}">{$vo.title}</a></h6>
+                </div>
+            </div>
+        </div>
+		{/foreach}
+    </div>
+    <div url="{:url('loadVotes',['term_id'=>$nav_id])}" class="load-more text-center m-t text-666666">下拉加载更多</div>
+</div>
+</div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/frontend.js"></script>
+{/block}

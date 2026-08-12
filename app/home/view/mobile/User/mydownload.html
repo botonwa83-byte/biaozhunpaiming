@@ -1,0 +1,45 @@
+{extend name="public/mobile/base" /}
+{block name="title"}我的下载 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<body style="padding-top: 0;">
+<header class="bdb-grey" style="z-index: 999">
+    <nav class="navbar">
+        <a href="javascript:history.back(-1)" class="navbar-brand"><i class="icon-back"></i></a>
+        <h6>我的下载</h6>
+    </nav>
+</header>
+
+<!-- <p class="p-l-16 p-r-16 p-t-13 p-b-13 m-a-0 fs12">这里仅有免费报告，收费报告请联系：<a href="tel:010-56676029" class="text-blue">010-56676029</a></p> -->
+
+<div class="content content-order content-list" style="min-height: 80vh">
+    {foreach item="v" name="reports"}
+    <div class="card">
+        <a href="{:url('report/detail',array('id'=>$v.id))}">
+            <div class="card-block">
+                <h6 class="card-title" style="white-space: normal">{$v.report_name}</h6>
+                <p class="card-text text-right">
+                    <small>
+                        <span class="pull-left" style="padding-top: .2em">{$v.createtime|date="Y-m-d",###}</span>
+                        <span>{$v.report_hits}</span>
+                    </small>
+                </p>
+            </div>
+        </a>
+    </div>
+    {/foreach}
+    {if condition="count($reports) gt config('MORE_PAGESIZE')"}
+    <div class="container">
+        <div class="p-t-16 p-b-40">
+            <a href="{:url('list')}" class="btn btn-block btn-secondary js-hotunite-more-btn">加载更多</a>
+        </div>
+    </div>
+    {/if}
+    <div class="content content-home vote-list" style="min-height: 80vh">
+        <div class="build0 text-center">
+            <img src="__MIMG__/xiazai2.png" alt="" style="width: 50px; height: 50px;">
+            <p style="margin-top: 20px;">这儿没报告</p>
+        </div>
+    </div>
+</div>
+{/block}

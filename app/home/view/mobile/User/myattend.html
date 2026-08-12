@@ -1,0 +1,50 @@
+{extend name="public/mobile/base" /}
+{block name="title"}我参加的投票 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<body style="padding-top: 0;">
+<header class="bdb-grey" style="z-index: 999">
+    <nav class="navbar">
+        <a href="javascript:history.back(-1)" class="navbar-brand"><i class="icon-back"></i></a>
+        <h6>我参与的投票</h6>
+    </nav>
+</header>
+<div class="content content-home vote-list" style="min-height: 80vh">
+    {if condition="$myattend"}
+        {foreach item="v" name="myattend"}
+        <div class="card">
+            <a href="{:url('vote/voteshow',array('id'=>$v['id']))}">
+                <div class="media-left" href="{:url('vote/voteshow',array('id'=>$v['id']))}">
+                    <img class="media-object img-responsive" src="{$v['smeta']['thumb']}" >
+                </div>
+                <div class="media-body">
+                    <h6 class="media-heading">{$v.title}</h6>
+                    <p>
+                        <small>
+                            <span class="pull-left" style="padding-top: .2em">{$v.createtime|date="Y-m-d",###}</span>
+                            <span>{$v.hits} 阅读</span>
+                        </small>
+                    </p>
+                </div>
+            </a>
+        </div>
+        {/foreach}
+        {if condition="count($myattend) gt (config('MORE_PAGESIZE')-1)"}
+        <div class="container">
+            <div class="p-t-16 p-b-40">
+                <a href="{:url('list/loadmorehotunite')}" class="btn btn-block btn-secondary js-hotunite-more-btn">加载更多</a>
+            </div>
+        </div>
+        {/if}
+    {else/}
+        <div class="content content-home vote-list" style="min-height: 80vh">
+            <div class="build0 text-center">
+                <img src="__MIMG__/wenjian.png" alt="" style="width: 40px;height: 48px">
+                <p style="margin-top: 20px">您还未参加与何投票</p>
+                <p><a href="{:url('/votes')}" style="text-decoration: underline">快来参与投票吧</a></p>
+            </div>
+        </div>
+    {/if}
+</div>
+{/block}
+{block name="footer"}{include file="public/mobile/footer" /}{/block}

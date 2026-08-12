@@ -1,0 +1,166 @@
+{extend name="public/mobile/base" /}
+{block name="title"}{$report.report_name} - 报告 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="seo"}
+<meta name="description" content="{$report.report_name}"/>
+<meta name="keywords" content="{$report.report_name}" />
+{/block}
+{block name="main"}
+<body>
+<div class="bar-app">
+    <a href="/">
+        <img src="__MIMG__/logo90.png" class="bar-app-logo pull-left">
+        <div class="text-white pull-left" style="margin-left:10px;">
+            <strong>标准排名</strong>
+            <br>
+            <small>比出美好生活</small>
+        </div>
+    </a>
+    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.bm.standard&g_f=991653" class="btn btn-sm btn-danger2 pull-right" style="margin: 10px 15px 0;">下载APP</a>
+</div>
+<div class="position-rel">
+    <div class="report-mark"></div>
+    <img class="media-object img-responsive" src="{$report.thumb|default='__MIMG__/bg-report.jpg'}" style="width: 100%;">
+    <div class="report-banner text-white">
+        <div class="col-md-5 col-xs-5 p-t">
+            <img src="{$report.smeta|default='__MIMG__/report-book.png'}" class="img-responsive pull-left">
+        </div>
+        <h6 class="text-white">{$report.report_name}</h6>
+        <div style="position: absolute;bottom: 0;left: 40%;">
+            <p>页数：{$report.report_page}</p>
+            <p>报告时间：{$report.report_time}</p>
+            <p>图表：{$report.report_chart}</p>
+            {php}
+                if($report['report_price_status'] == 1){
+                	$price_status_string = '价格：免费';
+                }elseif($report['report_price_status'] == 2){
+                	$price_status_string='价格：面议';
+                }else{
+                	$price_status_string="价格：￥".$report_cost;
+                }
+            {/php}
+            <p>{$price_status_string}</p>
+        </div>
+    </div>
+</div>
+<div class="bg-white">
+    <div class="container p-t">
+        {if condition="session('user')"}
+            {if condition="$report.report_price_status eq 1"}
+                <!-- <a href="{:url('reportDownload',['backup'=>$report['report_file']],false)}" class="btn btn-block btn-danger" style="background-color: #ffffff;border: 1px solid #b81c22;color: #b81c22;">下载报告</a> -->
+            	<a href="http://47.94.199.232/data/backup/{$report['report_file']}" class="btn btn-block btn-danger" target="_blank" style="background-color: #ffffff;border: 1px solid #b81c22;color: #b81c22;">下载报告</a>
+        	{else/}
+            	<a href="{:url('reportForm',['id'=>$report['id']])}" class="btn btn-block btn-danger" style="background-color: #ffffff;border: 1px solid #b81c22;color: #b81c22;">下载报告</a>
+            {/if}
+        {else/}
+        	<a href="javascript:;" class="btn btn-block btn-danger" style="background-color: #ffffff;border: 1px solid #b81c22;color: #b81c22;" data-toggle="modal" data-target=".bd-example-modal-sm">下载报告</a>
+        {/if}
+    </div>
+</div>
+{if condition="$report.report_desc"}
+<div class="container p-t bg-white">
+    <div class="row">
+        <div class="vote-more text-gray">
+            <h6 class="m-x m-b-0" style="padding-bottom: 10px">
+               <b>{$report.report_desc_name|default="概述"}：</b>
+            </h6>
+        </div>
+        <div class="collapse in p-x p-b">
+           {$report.report_desc}
+        </div>
+    </div>
+</div>
+{/if}
+{if condition="$report.report_content"}
+<div class="container p-t bg-white m-t">
+    <div class="row">
+        <div class="vote-more text-gray">
+            <h6 class="border-green m-x m-b-0" style="padding-bottom: 10px">
+                <b>{$report.report_catalog_name|default="报告目录"}：</b>
+            </h6>
+        </div>
+        <div class="collapse in p-a">
+            {$report.report_content}
+        </div>
+    </div>
+</div>
+{/if}
+{if condition="$report.report_author"}
+<div class="container p-t bg-white m-t">
+    <div class="row">
+        <div class="vote-more text-gray">
+            <h6 class="border-green m-x m-b-0" style="padding-bottom: 10px">
+                <b>{$report.report_author_name|default="作者"}：</b>
+            </h6>
+        </div>
+        <div class="collapse in p-a">
+            {foreach item="v" name="report.report_author"}
+                <div>{$v}</div>
+            {/foreach}
+        </div>
+    </div>
+</div>
+{/if}
+{if condition="$report_colls"}
+<div class="list-about content-hotlist m-y bg-white">
+    <h6 class="p-x p-t clearfix border-green m-b-0" style="padding-bottom: 10px">
+        <i class="fa fa-caret-right text-red"></i> 相关报告
+    </h6>
+    {foreach item="v" name="report_colls"}
+    <a href="{:url('report/detail',array('id'=>$v['id']))}" class="cell" style="border-top: none;border-bottom: 1px solid #dadada;padding: 1.4em .8em .8em .8em;position: relative;">
+        {if condition="$v['report_price_status'] eq 1"}
+        <span class="label-free" style="left: -0.5em"></span>
+        {/if}
+        <div class="media-body">
+            <h6 class="media-heading">{$v.report_name}</h6>
+            <div class="text-right" style="color: #818181;">
+                <small>
+                    <span class="m-r"><i class="fa fa-eye"></i> {$v.report_hits}</span>
+                    <span>{$v.createtime|date="Y-m-d",###}</span>
+                </small>
+            </div>
+        </div>
+    </a>
+    {/foreach}
+</div>
+{/if}
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bdb0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="deal-close"></span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title text-center" id="myModalLabel">登录</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center">
+                    <div class="{$is_wechat?'col-xs-4':'col-xs-6'}">
+                        <a href="{:url('/home/OpenAuth/login',array('type'=>'qq'))}" class="text-gray"><i class="icon-qq50 bdra50"></i><br>QQ登录</a>
+                    </div>
+
+                    <div class="{$is_wechat?'col-xs-4':'col-xs-6'}">
+                        <a href="{:url('/home/OpenAuth/login',array('type'=>'sina'))}" class="text-gray"><i class="icon-weibo50 bdra50"></i><br>微博登录</a>
+                    </div>
+
+                    {if condition="$is_wechat"}
+                    <div class="col-xs-4">
+                        <a href="{:url('home/login/wechatLoginUrl')}" class="text-gray"><i class="icon-weixin50 bdra50"></i><br>微信登录</a>
+                    </div>
+                    {/if}
+                </div>
+            </div>
+            <div class="modal-footer text-center bdt0">
+                <a href="{:url('home/login/login')}" class="text-gray2">手机号登录/注册 ﹥</a>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__MJS__/basic.js"></script>
+{/block}
+{block name="footer"}
+{include file="public/mobile/footer" /}
+{/block}

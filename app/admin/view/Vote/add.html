@@ -1,0 +1,315 @@
+{extend name="Public/base" /}
+{block name="main-content"}
+    <div class="page-content">
+        <!-- <link rel="stylesheet" type="text/css" media="all" href="__PUBLIC__/sldate/daterangepicker-bs3.css"/> -->
+        <link rel="stylesheet" type="text/css" media="all" href="__PUBLIC__/css/jquery.datetimepicker.css" />
+        <!--主题-->
+        <div class="page-header">
+            <h1>
+                您当前操作
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    添加投票
+                </small>
+            </h1>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <form class="form-horizontal ajaxForm2" name="form0" method="post" action="{:url('runadd')}" enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"> 投票标题： </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="title" placeholder="必填：投票标题" class="col-xs-10 col-sm-6" required/>
+                            <span class="help-inline col-xs-12 col-sm-7"><span class="middle" id="resone"></span></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"> 投票描述：  </label>
+                        <div class="col-sm-10">
+                            <textarea name="description" cols="30" rows="5" placeholder="投票描述"  class="col-xs-10 col-sm-6" required></textarea>
+                            <span class="help-inline col-xs-12 col-sm-7"><span class="middle" id="resone"></span></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"> 发起人： </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="vote_author_name" placeholder="必填：发起人" class="col-xs-10 col-sm-6" required/>
+                            <span class="help-inline col-xs-12 col-sm-7"><span class="middle" id="resone"></span></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"> 关键词： </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="keywords" placeholder="关键词" class="col-xs-10 col-sm-5"/>
+                            <span class="help-inline col-xs-12 col-sm-6">
+                                <span class="middle red">*关键词，多个用空格隔开</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="option-add">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"> 输入问题： </label>
+                            <div class="col-sm-10">
+                                <input type="text" name="question[1][title]" placeholder="必填：输入问题" class="col-xs-10 col-sm-6" required/>
+                                <span class="help-inline col-xs-12 col-sm-7"><span class="middle" id="resone"></span></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right" for=""> 类型： </label>
+                            <div class="col-sm-10">
+                                <div class="radio">
+                                    <label>
+                                        <input name="question[1][ismanyasr]" checked type="radio" class="ace" value="0"/>
+                                        <span class="lbl"> 单选</span>
+                                    </label>
+                                    <label>
+                                        <input name="question[1][ismanyasr]" type="radio" class="ace" value="1"/>
+                                        <span class="lbl"> 多选</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"> 选项： </label>
+                            <div class="col-sm-10">
+                                <a href="javascript:;" class="file">
+                                    <input type="file" name="pic1_1" class="add-file"/>选择上传文件</a>
+                                <span class="lbl">&nbsp;&nbsp;<img src="__PUBLIC__/img/no_img.jpg" width="100" height="70" class="img"></span>&nbsp;&nbsp;
+                                <a href="javascript:;" onClick="return backpic('__PUBLIC__/img/no_img.jpg');" title="还原修改前的图片" class="file">撤销上传</a>
+                                <span class="lbl"><input type="text" name="question[1][answer][1]" style="width: 30%;min-width: 400px"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"></label>
+                            <div class="col-sm-10">
+                                <a href="javascript:;" class="file">
+                                    <input type="file" name="pic1_2" class="add-file"/>选择上传文件</a>
+                                <span class="lbl">&nbsp;&nbsp;<img src="__PUBLIC__/img/no_img.jpg" width="100" height="70" class="img"></span>&nbsp;&nbsp;
+                                <a href="javascript:;" onClick="return backpic('__PUBLIC__/img/no_img.jpg');" title="还原修改前的图片" class="file">撤销上传</a>
+                                <span class="lbl"><input type="text" name="question[1][answer][2]" style="width: 30%;min-width: 400px"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"></label>
+                            <div class="col-sm-10">
+                                <a href="javascript:void(0)" class="btn btn-default btn-option-add" option-num="1">添加选项</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"></label>
+                        <div class="col-sm-10">
+                            <a href="javascript:void(0)" class="btn btn-default btn-success btn-question-add" style="margin-left:260px;">添加问题</a>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right" > 截止时间： </label>
+                        <div class="col-sm-10">
+                            <div class="col-xs-12 col-sm-3 hidden-xs btn-sespan">
+                                <div class="input-group">
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+									</span>
+                                    <input type="text" required name="endtime" class="endtime" placeholder="点击选择日期范围" id="datetimepicker"/>    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"> 封面图片： </label>
+                        <div class="col-sm-10">
+                            <a href="javascript:;" class="file">
+                                <input type="file" name="img" class="add-file"/>选择上传文件</a>
+                            <span class="lbl">&nbsp;&nbsp;<img src="__PUBLIC__/img/no_img.jpg" width="100" height="70" class="img"></span>&nbsp;&nbsp;
+                            <a href="javascript:;" onClick="return backpic('__PUBLIC__/img/no_img.jpg');" title="还原修改前的图片" class="file">撤销上传</a>
+                            <span class="lbl">&nbsp;&nbsp;上传前先用PS处理成等比例图片后上传，最后都统一比例<br/></span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"> 是否审核： </label>
+                        <div class="col-sm-10" style="padding-top:5px;">
+                            <input name="vote_status" id="vote_status" value="1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox"/>
+                            <span class="lbl">&nbsp;&nbsp;默认关闭</span>
+                        </div>
+                    </div>
+                    <div class="space-4"></div>
+                    <div class="space-4"></div>
+                    <div class="clearfix form-actions">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button class="btn btn-info" type="submit"><i class="ace-icon fa fa-check bigger-110"></i>提交</button>&nbsp; &nbsp; &nbsp;
+                            <button class="btn" type="reset"><i class="ace-icon fa fa-undo bigger-110"></i>重置</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="scripts"}
+    <script type="text/javascript" src="__PUBLIC__/sldate/moment.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/jquery.datetimepicker.full.min.js"></script>
+    <script type="text/javascript">
+        $.datetimepicker.setLocale('zh');
+        $('#datetimepicker').datetimepicker({
+            dayOfWeekStart : 1,
+            lang:'zh',
+            disabledDates:[],
+            startDate:  ''
+        });
+        $(document).on('change',".add-file",function () {
+            var objUrl = getObjectURL(this.files[0]);
+            if (objUrl) {
+                $(this).parent().next().children('img').attr("src", objUrl);
+            }
+        });
+        function getObjectURL(file) {
+            var url = null;
+            if (window.createObjectURL != undefined) { // basic
+                $("#oldcheckpic").val("nopic");
+                url = window.createObjectURL(file);
+            } else if (window.URL != undefined) { // mozilla(firefox)
+                $("#oldcheckpic").val("nopic");
+                url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) { // webkit or chrome
+                $("#oldcheckpic").val("nopic");
+                url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+        }
+
+        function backpic(picurl,evt) {
+            $(evt).parent().children('span').children('img').attr('src',picurl);
+            // $(evt).before().children('img').attr("src", picurl);//还原修改前的图片
+            $(evt).parent().children('span').children('img').val("");//清空文本框的值
+            // $("input[name='oldcheckpic']").val(picurl);//清空文本框的值
+        }
+
+        /* 添加选项 */
+        var qst_pics_option = 3;
+        $(document).on('click', '.btn-option-add', function () {
+            qst_pics_num = $(this).attr('option-num');
+            $(this).closest(".form-group").before(
+                '<div class="form-group">'
+                +'<label class="col-sm-2 control-label no-padding-right"><a href="javascript:void(0)" class=" close-option"><span class="fa fa-close"></span></a></label>'
+                +'<div class="col-sm-10">'
+                +'<a href="javascript:;" class="file">'
+                +'<input type="file" name="pic'+qst_pics_num+'_'+qst_pics_option+'" class="add-file"/>选择上传文件</a>'
+                +'<span class="lbl">&nbsp;&nbsp;<img src="__PUBLIC__/img/no_img.jpg" width="100" height="70"></span>&nbsp;&nbsp;'
+                +'<a href="javascript:;" onClick="return backpic(\'__PUBLIC__/img/no_img.jpg\',this);" title="还原修改前的图片" class="file">撤销上传</a>'
+                +'<span class="lbl"><input name="question['+qst_pics_num+'][answer]['+qst_pics_option+']" type="text" style="width: 30%;min-width: 400px"></span>'
+                +'</div>'
+                +'</div>'
+            );
+            // i++;
+            // qst_pics_num++;
+            qst_pics_option++;
+            $(".close-option").click(function () {
+                $(this).closest(".form-group").remove();
+            });
+        });
+
+        var question_num = 2;
+        $(".btn-question-add").click(function(){
+            $(this).closest(".form-group").before(
+                    '<hr/>'
+                    +'<div class="option-add">'
+                    +'<div class="form-group">'
+                    +'<label class="col-sm-2 control-label no-padding-right"> 输入问题： </label>'
+                    +'<div class="col-sm-10">'
+                    +'<input type="text" name="question['+question_num+'][title]" placeholder="必填：输入问题" class="col-xs-10 col-sm-6"required/>'
+                    +'<span class="help-inline col-xs-12 col-sm-7"><span class="middle" id="resone"></span></span>'
+                    +'</div>'
+                    +'</div>'
+
+                    +'<div class="form-group">'
+                    +'<label class="col-sm-2 control-label no-padding-right" for=""> 类型： </label>'
+                    +'<div class="col-sm-10">'
+                    +'<div class="radio">'
+                    +'<label>'
+                    +'<input name="question['+question_num+'][ismanyasr]" checked type="radio" class="ace" value="1"/>'
+                    +'<span class="lbl"> 单选</span>'
+                    +'</label>'
+                    +'<label>'
+                    +'<input name="question['+question_num+'][ismanyasr]" type="radio" class="ace" value="2"/>'
+                    +'<span class="lbl"> 多选</span>'
+                    +'</label>'
+                    +'</div>'
+                    +'</div>'
+                    +'</div>'
+
+                    +'<div class="form-group">'
+                    +'<label class="col-sm-2 control-label no-padding-right"> 选项： </label>'
+                    +'<div class="col-sm-10">'
+                    +'<a href="javascript:;" class="file">'
+                    +'<input type="file" name="pic'+question_num+'_1" class="add-file"/>选择上传文件</a>'
+                    +'<span class="lbl">&nbsp;&nbsp;<img src="__PUBLIC__/img/no_img.jpg" width="100" height="70" class="img"></span>&nbsp;&nbsp;'
+                    +'<a href="javascript:;" onClick="return backpic(\'__PUBLIC__/img/no_img.jpg\');" title="还原修改前的图片" class="file">撤销上传</a>'
+                    +'<span class="lbl"><input name="question['+question_num+'][answer][1]" type="text" style="width: 30%;min-width: 400px"></span>'
+                    +'</div>'
+                    +'</div>'
+
+                    +'<div class="form-group">'
+                    +'<label class="col-sm-2 control-label no-padding-right"></label>'
+                    +'<div class="col-sm-10">'
+                    +'<a href="javascript:;" class="file">'
+                    +'<input type="file" name="pic'+question_num+'_2" class="add-file"/>选择上传文件</a>'
+                    +'<span class="lbl">&nbsp;&nbsp;<img src="__PUBLIC__/img/no_img.jpg" width="100" height="70" class="img"></span>&nbsp;&nbsp;'
+                    +'<a href="javascript:;" onClick="return backpic(\'__PUBLIC__/img/no_img.jpg\');" title="还原修改前的图片" class="file">撤销上传</a>'
+                    +'<span class="lbl"><input name="question['+question_num+'][answer][2]" type="text" style="width: 30%;min-width: 400px"></span>'
+                    +'</div>'
+                    +'</div>'
+
+                    +'<div class="form-group">'
+                    +'<label class="col-sm-2 control-label no-padding-right"></label>'
+                    +'<div class="col-sm-10">'
+                    +'<a href="javascript:void(0)" class="btn btn-default btn-option-add" option-num="'+question_num+'">添加选项</a>'
+                    +'</div>'
+                    +'</div>'
+
+                    +'</div>'
+
+
+            );//before
+            question_num++;
+            // i+=2;
+            $(".question-close").click(function(){
+                $(this).closest(".bg-white").remove();
+            });
+        });
+
+        //多图设置
+        $("#pic_list").hide();
+        $("#news_pic_list").click(function () {
+            $("#pic_list").hide();
+        });
+        $("#news_pic_qqlist").click(function () {
+            $("#pic_list").show();
+        });
+        //跳转额外属性
+        $("#pptaddress").hide();
+        $("#news_flag_vaj").click(function () {
+            $("#pptaddress").toggle(400);
+        });
+        $("#cpprice").hide();
+        $("#news_flag_vacp").click(function () {
+            $("#cpprice").toggle(400);
+        });
+    </script>
+{/block}

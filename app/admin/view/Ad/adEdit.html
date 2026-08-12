@@ -1,0 +1,178 @@
+{extend name="Public/base" /}
+{block name="main-content"}
+	<div class="page-content">
+		<!--主题-->
+		<div class="page-header">
+			<h1>
+				您当前操作
+				<small>
+					<i class="ace-icon fa fa-angle-double-right"></i>
+					修改广告信息
+				</small>
+			</h1>
+		</div>
+		<form class="form-horizontal ajaxForm2" name="ad_add" method="post" action="{:url('runEdit')}">
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group">
+							<input type="hidden" value="{$ad.ad_id}" name="ad_id">
+							<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 所属位置： </label>
+							<div class="col-sm-11">
+								<select name="ad_term_id"  class="col-sm-4 selector" required>
+									<option value="">请选择所属广告位</option>
+									{foreach name="terms" item="v"}
+										<option value="{$v.term_id}" {$ad.ad_term_id == $v.term_id?'selected':''}>{$v.name}</option>
+									{/foreach}
+								</select>
+								<span class="lbl red">&nbsp;&nbsp;<span class="red">*</span>请选择所属位置</span>
+							</div>
+						</div>
+						<div class="space-4"></div>
+
+						<div class="form-group">
+							<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 广告名称：  </label>
+							<div class="col-sm-11">
+								<input type="text" value="{$ad.ad_name}" name="ad_name" id="ad_name" placeholder="输入广告名称" class="col-xs-10 col-sm-5" required/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 广告类型：  </label>
+							<div class="col-sm-11">
+								<select class="col-sm-2" name="ad_type" onchange="setAdUrl(this)">
+									<option value="1" {$ad.ad_type==1?'selected':''}>广告</option>
+									<option value="2" {$ad.ad_type==2?'selected':''}>专题</option>
+									<option value="3" {$ad.ad_type==3?'selected':''}>视频</option>
+									<option value="4" {$ad.ad_type==4?'selected':''}>报名</option>
+									<option value="6" {$ad.ad_type==6?'selected':''}>其他</option>
+								</select>
+								<span class="lbl red">&nbsp;&nbsp;<span class="red">*</span>请选择类型</span>
+							</div>
+						</div>
+
+						<div class="form-group" id="pic_list">
+							<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 广告图片： </label>
+							<div class="col-sm-11">
+								<a href="javascript:;" class="file">
+									<input type="file" name="ad_image" id="file0" multiple="multiple"/>
+									选择上传文件
+								</a>
+								<a href="javascript:;" onclick="return backpic('__PUBLIC__/img/no_img.jpg');" title="还原修改前的图片" class="file">
+									撤销上传
+								</a>
+								<div>
+								<img src="{$ad.ad_image|default='__PUBLIC__/img/no_img.jpg'}" height="70" id="img0" >
+								<input type="hidden" name="ad_image" id="ad_image" value="{$ad.ad_image}"/>
+								</div>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						<div class="form-group" id="pic_listurl">
+							<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 链接URL：  </label>
+							<div class="col-sm-11">
+								<input type="text" name="ad_url" id="ad_url" placeholder="输入链接URL" class="col-xs-5 col-sm-2" value="{$ad.ad_url}" />
+								<span class="lbl red"><span class="red">*</span>在文本框填写ID就行</span>
+							</div>
+						</div>
+						<div class="form-group" id="pic_listurl">
+							<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 专题的ID：  </label>
+							<div class="col-sm-11">
+								<input type="text" name="ad_special" id="ad_special" placeholder="输入专题的ID" class="col-xs-5 col-sm-2" value="{$ad.ad_special}" />
+								<span class="lbl red"><span class="red">*</span>在文本框填写ID就行</span>
+							</div>
+
+						</div>
+						<div class="space-4"></div>
+
+						<div class="form-group">
+							<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 是否审核： </label>
+							<div class="col-sm-11" style="padding-top:5px;">
+								<input name="ad_status" id="ad_status" value="1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox" {$ad.ad_status==1?'checked':''}/>
+								<span class="lbl">&nbsp;&nbsp;默认关闭</span>
+							</div>
+						</div>
+						<div class="space-4"></div>
+
+						<div class="form-group">
+							<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 排序：  </label>
+							<div class="col-sm-11">
+								<input type="text" name="ad_order" id="ad_order" value="{$ad.ad_order}" class="col-xs-10 col-sm-3" />
+								<span class="lbl">&nbsp;&nbsp;<span class="red">*</span>从小到大排序</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 广告时间：  </label>
+							<div class="col-sm-11">
+								<input type="text" name="ad_second" id="ad_second" value="{$ad.ad_second}" class="col-xs-10 col-sm-3" />
+								<span class="lbl">&nbsp;&nbsp;<span class="red">*</span>广告时间</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 相关视频：  </label>
+							<div class="col-sm-11">
+								<input type="text" name="ad_correlation" id="ad_correlation" value="{$ad.ad_correlation}" class="col-xs-10 col-sm-3" />
+								<span class="lbl">&nbsp;&nbsp;<span class="red">*</span>相关视频id，用英文逗号分开</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-1 control-label no-padding-right" for="form-field-1"> 内容： </label>
+							<div class="col-sm-11">
+								<textarea  name="ad_desc" cols="20" rows="5" class="col-xs-10 col-sm-8 limitedone" id="form-field-10">{$ad.ad_desc}</textarea>
+								<span class="lbl">&nbsp;&nbsp;广告文字内容</span>
+							</div>
+						</div>
+						<div class="space-4"></div>
+
+					</div>
+				</div>
+			</div>
+			<div class="clearfix form-actions">
+				<div class="col-md-offset-3 col-md-9">
+					<button class="btn btn-info" type="submit">
+						<i class="ace-icon fa fa-check bigger-110"></i>
+						保存
+					</button>
+
+					&nbsp; &nbsp; &nbsp;
+					<button class="btn" type="reset">
+						<i class="ace-icon fa fa-undo bigger-110"></i>
+						重置
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	</div>
+	</div>
+{/block}
+{block name="scripts"}
+	<script>
+		$("#plug_ad_checkjsid").click(function(){
+			$("#pic_jslist").show();
+			$("#pic_list").hide();
+			$("#pic_listurl").hide();
+		});
+		$("#plug_ad_checkid").click(function(){
+			$("#pic_jslist").hide();
+			$("#pic_list").show();
+			$("#pic_listurl").show();
+		});
+		function setAdUrl(evt){
+			var val = $(evt).val();
+			var type = '';
+			if(val == 1){
+				type = 'ad/'; 
+			}else if(val == 2){
+				type = 'special/';
+			}else if(val == 3){
+				type = 'video/';
+			}else if(val == 4){
+				type = 'apply/';
+			}else if(val == 5){
+				type = '';
+			}
+			$('#ad_url').val(type);
+		}
+	</script>
+{/block}

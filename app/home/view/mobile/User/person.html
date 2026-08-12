@@ -1,0 +1,42 @@
+{extend name="public/mobile/base" /}
+{block name="title"}个人中心 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<body class="bg-white" style="padding-top: 0">
+<div class="banner position-rel">
+    <a href="/" class="person-back"><i class="icon-gerenfanhui"></i></a>
+    <img src="__MIMG__/person-bg.jpg" class="img-responsive" alt="" style="width: 100%;">
+    <div class="person-head">
+        <div class="person-img">
+            <img src="{$user['avatar']?$user['avatar']:'__MIMG__/portrait8.jpg'}" alt="" class="img-circle">
+        </div>
+        <p class="person-name">{$user['user_nicename']?$user['user_nicename']:$user['user_login_encrypt']}</p>
+    </div>
+</div>
+<div class="content">
+    <ul class="person-ul m-b-lg fs15">
+        <li>
+            <a href="{:url('personBuild')}">我创建的投票</a>
+        </li>
+        <li>
+            <a href="{:url('myAttendVote')}">我参与的投票</a>
+        </li>
+        <li>
+            <a href="{:url('myArticleFavlists')}">文章收藏</a>
+        </li>
+        <li>
+            <a href="{:url('myVoteFavlists')}">投票收藏</a>
+        </li>
+        <li>
+            <a href="{:url('mydownload')}">我的下载</a>
+        </li>
+        <li>
+            <a href="{:url('account')}">账户管理</a>
+        </li>
+        <li>
+            <a href="{:url('aboutus')}">关于我们</a>
+        </li>
+    </ul>
+</div>
+{/block}
+{block name="footer"}{include file="public/mobile/footer" /}{/block}

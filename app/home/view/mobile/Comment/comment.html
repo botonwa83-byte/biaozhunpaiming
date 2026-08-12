@@ -1,0 +1,183 @@
+{extend name="public/mobile/base" /}
+{block name="title"}{$post.post_title} - 评论 - 标准排名{/block}
+{block name="seo"}
+<meta name="description" content="{$post.post_mime_type}"/>
+<meta name="keywords" content="{$post.post_keywords}" />
+{/block}
+{block name="navs"}
+<body style="padding-top: 50px">
+<div class="bar-app">
+    <a href="/">
+        <img src="__MIMG__/logo90.png" alt="标准排名" class="bar-app-logo pull-left">
+        <div class="text-white pull-left" style="margin-left:1px;">
+            <strong style="font-size: 20px">标准排名</strong>
+            <br>
+            <strong style="color: #76EE00;font-size: 11px">Green Ranking</strong>
+        </div>
+    </a>
+</div>
+{/block}
+{block name="main"}
+<div class="container content-article p-y bg-white ">
+    <h5 class="m-b">{$post.post_title}</h5>
+    <p class="help-block fs12">
+        <span>{$post.post_author_name}</span>
+        <span class="m-l-15">{$post.post_modified|date="Y-m-d",###}</span>
+        <span class="pull-right"><i class="icon-eye2"></i> {$post.post_hits}</span>
+    </p>
+    <div class="article-content">
+        {$post.post_mime_type} [<a href="{:url('articles/detail',['id'=>$encrypt_id])}" class="link-blue fs14">查看全文</a>]
+    </div>
+</div>
+
+{if condition="$commentlist eq false"}
+<div class="container comment m-b-lg">
+    <div class="text-center">
+        <img src="__MIMG__/sofa.png" alt="" style="margin: 10em 0 1em 0 ">
+        <p>还没有人来评论！</p>
+    </div>
+</div>
+{/if}
+{if condition="$commentlist eq true"}
+	<div class=" comment m-b m-t-4 bg-white">
+		{foreach item="v" name="commentlist"}
+		    <div class="row p-t"  style="margin: 0;position: relative">
+		        {if condition="$v['top'] eq 1"}
+		        	<span style="position: absolute;left: 0;top: 0;"><img src="__MIMG__/label-hot.png" alt="" style="width: 35px;height: 30px;"></span>
+		        {/if}
+		        <div class="col-xs-2"><img src="{$v.avatar|default='__MIMG__/portrait7.jpg'}" class="img-circle" alt=""></div>
+		        <div class="col-xs-10 p-r-0">
+		            <h6 class="m-b-0 p-r text-lightblue">{$v.full_name|urldecode}</h6>
+		            <p class="m-b-0 p-r"><small>{$v.createtime|date="Y-m-d",###}</small></p>
+		            <p class="p-r">{$v.content}</p>
+		            <p class="text-right m-y p-r" style="font-size: 13px">
+		                <a href="{:url('comment/commentReply',array('id'=>$ob_id,'cid'=>$v['id']))}" class="m-r text-gray">回复 {$v.replay_num}</a>
+		                <a href="javascript:;" url="{:url('doLike',array('id'=>$v['id'],'ob_id'=>$ob_id,'type'=>1))}" class="do-like" style="color: #818181;">
+		                   <i class="{:in_array($v['id'],$dolikes)?'icon-heart15':'icon-heart-o15'}"></i>
+		                    <span class="com-like">{$v.com_like}</span>
+		                </a>
+		            </p>
+		            {if condition="isset($v['children'])"}
+		                <div class="m-b p-b-sm ">
+		                	{foreach name="v.children" item="vv" key="kk"}
+		                	{php}$path = explode("-", $vv['path']);{/php}
+		                	{if condition="!isset($path[2])"}
+		                    	<hr>
+		                    	<p class="m-b-0 p-r">
+		                        <span class="text-lightblue">{$vv.full_name}</span>
+		                        回复
+		                        <span class="text-lightblue">{$v['full_name']}</span>：
+		                        <a href="javascript:;" url="{:url('doLike',array('id'=>$vv['id'],'ob_id'=>$ob_id,'type'=>1))}" class="do-like pull-right" style="color: #818181;">
+		                          <i class="{:in_array($vv['id'],$dolikes)?'icon-heart15':'icon-heart-o15'}"></i></a>
+		                        <br>
+		                        {$vv.content}</p>
+		                    {else/}
+		                        <hr>
+		                    	<p class="m-b-0 p-r">
+		                        <span class="text-lightblue">{$vv.full_name}</span>
+		                        回复
+		                        <span class="text-lightblue">{$v['children'][$path[2]]['full_name']}</span>：
+		                        <a href="javascript:;" url="{:url('doLike',array('id'=>$vv['id'],'ob_id'=>$ob_id,'type'=>1))}" class="do-like pull-right" style="color: #818181;">
+		                            <i class="{:in_array($vv['id'],$dolikes)?'icon-heart15':'icon-heart-o15'}"></i>
+		                        </a>
+		                        <br>
+		                        {$vv.content}</p>
+		                    {/if}
+		                    {/foreach}
+		                    {if condition="count($v['children']) gt 2"}
+			                <a href="{:url('comment/commentReply',array('id'=>$ob_id,'cid'=>$v['id']))}" class="btn btn-block btn-sm reply-more">查看更多</a>
+			            	{/if}
+		                </div>
+	            	{/if}
+		        </div>
+		    </div>
+		    <hr>
+		{/foreach}
+	</div>
+{/if}
+
+<div class="navbar-fixed-bottom bg-white">
+    {if condition="session('uid')"}
+    <a href="#commentWindow" class="btn btn-block btn-comment" data-toggle="collapse" aria-expanded="false" aria-controls="commentWindow">评论</a>
+    {else/}
+    <a href="javascript:;" class="btn btn-block btn-comment"  data-toggle="modal" data-target=".bd-example-modal-sm">评论</a>
+    {/if}
+    <form action="{:url('present')}" class="ajaxForm" method="post" id="form">
+    <div class="collapse" id="commentWindow">
+        <div class="card card-block m-b-0">
+            <input type="hidden" name="ob_id" value="{$ob_id}"/>
+            <input type="hidden" name="type" value="1"/>
+            <textarea  class="com-content" name="content" rows="3" style="width: 100%;"></textarea>
+            <p class="massage text-red"></p>
+            <p class="m-y-0 text-right">
+                <a href="#commentWindow" class="btn btn-sm btn-secondary" data-toggle="collapse" aria-expanded="false" aria-controls="commentWindow">取消</a>
+                <input type="submit" value="发布" class="btn btn-sm btn-danger">
+            </p>
+        </div>
+    </div>
+    </form>
+</div>
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bdb0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="deal-close"></span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title text-center" id="myModalLabel">登录</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center">
+                    <div class="{$is_wechat?'col-xs-4':'col-xs-6'}">
+                        <a href="{:url('/home/OpenAuth/login',array('type'=>'qq'))}" class="text-gray"><i class="icon-qq50 bdra50"></i><br>QQ登录</a>
+                    </div>
+
+                    <div class="{$is_wechat?'col-xs-4':'col-xs-6'}">
+                        <a href="{:url('/home/OpenAuth/login',array('type'=>'sina'))}" class="text-gray"><i class="icon-weibo50 bdra50"></i><br>微博登录</a>
+                    </div>
+
+                    {if condition="$is_wechat"}
+                    <div class="col-xs-4">
+                        <a href="{:url('home/login/wechatLoginUrl')}" class="text-gray"><i class="icon-weixin50 bdra50"></i><br>微信登录</a>
+                    </div>
+                    {/if}
+                </div>
+            </div>
+            <div class="modal-footer text-center bdt0">
+                <a href="{:url('home/login/login')}" class="text-gray2">手机号登录/注册 ﹥</a>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__MJS__/basic.js"></script>
+<script src="__MJS__/jquery.form.js"></script>
+<script>
+    wx.config({
+        debug: false,
+        appId: '{:config("WX_APP_ID")}',
+        timestamp: '{$time}',
+        nonceStr: '{$nonceStr}',
+        signature: '{$signature}',
+        jsApiList: [
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage'
+        ]
+    });
+    wx.ready(function(){
+        wx.onMenuShareAppMessage({
+            title: '{$post.post_title}',
+            desc: '{$post.post_mime_type}',
+            link: '{$url}',
+            imgUrl: "__UPLOAD__/{$post.semta.thumb}"
+        });
+        wx.onMenuShareTimeline({
+            title: '{$post.post_title}',
+            link: '{$url}',
+            imgUrl: "__UPLOAD__/{$post.semta.thumb}"
+        });
+    });
+</script>
+{/block}

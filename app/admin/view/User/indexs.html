@@ -1,0 +1,74 @@
+{extend name="Public/base" /}
+{block name="main-content"}
+	<div class="page-content">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{:url('user/index')}">用户列表</a></li>
+            {if session('aid') == 1}
+			<li><a href="{:url('user/add')}">添加管理员</a></li>
+            {/if}
+		</ul>
+        <!-- <form class="well form-inline margin-top-20" method="post" action="{:url('User/index')}">
+            用户名:
+            <input type="text" class="form-control" name="user_login" style="width: 120px;" value="{:input('request.user_login/s','')}" placeholder="请输入{:lang('USERNAME')}">
+            邮箱:
+            <input type="text" class="form-control" name="user_email" style="width: 120px;" value="{:input('request.user_email/s','')}" placeholder="请输入{:lang('EMAIL')}">
+            <input type="submit" class="btn btn-primary" value="搜索" />
+            <a class="btn btn-danger" href="{:url('User/index')}">清空</a>
+        </form> -->
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th width="50">ID</th>
+					<th>用户名</th>
+					<th>登录ip</th>
+					<th>上次登录时间</th>
+					<th>邮箱</th>
+					<th>状态</th>
+					<th width="130">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{php}$user_statuses=array("0"=>'锁定',"1"=>'正常',"2"=>lang('USER_STATUS_UNVERIFIED'));{/php}
+                {foreach name="users" item="vo"}
+				<tr>
+					<td>{$vo.id}</td>
+					<td>{$vo.user_login}</td>
+					<td>{$vo.last_login_ip}</td>
+					<td>{:date('Y-m-d H:i:s',$vo['last_login_time'])}</td>
+					<td>{$vo.user_email}</td>
+					<td>{$user_statuses[$vo['user_status']]}</td>
+					<td>
+						<!-- <if condition="$vo['id'] eq 1 || $vo['id'] eq cmf_get_current_admin_id()">
+						  <font color="#cccccc">{:lang('EDIT')}</font>  <font color="#cccccc">{:lang('DELETE')}</font>
+							<if condition="$vo['user_status'] eq 1">
+								<font color="#cccccc">{:lang('BLOCK_USER')}</font>
+							<else />
+								<font color="#cccccc">{:lang('ACTIVATE_USER')}</font>
+							</if>
+						<else /> -->
+							<!-- <a href='{:url("user/edit",array("id"=>$vo["id"]))}'>{:lang('EDIT')}</a> -->
+							<!-- <a class="js-ajax-delete" href="{:url('user/delete',array('id'=>$vo['id']))}">删除</a> -->
+							<!-- <if condition="$vo['user_status'] eq 1">
+								<a href="{:url('user/ban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:lang('BLOCK_USER_CONFIRM_MESSAGE')}">{:lang('BLOCK_USER')}</a>
+							<else />
+								<a href="{:url('user/cancelban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn" data-msg="{:lang('ACTIVATE_USER_CONFIRM_MESSAGE')}">{:lang('ACTIVATE_USER')}</a>
+							</if> -->
+						<!-- </if> -->
+                        <a class="red confirm-rst-url-btn" data-info="你确定要删除到回收站吗？" href="{:url('del',array('id'=>$vo['id']))}" title="回收站"><i class="ace-icon fa fa-trash-o bigger-130"></i></a>
+					</td>
+				</tr>
+				{/foreach}
+			</tbody>
+		</table>
+		<div class="pagination">{$page}</div>
+	</div>
+{/block}
+{block name="scripts"}
+    <script type="text/javascript" src="__PUBLIC__/sldate/moment.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/sldate/daterangepicker.js"></script>
+    <script type="text/javascript">
+        $('#reservation').daterangepicker(null, function (start, end, label) {
+            console.log(start.toISOString(), end.toISOString(), label);
+        });
+    </script>
+{/block}

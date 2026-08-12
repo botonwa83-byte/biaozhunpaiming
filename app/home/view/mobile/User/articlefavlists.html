@@ -1,0 +1,49 @@
+{extend name="public/mobile/base" /}
+{block name="title"}我的文章收藏 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<body style="padding-top: 0;">
+<header class="bdb-grey" style="z-index: 999">
+    <nav class="navbar">
+        <a href="javascript:history.back(-1)" class="navbar-brand"><i class="icon-back"></i></a>
+        <h6>文章收藏</h6>
+    </nav>
+</header>
+<div class="content content-home vote-list" style="min-height: 80vh">
+    {if condition="$articles"}
+    {foreach item="v" name="articles"}
+    <div class="card">
+        <a href="{:url('articles/detail',array('id'=>$v['tid']))}">
+            <div class="media-left" href="{:url('articles/detail',array('id'=>$v['tid']))}">
+                <img class="media-object img-responsive" src="__UPLOAD__/{$v['smeta']}" alt="">
+            </div>
+            <div class="media-body">
+                <h6 class="media-heading">{$v.post_title}</h6>
+                <p>
+                    <small>
+                        <span class="pull-left" style="padding-top: .2em">{$v.post_modified|date="Y-m-d",###}</span>
+                        <span>{$v.comment_count} 评论</span>
+                    </small>
+                </p>
+            </div>
+        </a>
+    </div>
+    {/foreach}
+    {if condition="count($articles) gt (config('MORE_PAGESIZE')-1)"}
+    <div class="container">
+        <div class="p-t-16 p-b-40">
+            <a href="{:url('list/loadmorehotunite')}" class="btn btn-block btn-secondary js-hotunite-more-btn">加载更多</a>
+        </div>
+    </div>
+    {/if}
+    {else/}
+    <div class="content content-home vote-list" style="min-height: 80vh">
+        <div class="build0 text-center">
+            <img src="__MIMG__/shoucang-44.png" alt="" style="width: 60px; height: 60px;">
+            <p style="margin-top: 20px;">这里空空如也</p>
+<!--            <p><a href="{:url('vote/add')}" style="text-decoration: underline">快来参加投票吧</a></p>-->
+        </div>
+    </div>
+    {/if}
+</div>
+{/block}

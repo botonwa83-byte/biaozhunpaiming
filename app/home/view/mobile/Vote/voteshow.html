@@ -1,0 +1,247 @@
+{extend name="public/mobile/base" /}
+{block name="title"}{$vote['title']} - 投票 - 标准排名{/block}
+{block name="seo"}
+<meta name="description" content="{$vote.description}"/>
+<meta name="keywords" content="{$vote.description}" />
+{/block}
+{block name="navs"}
+<body style="padding-top: 50px">
+<div class="bar-app">
+    <a href="/">
+        <img src="__MIMG__/logo90.png" alt="标准排名" class="bar-app-logo pull-left">
+        <div class="text-white pull-left" style="margin-left:1px;">
+            <strong style="font-size: 20px">标准排名</strong>
+            <br>
+            <strong style="color: #76EE00;font-size: 11px">Green Ranking</strong>
+        </div>
+    </a>
+</div>
+{/block}
+{block name="main"}
+<div class="banner position-rel">
+    <img src="{$vote['smeta']['thumb']|default='__MIMG__/randvote.jpg'}" class="img-responsive" style="width: 100%;">
+    <span class="vote-endtime">结束时间：<b class="font-num">{$vote['endtime']|date="Y-m-d",###}</b></span>
+</div>
+<div class="content content-voting bg-white">
+    <div class="container p-t">
+        <h5>{$vote['title']} {if condition="count($vote['question']) eq 1"}<span class="text-red">{$vote['question'][0]['ismanyasr'] == 1?'（多选）':'（单选）'}</span>{/if}</h5>
+        <p class="help-block text-help m-b-5">
+            <small>
+                <span>{$vote.vote_author_name}</span>
+            </small>
+        </p>
+        <p class="m-b-10">
+        {php}$keywords = explode(' ',$vote['keywords']);{/php}
+        {foreach item="v" name="keywords"}
+        <span class="label label-default key-word">{$v}</span>
+        {/foreach}
+        </p>
+        <p class="text-help m-b-20">{$vote['description']}</p>
+    </div>
+</div>
+<div class="content content-voting bg-white m-t-xs">
+    <form action="{:url('vote/votePost',array('id'=>$vote['id']))}" class="form" method="get" >
+        <input type="hidden" value="{$vote['ismain']}" name="ismain"/>
+        {foreach item="v" key="k" name="vote['question']"}
+            <div class="voting-main" id="div{$k}">
+                {if condition="count($vote['question']) gt 1"}
+                <h6 class="voting-question position-rel">
+                    <span class="icon-diandian"></span>
+                    <span><!--{$k+1}、-->{$v.question} (<span class="text-danger">{$v['ismanyasr']==1?'多选':'单选'}</span>)</span>
+                </h6>
+                {/if}
+                {if condition="$v['ismanyasr'] eq 0"}
+                    {foreach item="vo" name="v['answers']" key="kk"}
+                        <div class="voting-cell">
+                            <div>
+                                <input type="radio" id="test{$k}{$kk}" name="choices[{$v.id}]" value="{$vo.id}">
+                            </div>
+                            <label for="test{$k}{$kk}" class="card voting-radio">
+                        {if condition="$vo['a_pic']"}
+	                    <span class="media-left" href="#">
+	                        <img class="media-object img-responsive" src="{$vo['a_pic']}" alt="">
+	                    </span>
+                        {/if}
+                        <span class="media-body">
+	                    <h6 class="media-heading">{$vo.content}</h6>
+	                    </span>
+                        </label>
+                        </div>
+
+                    {/foreach}
+                    {else/}
+                    {foreach item="vo" name="v['answers']" key="kk"}
+                        <div class="voting-cell">
+                            <div>
+                                <input type="checkbox" id="checkbox{$k}{$kk}" name="choices[{$v.id}][]" value="{$vo.id}">
+                            </div>
+                            <label for="checkbox{$k}{$kk}" class="card voting-checkbox">
+                                {if condition="$vo['a_pic']"}
+	                    <span class="media-left" href="#">
+	                        <img class="media-object img-responsive" src="{$vo['a_pic']}" alt="">
+	                    </span>
+                                {/if}
+                                <span class="media-body">
+	                        <h6 class="media-heading">{$vo.content}</h6>
+	                    </span>
+                            </label>
+                        </div>
+                    {/foreach}
+                {/if}
+            </div>
+            <hr class="m-b-0 m-t-17 m-x-14">
+        {/foreach}
+        <div class="container p-b-38">
+            {if condition="$vote['vote_status'] eq 1"}
+            <button type="submit" class="btn btn-danger btn-block">投票</button>
+            {else/}
+            <button type="button" disabled="disabled" class="btn btn-danger btn-block">正在审核中...</button>
+            {/if}
+        </div>
+    </form>
+</div>
+{if condition="$covotes"}
+<div class="list-about content-hotlist m-t-4 bg-white p-0">
+    <h6 class="p-y-10 p-x-9 bdb-grey2 m-b-0 fs14"><i class="fa fa-caret-right text-red2"></i> 相关推荐</h6>
+    {foreach item="v" name="covotes"}
+        <a href="{:url('vote/voteShow',array('id'=>$v['id']))}" class="cell">
+            <div class="media-left" href="#">
+                {php}$smeta=json_decode($v['smeta'],true);{/php}
+                <img class="media-object img-responsive" src="{$smeta['thumb']}" alt="图片">
+            </div>
+            <div class="media-body">
+                <h6 class="media-heading">{$v.title}</h6>
+                <p>
+                    <small>
+                        <span class="pull-left" style="padding-top: .2em">{$v.createtime|date="Y-m-d",###}</span>
+                        <span> {$v.hits} 阅读</span>
+                    </small>
+                </p>
+            </div>
+        </a>
+    {/foreach}
+</div>
+{/if}
+<div class="container">
+    <div class="row">
+        <nav class="text-center nav-footer col-xs-12">
+            <div class="row">
+                <div class="col-xs-3" style="padding: 0 5px">
+                    <a href="{$dolike?'javascript:;':url('vote/doLike',array('id'=>$vote['id']))}" class="heart-o js-count-btn">
+                        <i class="fa {$dolike?'icon-heart':'icon-heart-o'}"></i>
+                        <span class="post-like">{$vote['praise']>999?'999+':$vote['praise']}</span>
+                    </a>
+                </div>
+                <div class="col-xs-3" style="padding: 0 5px">
+                    <a href="{:url('Comment/vote',array('id'=>$vote['id'],'types'=>2))}" class="commenting-o">
+                    <i class="icon-commenting"></i>
+                    <span class="post-like">{$vote['comment_count']>999?'999+':$vote['comment_count']}</span>
+                    </a>
+                </div>
+                <div class="col-xs-3" style="padding: 0 5px">
+                    <a href="{:url('vote/favorite',array('id'=>$vote['id']))}" class="js-favorite-btn" {$user?'':'data-toggle="modal" data-target=".bd-example-modal-sm"'}>
+                        <i class="{$favorite?'icon-star':'icon-star-o'}"></i>
+                    </a>
+                </div>
+                <div class="col-xs-3" style="padding: 0 5px">
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#shareModal" class="share-alt">
+                        <i class="icon-share"></i>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h6 class="modal-title" id="shareModalLabel">分享到：</h6>
+            </div>
+            <div class="modal-body">
+                <div class="bdsharebuttonbox">
+                    <a href="#" class="bds_tsina m-r-lg" data-cmd="tsina" title="分享到新浪微博"></a>
+                    <a href="#" class="bds_qzone m-r-lg" data-cmd="qzone" title="分享到QQ空间"></a>
+                    <a href="#" class="bds_tqq m-r-lg" data-cmd="tqq" title="分享到腾讯微博"></a>
+                </div>
+                <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"32"},"share":{},"image":{"viewList":["weixin","tsina","qzone","tqq","renren"],"viewText":"分享到：","viewSize":"32"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["weixin","tsina","qzone","tqq","renren"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bdb0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="deal-close"></span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title text-center" id="myModalLabel">登录</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center">
+                    <div class="{$is_wechat?'col-xs-4':'col-xs-6'}">
+                        <a href="{:url('/home/OpenAuth/login',array('type'=>'qq'))}" class="text-gray"><i class="icon-qq50 bdra50"></i><br>QQ登录</a>
+                    </div>
+
+                    <div class="{$is_wechat?'col-xs-4':'col-xs-6'}">
+                        <a href="{:url('/home/OpenAuth/login',array('type'=>'sina'))}" class="text-gray"><i class="icon-weibo50 bdra50"></i><br>微博登录</a>
+                    </div>
+
+                    {if condition="$is_wechat"}
+                    <div class="col-xs-4">
+                        <a href="{:url('home/login/wechatLoginUrl')}" class="text-gray"><i class="icon-weixin50 bdra50"></i><br>微信登录</a>
+                    </div>
+                    {/if}
+                </div>
+            </div>
+            <div class="modal-footer text-center bdt0">
+                <a href="{:url('home/login/login')}" class="text-gray2">手机号登录/注册 ﹥</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+{block name="js"}
+<script src="__MJS__/basic.js"></script>
+<script src="__MJS__/general.js"></script>
+{if condition="$is_wechat"}
+<script>
+    wx.config({
+        debug: false,
+        appId: 'wx0c6c26670bc08ecd',
+        timestamp: '{$time}',
+        nonceStr: '{$nonceStr}',
+        signature: '{$signature}',
+        jsApiList: [
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage'
+        ]
+    });
+    wx.ready(function(){
+        wx.onMenuShareAppMessage({
+            title: "{$vote['title']}",
+            desc: "{$vote.description}",
+            link: "{$url}",
+            imgUrl: "http://www.biaozhunpaiming.com{$vote['smeta']['thumb']}"
+        });
+        wx.onMenuShareTimeline({
+            title: "{$vote['title']}",
+            link: "{$url}",
+            imgUrl: "http://www.biaozhunpaiming.com{$vote['smeta']['thumb']}"
+        });
+    });
+</script>
+{/if}
+{/block}
+{block name="footer"}{include file="public/mobile/footer" /}{/block}

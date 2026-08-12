@@ -1,0 +1,132 @@
+{extend name="home/base" /}
+{block name="title"}{$post.post_title} - 评论 - 标准排名{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<div class="page-wrap">
+<div class="view">
+<div class="page-content">
+    <div class="contain narrow post-content">
+        <h6>{$post.post_title}</h6>
+    </div>
+    <div class="sharedaddy article-about">
+        <h6 class="sd-title">
+            评论（<span>{$post.comment_count}</span>条）
+        </h6>
+        <div class="row no-gutter">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 m-b-lg">
+                <form action="{:url('home/Comment/present')}" method="post" id="form" class="ajaxForm">
+                    <input type="hidden" name="ob_id" value="{$post.object_id}"/>
+                    <input type="hidden" name="type" value="1"/>
+                    <textarea name="content" cols="30" rows="5" class="com_content comment-text" placeholder="评论内容"></textarea>
+                    <p class="massage"></p>
+                    <p class="help-block">
+                        可以输入&nbsp;<span class="textcontent">150</span>&nbsp;字
+                        <span class="right">
+                            {if condition="$user"}
+                            <button class="btn btn-secondary btn-sm js-ajax-submit-input">发布评论</button>
+                            {else/}
+                            <a href="javascript:void(0)" class="btn btn-secondary btn-sm" data-toggle="modal" data-target=".login">发布评论</a>
+                            {/if}
+                        </span>
+                    </p>
+                </form>
+            </div>
+            {foreach item="v" name="commentlist"}
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="position: relative;">
+                {if condition="$v['top'] eq 1"}
+                <span style="position: absolute;left: 0;top: -28px;"><img src="__IMG__/label-hot.png" alt=""></span>
+                {/if}
+                <div class="media m-t-0">
+                    <a class="media-left" href="javascript:;">
+                        <img class="media-object img-circle" url="{$v.avatar}" src="{$v.avatar|default='__MIMG__/portrait7.jpg'}" alt="Generic placeholder image" style="width: 50px;height: 50px;">
+                    </a>
+                    <div class="media-body">
+                        <h6 class="media-heading">{$v.full_name|urldecode}</h6>
+                        <p class="media-text">{$v.content}</p>
+                        <p class="help-block m-y clearfix">
+                            <span class="left">{$v.createtime|date="Y-m-d",###}</span>
+                            <span class="right">
+                                {if condition="$v['uid'] == $user['id']"}
+                                <a href="javascript:;" url="{:url('del',['id'=>$v['id']])}" class="text-danger ajax-submit">删除</a>
+                                {/if}
+                                <a href="javascript:;" url="{:url('doLike',array('id'=>$v['id'],'ob_id'=>$ob_id,'type'=>1))}" class="do-like">
+                                <i class="{:in_array($v['id'],$dolikes)?'fa fa-heart':'fa fa-heart-o'}"></i> <span class="com-like">{$v.com_like}</span></a>
+                            </span>
+                        </p>
+                        <div class="input-group input-group-sm m-y collapse">
+                            <input type="text" class="form-control com-content" placeholder="回复内容">
+                            <span class="input-group-btn">
+                                <button class="btn btn-danger js-ajax-submit-replay" data-id="{:request()->param('id')}" replay-id="{$v['id']}" com-id="{$v['id']}" type="submit">回复</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="m-y">
+            </div>
+            {/foreach}
+        </div>
+    </div>
+    {if condition="$commentlist"}
+        <div class="row">
+            <a href="javascript:void(0)" class="btn btn-block btn-secondary" data-toggle="modal" data-target=".appdownload" style="width: 60%;margin: 0 auto;">下载APP查看更多精彩内容</a>
+        </div>
+    {/if}
+</div>
+</div>
+</div>
+<div class="modal fade bs-example-modal-lg appdownload" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id=""></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row m-t" style="line-height: 24px">
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 p-b text-center" style="margin-left: 33%;">
+                        <img src="__IMG__/qr-app.png" class="img-responsive" alt="">
+                        <p style="font-size: 14px">下载客户端</p>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 p-b text-center">
+                        <img src="__IMG__/qr-weixin.JPG" class="img-responsive" alt="">
+                        <p style="font-size: 14px">关注公众号</p>
+                    </div>
+                </div>
+
+                <p class="text-center m-t fs14">比出美好生活</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title" id="myModalLabel">全部回复</h5>
+            </div>
+            <div class="media-body p-a reply-list" style="font-size: 16px">
+                加载中...
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/basic.js"></script>
+<script type="text/javascript">
+$('.ajax-submit').click(function(){
+    var _this = $(this);
+    var url = $(this).attr('url');
+    $.get(url,function(data){
+        if(data.status==1){
+            _this.closest('.media').remove();
+        }
+    });
+});
+</script>
+{/block}

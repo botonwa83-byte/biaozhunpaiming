@@ -1,0 +1,177 @@
+{extend name="Public/base" /}
+{block name="main-content"}
+    <div class="page-content">
+        <link rel="stylesheet" type="text/css" media="all" href="__PUBLIC__/css/jquery.datetimepicker.css" />
+        <!--主题-->
+        <div class="page-header">
+            <h1>
+                您当前操作
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    添加专题
+                </small>
+            </h1>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <form class="form-horizontal ajaxForm2" name="form0" method="post" action="{:url('runadd')}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"> 专题名： </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="speacial_name" placeholder="必填：专题名" class="col-xs-10 col-sm-6" required />
+                            <span class="help-inline col-xs-12 col-sm-7"><span class="middle" id="resone"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"> 专题描述：  </label>
+                        <div class="col-sm-10">
+                            <textarea name="description" cols="30" rows="5" placeholder="专题描述"  class="col-xs-10 col-sm-6" required></textarea>
+                            <span class="help-inline col-xs-12 col-sm-7"><span class="middle" id="resone"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="col-sm-2 control-label no-padding-right" name="ctname" placeholder="默认为议程" value="议程" />
+                        <div class="col-sm-10">
+                            <textarea name="content" cols="30" rows="5"  placeholder="必填：议程，多个需隔行" class="col-xs-10 col-sm-6" ></textarea>
+                            <span class="help-inline col-xs-12 col-sm-7"><span class="middle" id="resone"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"> 榜单：  </label>
+                        <div class="col-sm-10">
+                            <a href="javascript:;" class="file">
+                                <input type="file" name="list_pic" class="add-file"/>选择上传文件</a>
+                            <span class="lbl">&nbsp;&nbsp;<img src="__PUBLIC__/img/no_img.jpg" width="100" height="70" class="img"></span>&nbsp;&nbsp;
+                            <a href="javascript:;" onClick="return backpic('__PUBLIC__/img/no_img.jpg');" title="还原修改前的图片" class="file">撤销上传</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="col-sm-2 control-label no-padding-right" name="apply_name"  placeholder="默认为购票通道" value="购票通道" />
+                        <div class="col-sm-10">
+                            <input name="apply_link" placeholder="必填：链接" class="col-xs-10 col-sm-6"  />
+                            <span class="help-inline col-xs-12 col-sm-7"><span class="middle" id="resone"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="col-sm-2 control-label no-padding-right" name="vname" placeholder="默认为视频" value="视频" />
+                        <div class="col-sm-10">
+                            <textarea name="video_link" placeholder="必填：多个视频ID" class="col-xs-10 col-sm-6" ></textarea>
+                            <span class="help-inline col-xs-12 col-sm-7"><span class="middle red" id="resone">英文逗号隔开</span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="col-sm-2 control-label no-padding-right" name="guest_name" placeholder="默认为 拟邀演讲嘉宾" value="拟邀演讲嘉宾" />
+                        <div class="col-sm-10">
+                            <textarea name="guest" placeholder="必填：多个嘉宾ID" class="col-xs-10 col-sm-6" ></textarea>
+                            <span class="help-inline col-xs-12 col-sm-7"><span class="middle red" id="resone">英文逗号隔开</span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="col-sm-2 control-label no-padding-right" name="coname" placeholder="默认为 相关文章" value="相关文章" />
+                        <div class="col-sm-10">
+                            <textarea name="correlation" placeholder="必填：多个相关文章ID" class="col-xs-10 col-sm-6" ></textarea>
+                            <span class="help-inline col-xs-12 col-sm-7"><span class="middle red" id="resone">英文逗号隔开</span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="col-sm-2 control-label no-padding-right" name="rename" placeholder="默认为 往期回顾" value="往期回顾" />
+                        <div class="col-sm-10">
+                            <textarea name="review" placeholder="必填：多个相关文章ID" class="col-xs-10 col-sm-6" ></textarea>
+                            <span class="help-inline col-xs-12 col-sm-7"><span class="middle red" id="resone">英文逗号隔开</span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"></label>
+                        <div class="col-sm-10">
+                            <a href="javascript:void(0)" class="btn btn-default btn-option-add">添加栏目</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right red" > 发布时间： </label>
+                        <div class="col-sm-10">
+                            <div class="col-xs-12 col-sm-3 hidden-xs btn-sespan">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                    </span>
+                                    <input type="text" name="createtime" class="sl-date" placeholder="点击选择日期范围" id="datetimepicker"/>    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right red" for="form-field-1"> 封面图片上传： </label>
+                        <div class="col-sm-10">
+                            <a href="javascript:;" class="file">
+                                <input type="file" name="img" id="file0" />
+                                选择上传文件
+                            </a>
+                            <span class="lbl">&nbsp;&nbsp;<img src="__PUBLIC__/img/no_img.jpg" width="100" height="70" id="img0" ></span>&nbsp;&nbsp;<a href="javascript:;" onClick="return backpic('__PUBLIC__/img/no_img.jpg');" title="还原修改前的图片" class="file">
+                            撤销上传
+                        </a>
+                        <span class="lbl">&nbsp;&nbsp;上传前先用PS处理成等比例图片后上传，最后都统一比例<br /></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"> 是否审核： </label>
+                        <div class="col-sm-10" style="padding-top:5px;">
+                            <input name="status" id="status" value="1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox"/>
+                            <span class="lbl">&nbsp;&nbsp;默认关闭</span>
+                        </div>
+                    </div>
+                    <div class="clearfix form-actions">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button class="btn btn-info" type="submit"><i class="ace-icon fa fa-check bigger-110"></i>提交</button>&nbsp; &nbsp; &nbsp;
+                            <button class="btn" type="reset"><i class="ace-icon fa fa-undo bigger-110"></i>重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="scripts"}
+    <link rel="stylesheet" type="text/css" media="all" href="__PUBLIC__/css/jquery.datetimepicker.css" />
+    <script type="text/javascript" src="__PUBLIC__/sldate/moment.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/jquery.datetimepicker.full.min.js"></script>
+    <script type="text/javascript">
+        $.datetimepicker.setLocale('zh');
+        $('#datetimepicker').datetimepicker({
+            dayOfWeekStart : 1,
+            lang:'zh',
+            disabledDates:[],
+            startDate:  ''
+        });
+        $(document).on('change',".add-file",function () {
+            var objUrl = getObjectURL(this.files[0]);
+            if (objUrl) {
+                $(this).parent().next().children('img').attr("src", objUrl);
+            }
+        });
+        function getObjectURL(file) {
+            var url = null;
+            if (window.createObjectURL != undefined) { // basic
+                $("#oldcheckpic").val("nopic");
+                url = window.createObjectURL(file);
+            } else if (window.URL != undefined) { // mozilla(firefox)
+                $("#oldcheckpic").val("nopic");
+                url = window.URL.createObjectURL(file);
+            } else if (window.webkitURL != undefined) { // webkit or chrome
+                $("#oldcheckpic").val("nopic");
+                url = window.webkitURL.createObjectURL(file);
+            }
+            return url;
+        }
+
+        function backpic(picurl,evt) {
+            $(evt).parent().children('span').children('img').attr('src',picurl);
+            // $(evt).before().children('img').attr("src", picurl);//还原修改前的图片
+            $(evt).parent().children('span').children('img').val("");//清空文本框的值
+            // $("input[name='oldcheckpic']").val(picurl);//清空文本框的值
+        }
+        $('.btn-option-add').click(function(){
+            var html = '<div class="form-group"><input class="col-sm-2 control-label no-padding-right" name="other_name[]"/><div class="col-sm-10"><textarea name="other_ids[]" placeholder="必填：多个相关文章ID" class="col-xs-10 col-sm-6" ></textarea><span class="help-inline col-xs-12 col-sm-7"><span class="middle red" id="resone">英文逗号隔开</span></span></div></div>';
+            $(this).closest('.form-group').before(html);
+        });
+    </script>
+{/block}

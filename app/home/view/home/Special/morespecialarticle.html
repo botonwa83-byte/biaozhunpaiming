@@ -1,0 +1,45 @@
+{extend name="home/base" /}
+{block name="title"}{$name} - 专题 - 标准排名{/block}
+<body>
+{block name="main"}
+<div class="page-wrap">
+    <div class="view">
+        <div class="page-content">
+            <div class="sharedaddy article-about">
+                <h6 class="sd-title">
+                    相关报道
+                </h6>
+                <div class="row no-gutter posts-list">
+                    {foreach item="v" name="posts"}
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                        <div class="object post">
+                            <div class="object-header image" style="background-image:url('{$v.smeta}');">
+                                <a target="_blank" href="{:url('articles/detail',array('id'=>$v['tid']))}" class="permacover"></a>
+                            		<span class="object-header-meta">
+                                        <a href="{:url('article/index',array('id'=>$v['tid']))}">
+                                            <span class="">{$v.post_modified|date="Y-m-d",###}</span>
+                                        <span class="right">
+                                            <span><i class="fa fa-heart-o"></i> {$v.post_like}</span>&nbsp;&nbsp;
+                                            <span><i class="fa fa-commenting-o"></i> {$v.comment_count}</span>
+                                        </span>
+                                        </a>
+                                    </span>
+                            </div>
+                            <div class="object-meta">
+                                <h3><a href="{:url('articles/detail',array('id'=>$v['tid']))}">{$v.post_title}</a>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    {/foreach}
+                </div>
+                <div url="{:url('loadmorespecialarticles',['id'=>$ids])}" class="load-more text-center m-t text-666666">下拉加载更多</div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/basic.js"></script>
+<script src="__JS__/frontend.js"></script>
+{/block}

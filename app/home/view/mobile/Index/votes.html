@@ -1,0 +1,93 @@
+{extend name="public/mobile/base" /}
+{block name="title"}{$navs[$nav_id]['label']} - 标准排名 - 比出美好生活{/block}
+{block name="meta"}
+<script type="text/javascript" src="http://imgcache.qq.com/tencentvideo_v1/tvp/js/tvp.player_v2.js"></script>
+<style type="text/css">
+    .bg-inverse {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 87.6px;/*脚部的高度*/
+        clear:both;
+    }
+</style>
+{/block}
+{block name="main"}
+<div class="banner-vote text-center">
+    {foreach name="vote_slides" item="vo"}
+    <a href="{:url('vote/voteshow',array('id'=>$vo['slide_url']))}" class="cell">
+        <img src="__DOMAIN__{$vo['slide_pic']}" alt="">
+        <div class="mark">
+            <h6>{$vo.slide_name}</h6>
+        </div>
+        <span class="label">{$vo.slide_content}</span>
+        <span class="icon-vote"></span>
+    </a>
+    {/foreach}
+</div>
+<div class="content content-home vote-list">
+    {foreach name="votes" item="vo"}
+    <div class="card">
+        <a href="{:url('vote/voteshow',array('id'=>$vo['id']))}">
+            <div class="media-left" href="{:url('vote/voteshow',array('id'=>$vo['id']))}">
+                {php}$smeta=json_decode($vo['smeta'],true);{/php}
+                <img class="media-object img-responsive" src="__DOMAIN__{$smeta['thumb']}" alt="">
+            </div>
+            <div class="media-body">
+                <h6 class="media-heading">{$vo.title}</h6>
+                <p>
+                    <small>
+                        {php}$keyword = explode('，',$vo['keywords']);{/php}
+                        <span class="pull-left" style="padding-top: .2em">{$vo.createtime|date="Y-m-d",###}</span>
+                        <span>{$vo.hits} 阅读</span>
+                    </small>
+                </p>
+            </div>
+        </a>
+    </div>
+    {/foreach}
+</div>
+<div class="container">
+    <div class="p-t-16 p-b-40">
+        <button url="{:url('loadVotes',['term_id'=>$nav_id])}" class="btn btn-block js-more-vote-btn">加载更多</button>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bdb0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="deal-close"></span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h5 class="modal-title text-center" id="myModalLabel">登录</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center">
+                    <div class="{$is_wechat?'col-xs-4':'col-xs-6'}">
+                        <a href="{:url('/home/OpenAuth/login',array('type'=>'qq'))}" class="text-gray"><i class="icon-qq50 bdra50"></i><br>QQ登录</a>
+                    </div>
+
+                    <div class="{$is_wechat?'col-xs-4':'col-xs-6'}">
+                        <a href="{:url('/home/OpenAuth/login',array('type'=>'sina'))}" class="text-gray"><i class="icon-weibo50 bdra50"></i><br>微博登录</a>
+                    </div>
+
+                    {if condition="$is_wechat"}
+                    <div class="col-xs-4">
+                        <a href="{:url('home/login/wechatLoginUrl')}" class="text-gray"><i class="icon-weixin50 bdra50"></i><br>微信登录</a>
+                    </div>
+                    {/if}
+                </div>
+            </div>
+            <div class="modal-footer text-center bdt0">
+                <a href="{:url('home/login/login')}" class="text-gray2">手机号登录/注册 ﹥</a>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__MJS__/basic.js"></script>
+<script src="__MJS__/general.js"></script>
+{/block}
+{block name="footer"}{include file="public/mobile/footer" /}{/block}

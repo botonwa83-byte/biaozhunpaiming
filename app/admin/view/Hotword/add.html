@@ -1,0 +1,30 @@
+{extend name="Public/base" /}
+{block name="main-content"}
+	<div class="page-content">
+		<div class="row">
+			<div class="col-xs-12">
+				<div>
+					<form class="form-horizontal ajaxForm2" id="add" name="form0" method="post" action="{:url('addHotword')}" >
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 热词名：  </label>
+							<div class="col-sm-10">
+							<textarea name="name" id="name"  placeholder="热词名"  class="col-xs-10 col-sm-6" ></textarea>
+							</div>
+						</div>
+						<div class="col-md-offset-3 col-md-9">
+							<button class="btn btn-info" type="submit">
+								<i class="ace-icon fa fa-check bigger-110"></i>
+								保存
+							</button>&nbsp; &nbsp; &nbsp;
+							<button class="btn" type="reset">
+								<i class="ace-icon fa fa-undo bigger-110"></i>
+								重置
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div><!-- /.page-content -->
+{/block}

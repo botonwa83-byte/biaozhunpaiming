@@ -1,0 +1,119 @@
+{extend name="public/mobile/base" /}
+{block name="title"}搜索 -标准排名{/block}
+{block name="meta"}{/block}
+{block name="navs"}
+<body style="padding-top: 50px;">
+<header class="navbar-fixed-top" style="z-index: 9999">
+    <nav class="navbar">
+        <a href="/" class="navbar-brand"><img src="__MIMG__/logo-black.png" alt="logo" style="width: 160%;margin-left: -10px;margin-top: -3px;"></a>
+        <button class="navbar-toggler pull-right" type="button" data-toggle="collapse" data-target="#Navbar">
+            <i class="burger icon-01"></i>
+        </button>
+    </nav>
+    <div class="collapse" id="Navbar">
+        <div class="nav-first p-a">
+            <div class="navbar-group m-b-5">
+                <form action="{:url('Search/detail')}" method="post" class="form-inline navbar-form">
+                    <input type="text" name="keyword" class="navbar-input" placeholder="搜索...">
+                    <button class="btn btn-search text-right" type="submit"><i class="icon-search"></i></button>
+
+                </form>
+            </div>
+            {if condition="!$user"}
+            <div class="navbar-group m-b-5">
+                    <ul class="nav nav-pills" style="overflow: hidden;padding: 10px 12px;">
+                        <li class="nav-item ">
+                            <a href="{:url('/home/OpenAuth/login',array('type'=>'qq'))}" class="btn btn-info bdr0" style="padding: 6px 9px;"><i class="fa fa-qq"></i></a>
+                            <a href="{:url('/home/OpenAuth/login',array('type'=>'sina'))}" class="btn btn-danger bdr0 m-l-sm" style="padding: 6px 9px;"><i class="fa fa-weibo"></i></a>
+                            {if condition="$is_wechat eq true"}
+                            <a href="{:url('home/login/wechatLoginUrl')}" class="btn btn-success bdr0 m-l-sm" style="padding: 6px 9px;"><i class="fa fa-weixin"></i></a>
+                            {/if}
+                        </li>
+                        <li class="nav-item pull-right">
+                            <a href="{:url('home/Login/login')}" class="btn fs14" style="color: #ffffff;">立即登录</a>
+                        </li>
+                    </ul> 
+            </div>
+            {else/}
+            <div class="navbar-group m-b-5">
+                <ul class="nav nav-pills navbar-user" style="overflow: hidden;padding: 10px 12px;">
+                    <li class="nav-item">
+                        <img src="{$user['avatar']?$user['avatar']:'__MIMG__/portrait8.jpg'}" alt="头像" class="img-circle">
+                        <span class="navbar-username">{$user['user_nicename']?$user['user_nicename']:$user['user_login_encrypt']}</span>
+                    </li>
+                    <li class="nav-item pull-right">
+                        <a href="{:url('User/person')}" class="link-login btn fs14 m-t-4" style="color: #ffffff;">个人中心></a>
+                    </li>
+                </ul>
+            </div>
+            {/if}
+            <ul class="nav nav-pills" style="overflow: hidden">
+                {foreach name="navs" key="k" item="vo"}
+                    <li class="nav-item" style="width: 50%;">
+                        <a href="{$vo['href']}" class="nav-link {$vo['id']==1?'active':''}" style="margin: 0px 0px 4px 2px">{$vo.label}</a>
+                    </li>
+                {/foreach}
+            </ul>
+        </div>
+    </div>
+</header>
+{/block}
+{block name="main"}
+<div class="content content-home search-result">
+    <ul class="nav nav-tabs text-center bg-white">
+        <!-- <li class="nav-item col-xs-12">
+            <a class="nav-link active" href="#home" role="tab" data-toggle="tab">文章</a>
+        </li> -->
+<!--         <li class="nav-item col-xs-6">
+            <a class="nav-link" href="#profile" role="tab" data-toggle="tab">投票</a>
+        </li> -->
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active posts-list" id="home">
+            {if condition="$posts"}
+            <div>
+            {foreach item="vo" name="posts"}
+            <div class="card">
+                <a href="{:url('articles/detail',array('id'=>$vo['tid']))}">
+                    {php}$smeta=json_decode($vo['smeta'],true);{/php}
+                    <div class="media-left" href="#">
+                        <img class="media-object img-responsive" src="__UPLOAD__/{$smeta['thumb']}">
+                    </div>
+                    <div class="media-body">
+                        <h6 class="media-heading">{$vo.post_title}</h6>
+                        <p>
+                            <small>
+                                <span class="pull-left" style="padding-top: .2em">{$vo.post_modified|date="Y-m-d",###}</span>
+                                <span> {$vo.comment_count} 评论</span>
+                            </small>
+                        </p>
+                    </div>
+                </a>
+            </div>
+            {/foreach}
+            </div>
+            	{if condition="count($posts) gt config('MORE_PAGESIZE')-1"}
+	            <div class="container">
+	                <div class="m-b">
+	                    <button url="{:url('loadSearchDetail',array('keyword'=>$keyword,'type'=>'article'))}" class="btn btn-block btn-secondary btn-sm js-more-btn">加载更多</button>
+	                </div>
+	            </div>
+	            {/if}
+            {else/}
+            <div role="tabpanel" class="tab-pane active" id="home">
+                <div class="search-empty text-center p-y-lg m-y-lg">
+                    <img src="__MIMG__/search-empty.png" alt="" style="width: 70%;margin: 0 auto;">
+                    <p class="p-t text-gray2">不知道飞哪里去了</p>
+                    <p><a href="/" class="btn btn-block" style="color: #b81c22;">返回首页》</a></p>
+                </div>
+            </div>
+            {/if}
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__MJS__/basic.js"></script>
+<script src="__MJS__/general.js"></script>
+{/block}
+</body>

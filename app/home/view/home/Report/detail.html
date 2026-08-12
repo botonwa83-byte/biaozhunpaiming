@@ -1,0 +1,174 @@
+{extend name="home/base" /}
+{block name="title"}{$report.report_name} - 报告 - 标准排名{/block}
+{block name="seo"}
+<meta name="description" content="{$report.report_desc}"/>
+<meta name="keywords" content="{$report.report_name}" />
+{/block}
+{block name="navs"}{/block}
+{block name="main"}
+<div class="page-wrap">
+<div class="view">
+    <div class="page-content">
+        <div class="contain narrow post-content">
+            <h6>{$report.report_name}</h6>
+            <div id="sharing">
+                <div class="sharedaddy sd-sharing-enabled">
+                    <div class="robots-nocontent sd-block sd-social sd-social-icon sd-sharing">
+                        <h3 class="sd-title">分享给你的朋友:</h3>
+                        <div id="share" style="position: relative;">
+                            <div class="bdsharebuttonbox" data-tag="share_1">
+                                <div class="sd-content">
+                                    <ul class="share-group">
+                                        <li class="share-weixin">
+                                            <a class="sd-button"  href="javascript:void(0)" title="分享到微信">
+                                                <i class="fa fa-weixin"></i>
+                                                <span class="sharing-screen-reader-text">分享到微信</span>
+                                            </a>
+                                            <a class="bds_weixin share-tool" data-cmd="weixin"></a>
+                                        </li>
+                                        <li class="share-pinterest">
+                                            <a class="sd-button" href="javascript:void(0)" title="分享到新浪微博">
+                                                <i class="fa fa-weibo"></i>
+                                                <span class="sharing-screen-reader-text">分享到新浪微博</span>
+                                            </a>
+                                            <a class="bds_tsina share-tool" data-cmd="tsina"></a>
+                                        </li>
+                                        <li class="share-twitter">
+                                            <a class="sd-button" href="javascript:void(0)" title="分享到腾讯微博" style="padding: 8px 10px;">
+                                                <i class="fa fa-tencent-weibo"></i>
+                                                <span class="sharing-screen-reader-text">分享到腾讯微博</span>
+                                            </a>
+                                            <a class="bds_tqq share-tool" data-cmd="tqq"></a>
+                                        </li>
+
+                                        <li class="share-qzone">
+                                            <a rel="nofollow"class="sd-button" href="javascript:void(0)" title="分享到QQ空间">
+                                                <i class="fa fa-star"></i>
+                                                <span class="sharing-screen-reader-text">分享到QQ空间</span>
+                                            </a>
+                                            <a class="bds_qzone share-tool" data-cmd="qzone"></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="left m-r-lg">
+                    <img src="{$report.smeta|default='__IMG__/report-book.png'}" alt="" style="width: 241px;height: 315px;">
+                </div>
+                <div class="left">
+                    <h5 class="m-b">{$report.report_name}</h5>
+                    <p class="p-t-0 m-b-0">页数：{$report.report_page}</p>
+                    <p class="p-t-0 m-b-0">报告时间：{$report.report_time}</p>
+                    <p class="p-t-0 m-b-0">图表：{$report.report_chart}</p>
+                    {php}
+                        if($report['report_price_status'] == 1){
+                            $price_status_string = '价格：免费';
+                        }elseif($report['report_price_status'] == 2){
+                            $price_status_string='价格：面议';
+                        }else{
+                            $price_status_string="价格：￥".$report_cost;
+                        }
+                    {/php}
+                    <p class="p-t-0 m-b-0">{$price_status_string}</p>
+                    <p class="m-b-0">
+                        {if condition="$user"}
+                        <a href="/data/backup/{$report.report_file}" class="btn btn-danger">下载报告</a>
+                        {else/}
+                        <a href="javascript:void(0)" class="btn btn-danger" data-toggle="modal" data-target=".login">下载报告</a>
+                        {/if}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="sharedaddy article-about">
+            <h6 class="sd-title">
+                <b>{$report.report_desc_name|default="概述"}：</b>
+            </h6>
+            <div class="row no-gutter">
+                <div class="contain narrow post-content text-gray">
+                    <p>{$report.report_desc}</p>
+                </div>
+            </div>
+        </div>
+        {if condition="$report.report_content"}
+        <div class="sharedaddy article-about">
+            <h6 class="sd-title">
+                <b>{$report.report_catalog_name|default="报告目录"}：</b>
+            </h6>
+            <div class="row no-gutter">
+                <div class="contain narrow post-content text-gray">
+                    <p>{$report.report_content}</p>
+                </div>
+            </div>
+        </div>
+        {/if}
+        <div class="sharedaddy article-about">
+            <h6 class="sd-title">
+                <b>{$report.report_author_name|default="作者"}：</b>
+            </h6>
+            <div class="row no-gutter">
+                <div class="contain narrow post-content text-gray">
+                    {foreach item="v" name="report.report_author"}
+                    <p>{$v}</p>
+                    {/foreach}
+                </div>
+            </div>
+        </div>
+        {if condition="$report_colls"}
+        <div class="sharedaddy article-about" style="position: relative">
+            <h6 class="sd-title">
+                {$report.coname?$report.coname:'相关报告'}
+            </h6>
+            <div class="row no-gutter">
+                {foreach item="v" name="report_colls"}
+                    <a href="{:url('report',array('id'=>$v['id']))}" class="report-a">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                            <div class="object dropup">
+                                <if condition="$v['report_price_status'] eq 1">
+                                <span class="label-free"></span>
+                                </if>
+                                <div class="object-meta p-t">
+                                    <h6 style="font-weight: normal">{$v.report_name}</h6>
+                                    <div class="object-meta-sub text-right">
+                                        <span class="m-r"><i class="fa fa-eye"></i>{$v.report_hits}</span>
+                                        <span class="">{$v.createtime|date="Y-m-d",###}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                {/foreach}
+            </div>
+        </div>
+        {/if}
+    </div>
+</div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/basic.js"></script>
+<script type="text/javascript">
+    window._bd_share_config = {
+        common : {
+            bdText : "{$report.report_name}_标准排名",
+            bdDesc : "{$report.report_name}",
+            bdUrl : "http://{$_SERVER['HTTP_HOST']}{:url('report',array('id'=>$report.id))}",
+            bdPic : "http://{$_SERVER['HTTP_HOST']}{$report.smeta}"
+        },
+        share : [{
+            "bdSize" : 16
+        }],
+        selectShare : [{
+            "bdselectMiniList" : ['weixin','tsina','qzone','tqq']
+        }]
+    }
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+{/block}
+{block name="footer"}
+{include file="public/home/footer" /}
+{/block}
