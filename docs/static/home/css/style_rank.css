@@ -1,0 +1,174 @@
+
+input {
+    outline: none;
+
+}
+
+.list50-bg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding-top: 52%;
+    padding-bottom: 15%;
+    background-image: url("../images/list50-bg.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+
+.list50-win {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 5;
+    width: 119px;
+    height: 98px;
+    margin-left: -60px;
+    margin-top: -49px;
+    display: block;
+    background-image: url('../images/list50-win.png');
+    background-repeat: no-repeat;
+    -webkit-background-size: 119px 98px;
+    background-size: 119px 98px;
+}
+
+.list50-nav {
+    margin-top: 10px;
+    width: 100%;
+    position: absolute;
+    top:0;
+    left: 0;
+}
+
+.list50-nav .navbar-brand img {
+    width: 50%;
+}
+
+.list50-search {
+    position: absolute;
+    width: 160px;
+    height: 35px;
+    background-color: #fff;
+    right: 72px;
+    bottom: 76px;
+}
+
+.list50-search input {
+    background-color: transparent;
+    border: none;
+    color: #333333;
+    font-size: 12px;
+    float: left;
+    padding-left: 10px;
+    width: 120px;
+}
+
+.btn-list50-search {
+    width:20px;
+    height: 20px;
+    background-color: transparent;
+    border: none;
+    background-image: url('../images/icon-search.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding: 0;
+    float: left;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.dropdown-toggle {
+    position: absolute;
+    right: 0;
+    bottom: 76px;
+}
+
+.list50-dropdown,
+.list50-dropdown .dropdown-menu {
+    font-size: 12px;
+
+}
+
+.list50-dropdown .dropdown-menu {
+    min-width: auto;
+    width: 70px;
+    top: 326px;
+    right: 0;
+}
+
+.list50-dropdown .btn-danger,
+.list50-dropdown .btn-danger:hover {
+    background-color: #e95555;
+    padding: 4px 10px;
+}
+
+
+.list50-table .table-bordered {
+    margin: 0;
+}
+
+.list50-table .table-bordered,
+.list50-table .table-bordered th,
+.list50-table .table-bordered td,
+.list50-table .table-bordered thead td {
+    border: 1px dashed #b4b4b4;
+    color: #333333;
+    font-size: 12px;
+}
+
+.list50-table .table-danger,
+.list50-table .table-danger > tr,
+.list50-table .table-danger > td {
+    background-color: #e95555;
+    color: #ffffff;
+}
+
+.list50-icon {
+    width: 14px;
+    height: 20px;
+    float: right;
+    margin-top: 4px;
+}
+
+.icon-list50-up {
+    background-image: url('../images/icon-up.png');
+    background-repeat: no-repeat;
+    background-size: 14px 20px;
+}
+
+.icon-list50-up-white {
+    background-image: url('../images/icon-up-white.png');
+    background-repeat: no-repeat;
+    background-size: 14px 20px;
+}
+
+.icon-list50-down {
+    background-image: url('../images/icon-down-list.png');
+    background-repeat: no-repeat;
+    background-size: 14px 20px;
+}
+
+.icon-list50-down-white {
+    background-image: url('../images/icon-down-white.png');
+    background-repeat: no-repeat;
+    background-size: 14px 20px;
+}
+
+.icon-list50-minus {
+    background-image: url('../images/icon-minus.png');
+    background-repeat: no-repeat;
+    background-size: 14px 20px;
+}
+
+.icon-list50-minus-white {
+    background-image: url('../images/icon-minus-white.png');
+    background-repeat: no-repeat;
+    background-size: 14px 20px;
+}
+
+
+
+.table-bordered, .table-bordered th, .table-bordered td {
+    border-color: #bbbbbb;
+    border-style: dashed;
+}

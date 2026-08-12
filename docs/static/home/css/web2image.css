@@ -1,0 +1,51 @@
+.main {
+    color: #555555;
+    font-size: 16px;
+    line-height: 28px;
+}
+
+.content p {
+    color: #555555;
+}
+
+.fs-12 {
+    font-size: 12px;
+}
+
+.fs-14 {
+    font-size: 14px;
+}
+
+.fs-16 {
+    font-size: 16px;
+}
+
+
+.lh-16 {
+    line-height: 16px;
+}
+
+.lh-20 {
+    line-height: 20px;
+}
+
+.text-heavy {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.information {
+    vertical-align: text-bottom;
+}
+
+.information p {
+    font-size: 12px;
+    line-height: 18px;
+    margin-bottom: 5px;
+}
+
+.poster-title {
+    font-family: "宋体", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
