@@ -168,6 +168,16 @@
       Object.defineProperty(xhr, 'statusText', {value: 'OK', configurable: true, writable: true});
       Object.defineProperty(xhr, 'responseText', {value: respText, configurable: true, writable: true});
       Object.defineProperty(xhr, 'response', {value: respText, configurable: true, writable: true});
+      Object.defineProperty(xhr, 'responseURL', {value: xhr.__apiUrl || '', configurable: true, writable: true});
+      Object.defineProperty(xhr, 'responseType', {value: '', configurable: true, writable: true});
+      // 模拟 getAllResponseHeaders
+      xhr.getAllResponseHeaders = function(){
+        return 'content-type: application/json; charset=utf-8\r\n';
+      };
+      xhr.getResponseHeader = function(name){
+        if(name.toLowerCase() === 'content-type') return 'application/json; charset=utf-8';
+        return null;
+      };
       // 触发事件
       if(typeof xhr.onreadystatechange === 'function'){
         try { xhr.onreadystatechange.call(xhr); } catch(e){}
@@ -186,6 +196,9 @@
         var lo = document.createEvent('Event');
         lo.initEvent('load', false, false);
         xhr.dispatchEvent(lo);
+        var le = document.createEvent('Event');
+        le.initEvent('loadend', false, false);
+        xhr.dispatchEvent(le);
       } catch(e){}
     } catch(e) {
       console.warn('[API拦截] fakeXHRResponse error:', e);
