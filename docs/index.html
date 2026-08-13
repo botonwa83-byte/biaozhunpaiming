@@ -62,22 +62,32 @@
         } catch(e){}
         if(keyword && d.all_brands){
           var kw = String(keyword).trim();
-          var found = d.all_brands.find(function(b){
+          // 找所有匹配的品牌，优先返回有实际数据的
+          var matches = d.all_brands.filter(function(b){
             return b.brand_name && String(b.brand_name).indexOf(kw) !== -1;
           });
-          if(found){
-            return {code: 200, msg: '获取成功', data: found};
+          if(matches.length > 0){
+            // 优先返回有exponent或非零系数的品牌
+            var found = matches.find(function(b){
+              return (b.exponent && b.exponent !== '0' && b.exponent !== 0) ||
+                     (b.sj_coeff && b.sj_coeff !== 0 && b.sj_coeff !== '0');
+            });
+            return {code: 200, msg: '获取成功', data: found || matches[0]};
           }
           // 没找到匹配，返回空对象而非null，防止前端读取null.rank_type报错
           return {code: 200, msg: '获取成功', data: {
-            id: 0, brand_name: '', rank_type: 0, rank_list_id: '',
-            details: [], scores: []
+            id: 0, brand_name: '', rank_type: 1, rank_list_id: '',
+            details: [], scores: [],
+            sj_coeff: 0, yx_coeff: 0, wr_coeff: 0, ws_coeff: 0,
+            fq_coeff: 0, hjxx_coeff: 0, exponent: '', level: ''
           }};
         }
         // 无关键词时也返回空对象
         return {code: 200, msg: '获取成功', data: {
-          id: 0, brand_name: '', rank_type: 0, rank_list_id: '',
-          details: [], scores: []
+          id: 0, brand_name: '', rank_type: 1, rank_list_id: '',
+          details: [], scores: [],
+          sj_coeff: 0, yx_coeff: 0, wr_coeff: 0, ws_coeff: 0,
+          fq_coeff: 0, hjxx_coeff: 0, exponent: '', level: ''
         }};
       }
       // 搜索详情（文章/投票）
